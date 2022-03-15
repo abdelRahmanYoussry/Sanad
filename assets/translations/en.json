@@ -1,0 +1,49 @@
+{
+    
+    "home": "Home",
+    "artist": "Artists",
+    "category": "Category",
+    "settings": "Settings",
+    "profile": "Profile",
+    "latest_video": "Latest Video",
+    "mostview_video": "Mostview Video", 
+    "video_details":"Video Details",
+    "favourite":"Favorite List",
+    "related_video":"Related Videos",
+    "comments":"Comments",
+    "remove_favorite":"Remove Favorite",
+    "add_favorite":"Add Favorite",
+
+
+    "push_notification": "Push Notification",
+    "my_favourites": "My Favourites",
+    "subscription": "Subscription",
+    "rate_our_app": "Rate Our App",
+    "share_with_friends": "Share With Friends",
+    "About_App": "About App",
+    "privacy_policy": "Privacy Policy",
+    "Logout": "Logout",
+
+    
+    "about_us": "About Us",
+    "company": "Company",
+    "email": "Email",
+    "website": "Website",
+    "contact": "Contact",
+
+    "are_you_sure": "are you sure want to Logout?",
+    "OK": "OK",
+
+    "likes": "Likes",
+    "Views": "Views",
+    "Videos": "Videos"
+    
+
+
+
+
+
+
+   
+
+}
