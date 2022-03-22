@@ -4,9 +4,9 @@ class Config {
   final String appName = 'Quiz App';
 
   final String doneAsset = 'assets/done.json';
-  final Color appColor = Color(0xff681FA9);
-  final Color appDarkColor = Color(0xff681FA9);
-  final Color appaccentColor = Color(0xff999999);
+  final Color appColor = const Color(0xff681FA9);
+  final Color appDarkColor = const Color(0xff681FA9);
+  final Color appaccentColor = const Color(0xff999999);
 
   //Intro images
   final String introImage1 = 'assets/news1.png';

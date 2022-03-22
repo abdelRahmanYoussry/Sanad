@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 import '../Theme/config.dart';
 
@@ -7,13 +8,13 @@ class ApiService {
   late Dio dio;
 
   ApiService() {
-    dio = new Dio();
+    dio = Dio();
   }
 
   Future<Response> genaralSetting() async {
     String generalsetting = "genaral_setting";
     Response response = await dio.get('$baseurl$generalsetting');
-    print(response.data);
+    debugPrint(response.data);
     return response;
   }
 
@@ -27,7 +28,7 @@ class ApiService {
           "type": type,
           "device_token": devicetoken
         }));
-    print(response.data);
+    debugPrint(response.data);
     return response;
   }
 
@@ -41,24 +42,24 @@ class ApiService {
           "password": password,
           "mobile": phonenumber,
         }));
-    print(response.data);
+    debugPrint(response.data);
     return response;
   }
 
   Future<Response> categorylist() async {
     String methodname = "get_category";
-    print('$baseurl$methodname');
+    debugPrint('$baseurl$methodname');
     Response response = await dio.get('$baseurl$methodname');
-    print(response.data);
+    debugPrint(response.data);
     return response;
   }
 
   Future<Response> getLeval(final categoryId, final userId) async {
     String methodname = "get_lavel";
-    print('$baseurl$methodname');
+    debugPrint('$baseurl$methodname');
     Response response = await dio.post('$baseurl$methodname',
         data: FormData.fromMap({"category_id": categoryId, "userId": userId}));
-    print(response.data);
+    debugPrint(response.data);
     return response;
   }
 }

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/login.dart';
-import 'package:quizapp/Pages/mainactivity.dart';
+import 'package:quizapp/Theme/config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnBoardingPage extends StatefulWidget {
+  const OnBoardingPage({Key? key}) : super(key: key);
+
   @override
   _OnBoardingPageState createState() => _OnBoardingPageState();
 }
@@ -14,7 +16,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
-  int _numPage = 3;
+  final int _numPage = 3;
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -26,15 +28,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
-      duration: Duration(microseconds: 150),
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      duration: const Duration(microseconds: 150),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       height: 8.0,
       width: isActive ? 24.0 : 16.0,
       decoration: BoxDecoration(
-          color: isActive
-              ? Theme.of(context).accentColor
-              : Theme.of(context).primaryColorDark,
-          borderRadius: BorderRadius.all(Radius.circular(12))),
+          color: isActive ? Config().appaccentColor : Config().appDarkColor,
+          borderRadius: const BorderRadius.all(Radius.circular(12))),
     );
   }
 
@@ -48,7 +48,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
     return Stack(
       children: <Widget>[
         PageView(
-            physics: ClampingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
             controller: _pageController,
             onPageChanged: (int page) {
               setState(() {
@@ -58,9 +58,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             children: <Widget>[
               Stack(children: <Widget>[
                 Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image: new AssetImage('assets/introscreen/intro1.png'),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/introscreen/intro1.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -70,7 +70,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.only(left: 10, right: 80),
+                          margin: const EdgeInsets.only(left: 10, right: 80),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -83,9 +83,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               ),
                             ),
                           )),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
-                        margin: EdgeInsets.only(left: 10, right: 80),
+                        margin: const EdgeInsets.only(left: 10, right: 80),
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -104,9 +104,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ]),
               Stack(children: [
                 Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image: new AssetImage('assets/introscreen/intro2.png'),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/introscreen/intro2.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -116,7 +116,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.only(left: 10, right: 80),
+                          margin: const EdgeInsets.only(left: 10, right: 80),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -129,9 +129,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               ),
                             ),
                           )),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
-                        margin: EdgeInsets.only(left: 10, right: 80),
+                        margin: const EdgeInsets.only(left: 10, right: 80),
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -150,9 +150,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ]),
               Stack(children: [
                 Container(
-                  decoration: new BoxDecoration(
-                    image: new DecorationImage(
-                      image: new AssetImage('assets/introscreen/intro3.png'),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/introscreen/intro3.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -162,7 +162,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                          margin: EdgeInsets.only(left: 10, right: 80),
+                          margin: const EdgeInsets.only(left: 10, right: 80),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -175,9 +175,9 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                               ),
                             ),
                           )),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
-                        margin: EdgeInsets.only(left: 10, right: 80),
+                        margin: const EdgeInsets.only(left: 10, right: 80),
                         child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -197,26 +197,25 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
             ]),
         Stack(
           children: [
-            new Positioned(
+            Positioned(
                 right: 10.0,
                 bottom: 20.0,
                 child: Align(
                   alignment: FractionalOffset.bottomRight,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Theme.of(context).accentColor, // background
-                      onPrimary: Theme.of(context).primaryColor,
-                      shadowColor: Theme.of(context).accentColor,
+                      primary: Config().appColor, // background
+                      onPrimary: Config().appColor,
+                      shadowColor: Config().appaccentColor,
                     ),
                     onPressed: () {
                       if (_currentPage == _numPage - 1) {
                         _storeOnboardInfo();
-                        Navigator.of(context).pushReplacement(
-                            new MaterialPageRoute(
-                                builder: (BuildContext context) => Login()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) => const Login()));
                       } else {
                         _pageController.nextPage(
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.ease);
                       }
                     },
@@ -226,14 +225,15 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                       children: <Widget>[
                         Text(
                           _currentPage != _numPage - 1 ? 'Next' : 'Done',
-                          style: TextStyle(color: Colors.white, fontSize: 20.0),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 20.0),
                         ),
-                        SizedBox(width: 10.0),
+                        const SizedBox(width: 10.0),
                       ],
                     ),
                   ),
                 )),
-            new Positioned.fill(
+            Positioned.fill(
                 bottom: 30.0,
                 child: Align(
                   alignment: Alignment.bottomCenter,
@@ -242,14 +242,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     children: _buildPageIndicator(),
                   ),
                 )),
-            new Positioned(
+            Positioned(
                 left: 10.0,
                 bottom: 20.0,
                 child: GestureDetector(
                   onTap: () {
                     _storeOnboardInfo();
-                    Navigator.of(context).pushReplacement(new MaterialPageRoute(
-                        builder: (BuildContext context) => Login()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => const Login()));
                   },
                   child: Container(
                     height: 40,
@@ -258,7 +258,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                     child: Text(
                       'Skip',
                       style: TextStyle(
-                          color: Theme.of(context).accentColor,
+                          color: Config().appaccentColor,
                           fontSize: 18.0,
                           decoration: TextDecoration.none),
                     ),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:quizapp/Pages/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Pages/mainactivity.dart';
 import 'Pages/onboaring.dart';
 import 'Theme/theme_model.dart';
 
@@ -16,16 +14,18 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isviewed = (prefs.getBool('seen') ?? false);
   runApp(EasyLocalization(
-    supportedLocales: [Locale('en'), Locale('es'), Locale('ar')],
+    supportedLocales: const [Locale('en'), Locale('es'), Locale('ar')],
     path: 'assets/translations',
-    fallbackLocale: Locale('en'),
-    startLocale: Locale('en'),
+    fallbackLocale: const Locale('en'),
+    startLocale: const Locale('en'),
     useOnlyLangCode: true,
-    child: MyApp(),
+    child: const MyApp(),
   ));
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       title: 'home',
-      home: isviewed != true ? OnBoardingPage() : Login(),
+      home: isviewed != true ? const OnBoardingPage() : const Login(),
       theme: ThemeModel().lightMode, // Provide light theme.
       darkTheme: ThemeModel().darkMode,
     );

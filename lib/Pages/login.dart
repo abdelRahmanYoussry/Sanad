@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:quizapp/Pages/forgotpass.dart';
+import 'package:quizapp/Pages/signup.dart';
 
 import '../Model/LoginModel.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
-import '../Utils/Utility.dart';
+
 import '../webservice/apiservice.dart';
-import '../widget/TextFields.dart';
-import '../widget/TextView.dart';
-import 'mainactivity.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -21,10 +20,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController passController = new TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
   List<SuccessModel>? loginList;
-  bool _isHidden = true;
 
   final loginuser = GetStorage();
 
@@ -52,14 +50,9 @@ class _LoginState extends State<Login> {
     }
   }
 
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -76,8 +69,8 @@ class _LoginState extends State<Login> {
               Expanded(
                   flex: 3,
                   child: Container(
-                    margin: EdgeInsets.only(top: 70),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.only(top: 70),
+                    decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage("assets/images/login_logo.png"),
                             fit: BoxFit.fitHeight)),
@@ -93,10 +86,11 @@ class _LoginState extends State<Login> {
                                 AssetImage("assets/images/login_bg_white.png"),
                             fit: BoxFit.cover)),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 50),
+                          margin: const EdgeInsets.symmetric(horizontal: 40),
                           width: double.infinity,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -110,9 +104,12 @@ class _LoginState extends State<Login> {
                                     hintText: "Email",
                                     hintStyle: TextStyle(color: Colors.grey)),
                               ),
-                              const Divider(
+                              Divider(
                                 thickness: 0.5,
-                                height: 10,
+                                height: size.height * 0.01,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.02,
                               ),
                               TextField(
                                 obscureText: _isObscure,
@@ -128,18 +125,30 @@ class _LoginState extends State<Login> {
                                           ? Icons.visibility
                                           : Icons.visibility_off),
                                     ),
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
                                     border: InputBorder.none,
                                     hintText: "Password",
-                                    hintStyle: TextStyle(color: Colors.grey)),
+                                    hintStyle:
+                                        const TextStyle(color: Colors.grey)),
+                              ),
+                              Divider(
+                                thickness: 0.5,
+                                height: size.height * 0.01,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.03,
                               ),
                               Container(
                                 alignment: Alignment.centerRight,
-                                margin: EdgeInsets.only(top: 10),
                                 child: GestureDetector(
                                   onTap: (() {
-                                    print('Test');
+                                    debugPrint('Test');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ForgotPass()));
                                   }),
                                   child: const Text(
                                     "Forgot your password ?",
@@ -151,7 +160,9 @@ class _LoginState extends State<Login> {
                             ],
                           ),
                         ),
-
+                        SizedBox(
+                          height: size.height * 0.03,
+                        ),
                         // #signup_button
                         MaterialButton(
                           onPressed: () {},
@@ -167,8 +178,8 @@ class _LoginState extends State<Login> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: size.height * 0.03,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -190,8 +201,8 @@ class _LoginState extends State<Login> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 30,
+                        SizedBox(
+                          height: size.height * 0.01,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -213,27 +224,33 @@ class _LoginState extends State<Login> {
                         ),
                         Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: 10),
+                          margin: const EdgeInsets.only(top: 5),
                           child: GestureDetector(
                             onTap: (() {
-                              print('Test');
+                              debugPrint('Test');
                             }),
                             child: RichText(
                                 text: TextSpan(
                               children: [
-                                new TextSpan(
+                                TextSpan(
                                   text: "Don't have an account? ",
-                                  style: new TextStyle(
-                                      color: Config().appaccentColor),
+                                  style:
+                                      TextStyle(color: Config().appaccentColor),
                                 ),
-                                new TextSpan(
+                                TextSpan(
                                     text: "Sign Up",
-                                    style: new TextStyle(
+                                    style: TextStyle(
                                         color: Config().appColor,
-                                        fontStyle: Fon),
-                                    recognizer: new TapGestureRecognizer()
+                                        fontWeight: FontWeight.bold),
+                                    recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        print("Click");
+                                        debugPrint("Click");
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SignUp()),
+                                        );
                                       })
                               ],
                             )),

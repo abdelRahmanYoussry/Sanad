@@ -1,12 +1,9 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/Model/CategoryModel.dart';
 import 'package:quizapp/Model/GetLevel.dart';
-import 'package:quizapp/Theme/theme_model.dart';
-
 import '../Model/GeneralSettingModel.dart';
 import '../webservice/apiservice.dart';
 
@@ -23,18 +20,18 @@ class _MainActivityState extends State<MainActivity> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Quiz', style: TextStyle(color: Colors.white)).tr(),
+        title: const Text('Quiz', style: TextStyle(color: Colors.white)).tr(),
         elevation: 0,
         actions: <Widget>[
-          new IconButton(
-            icon: Icon(Icons.search),
+          IconButton(
+            icon: const Icon(Icons.search),
             onPressed: () {
-              print('Test');
+              debugPrint('Test');
             },
           ),
         ],
       ),
-      body: Container(margin: EdgeInsets.all(10), child: getBotton()),
+      body: Container(margin: const EdgeInsets.all(10), child: getBotton()),
     );
   }
 
@@ -45,7 +42,7 @@ class _MainActivityState extends State<MainActivity> {
           onPressed: () {
             fetchgeneralSettings();
           },
-          child: Text('General Setting'),
+          child: const Text('General Setting'),
           style: TextButton.styleFrom(
             primary: Colors.black,
             backgroundColor: Colors.amber,
@@ -55,7 +52,7 @@ class _MainActivityState extends State<MainActivity> {
           onPressed: () {
             login("test@gmail.com", '12345', "3", "test123");
           },
-          child: Text('Login'),
+          child: const Text('Login'),
           style: TextButton.styleFrom(
             primary: Colors.black,
             backgroundColor: Colors.amber,
@@ -65,7 +62,7 @@ class _MainActivityState extends State<MainActivity> {
           onPressed: () {
             getCategory();
           },
-          child: Text('Category'),
+          child: const Text('Category'),
           style: TextButton.styleFrom(
             primary: Colors.black,
             backgroundColor: Colors.amber,
@@ -75,7 +72,7 @@ class _MainActivityState extends State<MainActivity> {
           onPressed: () {
             getLeval('2', '1');
           },
-          child: Text('Get Level'),
+          child: const Text('Get Level'),
           style: TextButton.styleFrom(
             primary: Colors.black,
             backgroundColor: Colors.amber,
@@ -87,9 +84,8 @@ class _MainActivityState extends State<MainActivity> {
 
   Future<GeneralSettingModel> fetchgeneralSettings() async {
     final response = await ApiService().genaralSetting();
-    print(response.statusCode);
     if (response.statusCode == 200) {
-      print(response.data);
+      debugPrint(response.data);
       return GeneralSettingModel.fromJson(jsonDecode(response.data));
     } else {
       throw Exception('Failed to load album');
@@ -97,12 +93,12 @@ class _MainActivityState extends State<MainActivity> {
   }
 
   Future<GeneralSettingModel> login(
-      String email, String password, String type, String device_token) async {
+      String email, String password, String type, String devicetoken) async {
     final response =
-        await ApiService().login(email, password, type, device_token);
-    print(response.statusCode);
+        await ApiService().login(email, password, type, devicetoken);
+
     if (response.statusCode == 200) {
-      print(response.data);
+      debugPrint(response.data);
       return GeneralSettingModel.fromJson(jsonDecode(response.data));
     } else {
       throw Exception('Failed to load album');
@@ -111,9 +107,9 @@ class _MainActivityState extends State<MainActivity> {
 
   Future<CategoryModel> getCategory() async {
     final response = await ApiService().categorylist();
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
-      print("Get Category==>" + response.data);
+      debugPrint("Get Category==>" + response.data);
       return CategoryModel.fromJson(jsonDecode(response.data));
     } else {
       throw Exception('Failed to load album');
@@ -122,9 +118,9 @@ class _MainActivityState extends State<MainActivity> {
 
   Future<GetLevel> getLeval(String categoryID, String userID) async {
     final response = await ApiService().getLeval(categoryID, userID);
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
-      print(response.data);
+      debugPrint(response.data);
       return GetLevel.fromJson(jsonDecode(response.data));
     } else {
       throw Exception('Failed to load album');

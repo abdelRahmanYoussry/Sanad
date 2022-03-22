@@ -7,7 +7,7 @@ class ThemeModel {
     primarySwatch: Colors.grey,
     primaryColor: Config().appColor,
     primaryColorDark: Config().appDarkColor,
-    iconTheme: IconThemeData(color: Colors.orange),
+    iconTheme: const IconThemeData(color: Colors.orange),
     fontFamily: 'Manrope',
     scaffoldBackgroundColor: Config().appColor,
     brightness: Brightness.light,
@@ -21,7 +21,7 @@ class ThemeModel {
       iconTheme: IconThemeData(
         color: Colors.grey[900],
       ),
-      actionsIconTheme: IconThemeData(color: Colors.white),
+      actionsIconTheme: const IconThemeData(color: Colors.white),
     ),
     textTheme: TextTheme(
       subtitle1: TextStyle(
@@ -37,24 +37,24 @@ class ThemeModel {
   final darkMode = ThemeData(
       primarySwatch: Colors.deepPurple,
       primaryColor: Config().appColor,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       fontFamily: 'Manrope',
-      scaffoldBackgroundColor: Color(0xff303030),
+      scaffoldBackgroundColor: const Color(0xff303030),
       brightness: Brightness.dark,
       primaryColorDark: Colors.grey[300],
       primaryColorLight: Colors.grey[800],
       secondaryHeaderColor: Colors.grey[400],
-      shadowColor: Color(0xff282828),
+      shadowColor: const Color(0xff282828),
       backgroundColor: Colors.grey[900],
       appBarTheme: AppBarTheme(
         color: Colors.grey[900],
         elevation: 0,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        actionsIconTheme: IconThemeData(color: Colors.white),
+        actionsIconTheme: const IconThemeData(color: Colors.white),
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         subtitle1: TextStyle(
             fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
       ),

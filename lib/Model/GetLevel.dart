@@ -1,8 +1,4 @@
-// To parse this JSON data, do
-//
-//     final getLevel = getLevelFromJson(jsonString);
-
-import 'dart:convert';
+// ignore_for_file: file_names
 
 class GetLevel {
   GetLevel({

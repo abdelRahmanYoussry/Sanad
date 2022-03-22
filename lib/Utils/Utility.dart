@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -27,7 +29,7 @@ class Utility {
 
     var outputFormat = DateFormat('dd-MMM-yyyy');
     var outputDate = outputFormat.format(inputDate);
-    print(outputDate);
+    debugPrint(outputDate);
     return outputDate;
   }
 
@@ -35,7 +37,7 @@ class Utility {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         });
@@ -44,7 +46,7 @@ class Utility {
   static showAlertDialog(BuildContext context, String message) {
     // Create button
     Widget okButton = TextButton(
-      child: Text("OK"),
+      child: const Text("OK"),
       onPressed: () {
         Navigator.of(context).pop();
       },
