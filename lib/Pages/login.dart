@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:quizapp/Pages/Home.dart';
 import 'package:quizapp/Pages/forgotpass.dart';
 import 'package:quizapp/Pages/signup.dart';
 
@@ -165,7 +166,12 @@ class _LoginState extends State<Login> {
                         ),
                         // #signup_button
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Home()));
+                          },
                           height: 45,
                           minWidth: MediaQuery.of(context).size.width / 1.4,
                           shape: const StadiumBorder(),

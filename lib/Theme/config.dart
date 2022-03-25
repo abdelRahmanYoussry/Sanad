@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Config {
-  final String appName = 'Quiz App';
+  final String appName = 'DTQuiz';
 
   final String doneAsset = 'assets/done.json';
   final Color appColor = const Color(0xff681FA9);
