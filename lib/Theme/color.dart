@@ -19,6 +19,7 @@ const leaderSelect = Color(0x6A20AA1A);
 const textBoxColor = Colors.white;
 const textColor = Color(0xFF000000);
 const textColorGrey = Color(0xFF666666);
+const textColorGree = Color(0xFF3BC54A);
 const labelColor = Color(0xFF8A8989);
 
 const actionColor = Color(0xFFe54140);

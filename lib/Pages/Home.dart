@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/Category.dart';
 import 'package:quizapp/Pages/Contest.dart';
 import 'package:quizapp/Pages/Level.dart';
+import 'package:quizapp/Pages/Settings.dart';
+import 'package:quizapp/Pages/Wallet.dart';
 import 'package:quizapp/Pages/leaderboard.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/Theme/color.dart';
@@ -446,23 +448,31 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/level_lock.png',
-                        height: 60,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text('Setting',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Settings()));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/level_lock.png',
+                          height: 60,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text('Setting',
+                            style: GoogleFonts.poppins(
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
                   ),
                 ],
               )),
@@ -528,21 +538,27 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 15,
               ),
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/images/level_lock.png',
-                    height: 60,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Wallet',
-                      style: GoogleFonts.poppins(
-                          color: textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500)),
-                ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Wallet()));
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Wallet',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
               ),
             ],
           )),
