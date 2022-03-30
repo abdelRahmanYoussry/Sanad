@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/Category.dart';
+import 'package:quizapp/Pages/Contest.dart';
 import 'package:quizapp/Pages/Level.dart';
+import 'package:quizapp/Pages/leaderboard.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/Theme/color.dart';
 
@@ -172,39 +174,45 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.22,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/blue_bg.png"),
-                      fit: BoxFit.fill),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Join in",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      const Text(
-                        "Practise",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Image.asset(
-                          'assets/images/right_arrow.png',
-                          height: 35.0,
-                          width: 50.0,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Contest()));
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.22,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/blue_bg.png"),
+                        fit: BoxFit.fill),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Join in",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                      ),
-                    ],
+                        const Text(
+                          "Practise",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Image.asset(
+                            'assets/images/right_arrow.png',
+                            height: 35.0,
+                            width: 50.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -348,21 +356,29 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/level_lock.png',
-                        height: 60,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text('Leaderboard',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LeaderBoard()));
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/level_lock.png',
+                          height: 60,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text('Leaderboard',
+                            style: GoogleFonts.poppins(
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

@@ -63,6 +63,7 @@ class _LevelState extends State<Level> {
             color: Colors.white,
             borderRadius: BorderRadius.all(Radius.circular(40))),
         child: GridView.builder(
+            padding: EdgeInsets.zero,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
             ),
@@ -75,7 +76,8 @@ class _LevelState extends State<Level> {
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  margin: const EdgeInsets.all(15),
+                  margin:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -104,7 +106,7 @@ class _LevelState extends State<Level> {
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey,
-                          blurRadius: 5.0,
+                          blurRadius: 1.0,
                         ),
                       ]),
                 ),
