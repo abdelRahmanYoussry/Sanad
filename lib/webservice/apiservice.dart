@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../Theme/config.dart';
 
-class ApiService {
+class ApiService extends ChangeNotifier {
   String baseurl = Config().baseurl + "/api/";
   late Dio dio;
 
@@ -12,8 +11,9 @@ class ApiService {
   }
 
   Future<Response> genaralSetting() async {
-    String generalsetting = "genaral_setting";
-    Response response = await dio.get('$baseurl$generalsetting');
+    String methodname = "genaral_setting";
+    debugPrint('$baseurl$methodname');
+    Response response = await dio.get('$baseurl$methodname');
     debugPrint(response.data);
     return response;
   }

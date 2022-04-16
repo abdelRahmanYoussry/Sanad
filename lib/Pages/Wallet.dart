@@ -22,17 +22,19 @@ class _WalletState extends State<Wallet> {
   }
 
   buildViewPager() {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        backgroundColor: white,
-        body: SingleChildScrollView(
-          child: Expanded(
-            child: Column(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: appBgColor,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Stack(children: [
                   Container(
-                    height: 310,
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/dash_bg.png"),
@@ -43,16 +45,17 @@ class _WalletState extends State<Wallet> {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       getAppbar(),
-                      const SizedBox(height: 10),
                       buildBody(),
                     ],
                   ),
                 ]),
               ],
             ),
-          ),
+            DefaultTabController(length: 3, child: buildPager())
+          ],
         ),
       ),
     );
@@ -63,62 +66,158 @@ class _WalletState extends State<Wallet> {
   }
 
   buildBody() {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 5, bottom: 10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(25, 10, 25, 5),
-            child: Text("Welcome Back",
-                style: GoogleFonts.poppins(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white)),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(25, 0, 25, 5),
-            child: Text(
-              "DivineTechs Developer",
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const SizedBox(height: 10),
+        Text("3265",
+            style: GoogleFonts.poppins(
+                fontSize: 28,
+                fontWeight: FontWeight.w500,
+                color: Colors.white)),
+        Row(
+          children: [
+            Text(
+              "Points",
               style: GoogleFonts.poppins(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
                   color: Colors.white),
             ),
-          ),
-        ]),
-      ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 20),
+              child: Text(
+                "1500 Points = 10 USD",
+                style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white),
+              ),
+            )
+          ],
+        ),
+        const SizedBox(height: 20),
+        Text("*minimum 100 points required for withdrawal request.",
+            style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                color: Colors.white)),
+      ]),
     );
   }
 
   buildPager() {
     return Column(
       children: [
-        Container(
+        const SizedBox(height: 10),
+        SizedBox(
           height: 50,
-          decoration: BoxDecoration(
-              color: tabbarunselect, borderRadius: BorderRadius.circular(25.0)),
           child: TabBar(
-            indicator: BoxDecoration(
-                color: white, borderRadius: BorderRadius.circular(25.0)),
+            indicatorColor: appColor,
             labelColor: appColor,
-            unselectedLabelColor: white,
+            unselectedLabelColor: appaccentColor,
             tabs: [
               CustomText(
-                  title: 'Upcoming', size: 16, fontWeight: FontWeight.w500),
-              CustomText(title: 'Live', size: 16, fontWeight: FontWeight.w500),
-              CustomText(title: 'Ended', size: 16, fontWeight: FontWeight.w500)
+                  title: 'Reward', size: 16, fontWeight: FontWeight.w500),
+              CustomText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
+              CustomText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
             ],
           ),
         ),
-        Expanded(
-            child: TabBarView(
-          children: [rewardHistory(), rewardHistory(), rewardHistory()],
-        ))
+        SizedBox(
+          height: MediaQuery.of(context).size.height - 300,
+          child: TabBarView(
+            children: <Widget>[
+              rewardHistory(),
+              rewardHistory(),
+              rewardHistory()
+            ],
+          ),
+        )
       ],
     );
   }
 
   rewardHistory() {
-    return CustomText(title: "title", size: 16, fontWeight: FontWeight.w600);
+    return Positioned.fill(
+      top: 350,
+      bottom: 80,
+      left: 0,
+      right: 0,
+      child: Stack(children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: ListView.builder(
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: 25,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: const EdgeInsets.only(
+                    left: 15, top: 5, right: 15, bottom: 5),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                          minRadius: 30,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              AssetImage("assets/images/ic_reward_coins.png")),
+                      Column(
+                        children: [
+                          Text(
+                            "50",
+                            style: GoogleFonts.poppins(
+                                color: appColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            "Points",
+                            style: GoogleFonts.poppins(
+                                color: Colors.black, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Column(
+                        children: const [
+                          Text(
+                            "Arjun Patel",
+                            style: TextStyle(
+                                color: black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            "22 July, 2021",
+                            style:
+                                TextStyle(color: textColorGrey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Success",
+                        style: TextStyle(
+                            color: appgreen,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
   }
 }

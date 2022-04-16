@@ -6,6 +6,8 @@ const secondary = Color(0xff999999);
 const appColor = Color(0xff681FA9);
 const appDarkColor = Color(0xff681FA9);
 const appaccentColor = Color(0xff999999);
+const appgreen = Color(0xff19C75A);
+const sharebg = Color(0xffFFFF59);
 
 const mainColor = Color(0xFF000000);
 const darker = Color(0xFF3E4249);

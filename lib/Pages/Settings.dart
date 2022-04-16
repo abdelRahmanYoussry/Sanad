@@ -1,5 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
+import 'package:quizapp/Pages/AboutUs.dart';
+import 'package:quizapp/Pages/Share.dart';
+import 'package:quizapp/Pages/privacyPolicy.dart';
 import 'package:quizapp/widget/CustomText.dart';
 
 import '../Theme/color.dart';
@@ -13,6 +17,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  bool _switchValue = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,7 +59,7 @@ class _SettingsState extends State<Settings> {
           menuItem("Privacy Policy"),
           menuItem("Push Notification"),
           menuItem("App Language"),
-          menuItem("Enagle Sound"),
+          menuItem("Enable Sound"),
           menuItem("Enable Vibration"),
           menuItem("Share App"),
           menuItem("Rate App")
@@ -67,10 +73,13 @@ class _SettingsState extends State<Settings> {
       onTap: () {
         if (title == 'About Us') {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Settings()));
+              MaterialPageRoute(builder: (context) => const AboutUs()));
         } else if (title == "Privacy Policy") {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Settings()));
+              MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
+        } else if (title == "Share App") {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Share()));
         }
       },
       child: Column(
@@ -80,7 +89,19 @@ class _SettingsState extends State<Settings> {
             children: [
               CustomText(title: title, size: 18, fontWeight: FontWeight.w600),
               const Spacer(),
-              Image.asset("assets/images/ic_right_arrow.png", height: 15),
+              if (title == 'Push Notification' ||
+                  title == 'Enable Sound' ||
+                  title == 'Enable Vibration')
+                CupertinoSwitch(
+                  value: _switchValue,
+                  onChanged: (value) {
+                    setState(() {
+                      _switchValue = value;
+                    });
+                  },
+                )
+              else
+                Image.asset("assets/images/ic_right_arrow.png", height: 15),
             ],
           ),
           const SizedBox(height: 20),

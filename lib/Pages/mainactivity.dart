@@ -39,9 +39,7 @@ class _MainActivityState extends State<MainActivity> {
     return Column(
       children: [
         TextButton(
-          onPressed: () {
-            fetchgeneralSettings();
-          },
+          onPressed: () {},
           child: const Text('General Setting'),
           style: TextButton.styleFrom(
             primary: Colors.black,
@@ -50,7 +48,7 @@ class _MainActivityState extends State<MainActivity> {
         ),
         TextButton(
           onPressed: () {
-            login("test@gmail.com", '12345', "3", "test123");
+            // login("test@gmail.com", '12345', "3", "test123");
           },
           child: const Text('Login'),
           style: TextButton.styleFrom(
@@ -60,7 +58,7 @@ class _MainActivityState extends State<MainActivity> {
         ),
         TextButton(
           onPressed: () {
-            getCategory();
+            // getCategory();
           },
           child: const Text('Category'),
           style: TextButton.styleFrom(
@@ -70,7 +68,7 @@ class _MainActivityState extends State<MainActivity> {
         ),
         TextButton(
           onPressed: () {
-            getLeval('2', '1');
+            // getLeval('2', '1');
           },
           child: const Text('Get Level'),
           style: TextButton.styleFrom(
@@ -82,48 +80,48 @@ class _MainActivityState extends State<MainActivity> {
     );
   }
 
-  Future<GeneralSettingModel> fetchgeneralSettings() async {
-    final response = await ApiService().genaralSetting();
-    if (response.statusCode == 200) {
-      debugPrint(response.data);
-      return GeneralSettingModel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  // Future<GeneralSettingModel> fetchgeneralSettings() async {
+  //   final response = await ApiService().genaralSetting();
+  //   if (response.statusCode == 200) {
+  //     debugPrint(response.data);
+  //     return GeneralSettingModel.fromJson(jsonDecode(response.data));
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 
-  Future<GeneralSettingModel> login(
-      String email, String password, String type, String devicetoken) async {
-    final response =
-        await ApiService().login(email, password, type, devicetoken);
+  // Future<GeneralSettingModel> login(
+  //     String email, String password, String type, String devicetoken) async {
+  //   final response =
+  //       await ApiService().login(email, password, type, devicetoken);
 
-    if (response.statusCode == 200) {
-      debugPrint(response.data);
-      return GeneralSettingModel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     debugPrint(response.data);
+  //     return GeneralSettingModel.fromJson(jsonDecode(response.data));
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 
-  Future<CategoryModel> getCategory() async {
-    final response = await ApiService().categorylist();
+  // Future<CategoryModel> getCategory() async {
+  //   final response = await ApiService().categorylist();
 
-    if (response.statusCode == 200) {
-      debugPrint("Get Category==>" + response.data);
-      return CategoryModel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     debugPrint("Get Category==>" + response.data);
+  //     return CategoryModel.fromJson(jsonDecode(response.data));
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 
-  Future<GetLevel> getLeval(String categoryID, String userID) async {
-    final response = await ApiService().getLeval(categoryID, userID);
+  // Future<GetLevel> getLeval(String categoryID, String userID) async {
+  //   final response = await ApiService().getLeval(categoryID, userID);
 
-    if (response.statusCode == 200) {
-      debugPrint(response.data);
-      return GetLevel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     debugPrint(response.data);
+  //     return GetLevel.fromJson(jsonDecode(response.data));
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 }

@@ -36,17 +36,17 @@ class _ForgotPassState extends State<ForgotPass> {
     super.dispose();
   }
 
-  Future<LoginModel> signIn() async {
-    String strEmail = emailController.text;
-    String strPass = passController.text;
-    final response =
-        await ApiService().login(strEmail, strPass, "1", "345354354");
-    if (response.statusCode == 200) {
-      return LoginModel.fromJson(jsonDecode(response.data));
-    } else {
-      throw Exception('Failed to load album');
-    }
-  }
+  // Future<LoginModel> signIn() async {
+  //   String strEmail = emailController.text;
+  //   String strPass = passController.text;
+  //   final response =
+  //       await ApiService().login(strEmail, strPass, "1", "345354354");
+  //   if (response.statusCode == 200) {
+  //     return LoginModel.fromJson(jsonDecode(response.data));
+  //   } else {
+  //     throw Exception('Failed to load album');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

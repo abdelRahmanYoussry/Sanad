@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/Category.dart';
 import 'package:quizapp/Pages/Contest.dart';
 import 'package:quizapp/Pages/Level.dart';
+import 'package:quizapp/Pages/Profile.dart';
 import 'package:quizapp/Pages/Settings.dart';
 import 'package:quizapp/Pages/Wallet.dart';
 import 'package:quizapp/Pages/leaderboard.dart';
@@ -393,21 +394,29 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/level_lock.png',
-                        height: 60,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text('Profile',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Profile()));
+                    },
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/level_lock.png',
+                          height: 60,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text('Profile',
+                            style: GoogleFonts.poppins(
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
                   ),
                 ],
               )),
