@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/Pages/Level.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
+import 'package:quizapp/Pages/level.dart';
+import 'package:quizapp/widget/myappbar.dart';
 
 import '../Theme/color.dart';
-import '../Theme/config.dart';
 
 class Category extends StatefulWidget {
   const Category({Key? key}) : super(key: key);
@@ -36,7 +35,7 @@ class _CategoryState extends State<Category> {
   }
 
   getAppbar() {
-    return const CustomAppbar(
+    return const MyAppbar(
       title: "Category",
     );
   }

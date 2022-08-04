@@ -2,9 +2,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
-
-import '../widget/CustomText.dart';
+import 'package:quizapp/widget/MyAppbar.dart';
+import 'package:quizapp/widget/myText.dart';
 
 bool topBar = false;
 
@@ -56,7 +55,7 @@ class _ShareState extends State<Share> {
   }
 
   getAppbar() {
-    return const CustomAppbar(title: "Share App");
+    return const MyAppbar(title: "Share App");
   }
 
   buildBody() {
@@ -85,7 +84,7 @@ class _ShareState extends State<Share> {
             width: 280,
             color: tabbarunselect,
             child: Center(
-              child: CustomText(
+              child: MyText(
                 title: "VhoWIH",
                 size: 24,
                 fontWeight: FontWeight.w600,
@@ -112,7 +111,7 @@ class _ShareState extends State<Share> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const SizedBox(height: 10),
-            CustomText(
+            MyText(
                 title: "Share to your friend by using these",
                 size: 18,
                 fontWeight: FontWeight.w500),
@@ -127,7 +126,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
+                    MyText(
                         title: "Facebook",
                         size: 16,
                         fontWeight: FontWeight.w500)
@@ -141,7 +140,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
+                    MyText(
                         title: "Twitter", size: 16, fontWeight: FontWeight.w500)
                   ],
                 ),
@@ -153,7 +152,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
+                    MyText(
                         title: "Google +",
                         size: 16,
                         fontWeight: FontWeight.w500)
@@ -173,8 +172,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
-                        title: "Line", size: 16, fontWeight: FontWeight.w500)
+                    MyText(title: "Line", size: 16, fontWeight: FontWeight.w500)
                   ],
                 ),
                 const Spacer(),
@@ -185,7 +183,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
+                    MyText(
                         title: "Whatsapp",
                         size: 16,
                         fontWeight: FontWeight.w500)
@@ -199,8 +197,7 @@ class _ShareState extends State<Share> {
                       height: 60,
                     ),
                     const SizedBox(height: 5),
-                    CustomText(
-                        title: "SMS", size: 16, fontWeight: FontWeight.w500)
+                    MyText(title: "SMS", size: 16, fontWeight: FontWeight.w500)
                   ],
                 ),
                 const Spacer(),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
-
-import '../widget/CustomText.dart';
+import 'package:quizapp/widget/myText.dart';
+import 'package:quizapp/widget/myappbar.dart';
 
 bool topBar = false;
 
@@ -62,7 +61,7 @@ class _WalletState extends State<Wallet> {
   }
 
   getAppbar() {
-    return const CustomAppbar(title: "Wallet");
+    return const MyAppbar(title: "Wallet");
   }
 
   buildBody() {
@@ -118,10 +117,9 @@ class _WalletState extends State<Wallet> {
             labelColor: appColor,
             unselectedLabelColor: appaccentColor,
             tabs: [
-              CustomText(
-                  title: 'Reward', size: 16, fontWeight: FontWeight.w500),
-              CustomText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
-              CustomText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
+              MyText(title: 'Reward', size: 16, fontWeight: FontWeight.w500),
+              MyText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
+              MyText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
             ],
           ),
         ),

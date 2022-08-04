@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
-import 'package:quizapp/widget/CustomText.dart';
+import 'package:quizapp/widget/MyAppbar.dart';
+import 'package:quizapp/widget/myText.dart';
 
 class Contest extends StatefulWidget {
   const Contest({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _ContestState extends State<Contest> {
   }
 
   getAppbar() {
-    return const CustomAppbar(
+    return const MyAppbar(
       title: "Contest",
     );
   }
@@ -53,13 +52,13 @@ class _ContestState extends State<Contest> {
                     labelColor: appColor,
                     unselectedLabelColor: white,
                     tabs: [
-                      CustomText(
+                      MyText(
                           title: 'Upcoming',
                           size: 16,
                           fontWeight: FontWeight.w500),
-                      CustomText(
+                      MyText(
                           title: 'Live', size: 16, fontWeight: FontWeight.w500),
-                      CustomText(
+                      MyText(
                           title: 'Ended', size: 16, fontWeight: FontWeight.w500)
                     ],
                   ),
@@ -95,12 +94,12 @@ class _ContestState extends State<Contest> {
                 children: [
                   Column(
                     children: [
-                      CustomText(
+                      MyText(
                           title: "Prize Pool",
                           size: 16,
                           fontWeight: FontWeight.w400,
                           colors: textColorGrey),
-                      CustomText(
+                      MyText(
                           title: "5000",
                           size: 24,
                           fontWeight: FontWeight.w600,
@@ -117,7 +116,7 @@ class _ContestState extends State<Contest> {
                                       borderRadius:
                                           BorderRadius.circular(28.0))),
                           backgroundColor: MaterialStateProperty.all(appColor)),
-                      child: CustomText(
+                      child: MyText(
                         title: ' Join Now ',
                         size: 16,
                         fontWeight: FontWeight.w500,
@@ -134,13 +133,13 @@ class _ContestState extends State<Contest> {
                     width: 20,
                   ),
                   const SizedBox(width: 10),
-                  CustomText(
+                  MyText(
                       title: "WINNERS: 20",
                       size: 18,
                       fontWeight: FontWeight.w400,
                       colors: textColorGree),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Quiz Contest",
                       size: 18,
                       fontWeight: FontWeight.w600,
@@ -159,13 +158,13 @@ class _ContestState extends State<Contest> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  CustomText(
+                  MyText(
                       title: "150 Left",
                       size: 16,
                       fontWeight: FontWeight.w600,
                       colors: red),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "500 Total",
                       size: 16,
                       fontWeight: FontWeight.w600,
@@ -177,15 +176,15 @@ class _ContestState extends State<Contest> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  CustomText(
+                  MyText(
                       title: "5h 40m", size: 16, fontWeight: FontWeight.w600),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Entry Fee: 50",
                       size: 16,
                       fontWeight: FontWeight.w600),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Winner Details",
                       size: 16,
                       fontWeight: FontWeight.w600,
@@ -218,12 +217,12 @@ class _ContestState extends State<Contest> {
                 children: [
                   Column(
                     children: [
-                      CustomText(
+                      MyText(
                           title: "Prize Pool",
                           size: 16,
                           fontWeight: FontWeight.w400,
                           colors: textColorGrey),
-                      CustomText(
+                      MyText(
                           title: "5000",
                           size: 24,
                           fontWeight: FontWeight.w600,
@@ -242,13 +241,13 @@ class _ContestState extends State<Contest> {
                     width: 20,
                   ),
                   const SizedBox(width: 10),
-                  CustomText(
+                  MyText(
                       title: "WINNERS: 20",
                       size: 18,
                       fontWeight: FontWeight.w400,
                       colors: textColorGree),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Quiz Contest",
                       size: 18,
                       fontWeight: FontWeight.w600,
@@ -267,13 +266,13 @@ class _ContestState extends State<Contest> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  CustomText(
+                  MyText(
                       title: "150 Left",
                       size: 16,
                       fontWeight: FontWeight.w600,
                       colors: red),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "500 Total",
                       size: 16,
                       fontWeight: FontWeight.w600,
@@ -285,15 +284,15 @@ class _ContestState extends State<Contest> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  CustomText(
+                  MyText(
                       title: "5h 40m", size: 16, fontWeight: FontWeight.w600),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Entry Fee: 50",
                       size: 16,
                       fontWeight: FontWeight.w600),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Winner Details",
                       size: 16,
                       fontWeight: FontWeight.w600,
@@ -326,12 +325,12 @@ class _ContestState extends State<Contest> {
                 children: [
                   Column(
                     children: [
-                      CustomText(
+                      MyText(
                           title: "Prize Pool",
                           size: 16,
                           fontWeight: FontWeight.w400,
                           colors: textColorGrey),
-                      CustomText(
+                      MyText(
                           title: "5000",
                           size: 24,
                           fontWeight: FontWeight.w600,
@@ -339,7 +338,7 @@ class _ContestState extends State<Contest> {
                     ],
                   ),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Entry Fee: 99",
                       size: 16,
                       fontWeight: FontWeight.w600,
@@ -355,13 +354,13 @@ class _ContestState extends State<Contest> {
                     width: 20,
                   ),
                   const SizedBox(width: 10),
-                  CustomText(
+                  MyText(
                       title: "WINNERS: 20",
                       size: 18,
                       fontWeight: FontWeight.w400,
                       colors: textColorGree),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Quiz Contest",
                       size: 18,
                       fontWeight: FontWeight.w600,
@@ -382,19 +381,19 @@ class _ContestState extends State<Contest> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  CustomText(
+                  MyText(
                       title: "Leaderboard",
                       size: 16,
                       fontWeight: FontWeight.w600,
                       colors: appColor),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Statistics",
                       size: 16,
                       fontWeight: FontWeight.w600,
                       colors: appColor),
                   const Spacer(),
-                  CustomText(
+                  MyText(
                       title: "Winner Details",
                       size: 16,
                       fontWeight: FontWeight.w600,

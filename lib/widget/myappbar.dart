@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
 
-class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double? height;
 
-  const CustomAppbar({
+  const MyAppbar({
     Key? key,
     required this.title,
     this.height,

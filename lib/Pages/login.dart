@@ -1,17 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:quizapp/Pages/Home.dart';
+import 'package:quizapp/Pages/home.dart';
 import 'package:quizapp/Pages/forgotpass.dart';
 import 'package:quizapp/Pages/signup.dart';
-
-import '../Model/LoginModel.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
-
-import '../webservice/apiservice.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
-import 'package:quizapp/widget/CustomText.dart';
+import 'package:quizapp/main.dart';
+import 'package:quizapp/widget/myText.dart';
+import 'package:quizapp/widget/myappbar.dart';
 
 bool topBar = false;
 
@@ -55,7 +56,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   getAppbar() {
-    return const CustomAppbar(title: "Edit Profile");
+    return const MyAppbar(title: "Edit Profile");
   }
 
   buildHeader() {
@@ -91,7 +92,7 @@ class _EditProfileState extends State<EditProfile> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 10),
-            CustomText(
+            MyText(
                 title: "  User Name",
                 size: 16,
                 fontWeight: FontWeight.w500,
@@ -117,7 +118,7 @@ class _EditProfileState extends State<EditProfile> {
             ),
 //  Email ID
             const SizedBox(height: 15),
-            CustomText(
+            MyText(
                 title: "  Email ID",
                 size: 16,
                 fontWeight: FontWeight.w500,
@@ -145,7 +146,7 @@ class _EditProfileState extends State<EditProfile> {
             // Contact No.
 
             const SizedBox(height: 15),
-            CustomText(
+            MyText(
                 title: "  Contact No.",
                 size: 16,
                 fontWeight: FontWeight.w500,
@@ -173,7 +174,7 @@ class _EditProfileState extends State<EditProfile> {
             // Address
 
             const SizedBox(height: 15),
-            CustomText(
+            MyText(
                 title: "  Address",
                 size: 16,
                 fontWeight: FontWeight.w500,
@@ -209,7 +210,7 @@ class _EditProfileState extends State<EditProfile> {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28.0))),
                       backgroundColor: MaterialStateProperty.all(appColor)),
-                  child: CustomText(
+                  child: MyText(
                     title: ' Save ',
                     size: 18,
                     fontWeight: FontWeight.w500,

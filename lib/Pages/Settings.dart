@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'package:quizapp/Pages/AboutUs.dart';
-import 'package:quizapp/Pages/Share.dart';
+import 'package:quizapp/Pages/aboutUs.dart';
+import 'package:quizapp/Pages/share.dart';
 import 'package:quizapp/Pages/privacyPolicy.dart';
-import 'package:quizapp/widget/CustomText.dart';
-
+import 'package:quizapp/widget/myText.dart';
 import '../Theme/color.dart';
-import '../widget/CustomAppbar.dart';
+import '../widget/MyAppbar.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -40,7 +38,7 @@ class _SettingsState extends State<Settings> {
   }
 
   getAppbar() {
-    return const CustomAppbar(
+    return const MyAppbar(
       title: "Settings",
     );
   }
@@ -87,7 +85,7 @@ class _SettingsState extends State<Settings> {
           const SizedBox(height: 25),
           Row(
             children: [
-              CustomText(title: title, size: 18, fontWeight: FontWeight.w600),
+              MyText(title: title, size: 18, fontWeight: FontWeight.w600),
               const Spacer(),
               if (title == 'Push Notification' ||
                   title == 'Enable Sound' ||

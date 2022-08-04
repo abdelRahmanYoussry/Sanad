@@ -1,12 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:quizapp/Pages/login.dart';
-import 'package:quizapp/Pages/mainactivity.dart';
-import 'package:quizapp/Pages/testApi.dart';
-import 'package:quizapp/webservice/api_provider.dart';
-import 'package:quizapp/webservice/apiservice.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Pages/onboaring.dart';
 import 'Theme/theme_model.dart';
@@ -18,22 +13,8 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   isviewed = (prefs.getBool('seen') ?? false);
-  // runApp(EasyLocalization(
-  //   supportedLocales: const [Locale('en'), Locale('es'), Locale('ar')],
-  //   path: 'assets/translations',
-  //   fallbackLocale: const Locale('en'),
-  //   startLocale: const Locale('en'),
-  //   useOnlyLangCode: true,
-  //   child: const MyApp(),
-  // ));
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => ApiService()),
-      ChangeNotifierProvider(create: (context) => ApiProvider()),
-    ],
-    child: const MyApp(),
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,9 +27,6 @@ class MyApp extends StatelessWidget {
     );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // localizationsDelegates: context.localizationDelegates,
-      // supportedLocales: context.supportedLocales,
-      // locale: context.locale,
       title: 'home',
       home: isviewed != true ? const OnBoardingPage() : const Login(),
       theme: ThemeModel().lightMode, // Provide light theme.

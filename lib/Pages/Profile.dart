@@ -1,11 +1,7 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/CustomAppbar.dart';
-
-import '../widget/CustomText.dart';
-import 'EditProfile.dart';
+import 'editprofile.dart';
 
 bool topBar = false;
 

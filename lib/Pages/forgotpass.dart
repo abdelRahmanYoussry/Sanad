@@ -1,14 +1,7 @@
-import 'dart:convert';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-
-import '../Model/LoginModel.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
-
-import '../webservice/apiservice.dart';
 
 class ForgotPass extends StatefulWidget {
   const ForgotPass({Key? key}) : super(key: key);
@@ -35,18 +28,6 @@ class _ForgotPassState extends State<ForgotPass> {
     passController.dispose();
     super.dispose();
   }
-
-  // Future<LoginModel> signIn() async {
-  //   String strEmail = emailController.text;
-  //   String strPass = passController.text;
-  //   final response =
-  //       await ApiService().login(strEmail, strPass, "1", "345354354");
-  //   if (response.statusCode == 200) {
-  //     return LoginModel.fromJson(jsonDecode(response.data));
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

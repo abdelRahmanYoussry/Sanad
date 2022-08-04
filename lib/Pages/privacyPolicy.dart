@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../widget/CustomAppbar.dart';
+import '../widget/myappbar.dart';
 
 class PrivacyPolicy extends StatefulWidget {
   const PrivacyPolicy({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   }
 
   getAppbar() {
-    return const CustomAppbar(
+    return const MyAppbar(
       title: "Privacy Policy",
     );
   }

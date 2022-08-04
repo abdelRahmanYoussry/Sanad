@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/Pages/Category.dart';
-import 'package:quizapp/Pages/Contest.dart';
-import 'package:quizapp/Pages/Level.dart';
-import 'package:quizapp/Pages/Profile.dart';
-import 'package:quizapp/Pages/Settings.dart';
-import 'package:quizapp/Pages/Wallet.dart';
+import 'package:quizapp/Pages/category.dart';
+import 'package:quizapp/Pages/contest.dart';
+import 'package:quizapp/Pages/level.dart';
+import 'package:quizapp/Pages/profile.dart';
+import 'package:quizapp/Pages/settings.dart';
+import 'package:quizapp/Pages/wallet.dart';
 import 'package:quizapp/Pages/leaderboard.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/Theme/color.dart';
@@ -89,7 +89,7 @@ class _HomeState extends State<Home> {
   buildBody() {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.only(top: 5, bottom: 10),
+        padding: const EdgeInsets.only(top: 0, bottom: 0),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(25, 10, 25, 5),
@@ -148,7 +148,7 @@ class _HomeState extends State<Home> {
                         fit: BoxFit.fill),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.only(left: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -190,7 +190,7 @@ class _HomeState extends State<Home> {
                         fit: BoxFit.fill),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(30),
+                    padding: const EdgeInsets.only(left: 30),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> {
                       fit: BoxFit.fill),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.only(left: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -277,7 +277,7 @@ class _HomeState extends State<Home> {
                       fit: BoxFit.fill),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(30),
+                  padding: const EdgeInsets.only(left: 30),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -350,7 +350,6 @@ class _HomeState extends State<Home> {
               const SizedBox(width: 40),
             ],
           ),
-          const SizedBox(height: 10),
           Row(
             children: [
               const SizedBox(width: 20),

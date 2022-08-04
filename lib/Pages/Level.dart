@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quizapp/Pages/questions.dart';
 
 import '../Theme/color.dart';
 import '../Theme/config.dart';
@@ -71,8 +72,10 @@ class _LevelState extends State<Level> {
             itemBuilder: (BuildContext ctx, index) {
               return GestureDetector(
                 onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => const Category()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Questions()));
                 },
                 child: Container(
                   alignment: Alignment.center,

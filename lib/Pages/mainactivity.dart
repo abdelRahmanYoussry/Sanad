@@ -1,11 +1,5 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:quizapp/Model/CategoryModel.dart';
-import 'package:quizapp/Model/GetLevel.dart';
-import '../Model/GeneralSettingModel.dart';
-import '../webservice/apiservice.dart';
 
 class MainActivity extends StatefulWidget {
   const MainActivity({Key? key}) : super(key: key);
