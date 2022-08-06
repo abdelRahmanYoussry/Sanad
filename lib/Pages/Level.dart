@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/questions.dart';
+import 'package:quizapp/widget/myappbar.dart';
+import 'package:quizapp/widget/myimage.dart';
+import 'package:quizapp/widget/mytext.dart';
 
 import '../Theme/color.dart';
 import '../Theme/config.dart';
@@ -15,28 +18,24 @@ class Level extends StatefulWidget {
 class _LevelState extends State<Level> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: appBgColor,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              height: 200,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/dash_bg.png"),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.vertical(
-                    bottom: Radius.elliptical(50.0, 50.0)),
-              ),
-            ),
-            Column(
-              children: [getAppbar(), const SizedBox(height: 20), buildBody()],
-            ),
-          ],
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/login_bg.png"),
+          fit: BoxFit.cover,
         ),
+        borderRadius:
+            BorderRadius.vertical(bottom: Radius.elliptical(50.0, 50.0)),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: MyAppbar(
+            title: "Select Level",
+          ),
+        ),
+        body: buildBody(),
       ),
     );
   }
@@ -56,66 +55,66 @@ class _LevelState extends State<Level> {
   }
 
   buildBody() {
-    return SingleChildScrollView(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        padding: const EdgeInsets.only(left: 5, right: 5),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(40))),
-        child: GridView.builder(
-            padding: EdgeInsets.zero,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-            ),
-            itemCount: 15,
-            itemBuilder: (BuildContext ctx, index) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Questions()));
-                },
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
+      child: GridView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemCount: 14,
+          itemBuilder: (BuildContext ctx, index) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Questions()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Container(
                   alignment: Alignment.center,
-                  margin:
-                      const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+                  margin: const EdgeInsets.only(
+                      left: 5, right: 5, bottom: 5, top: 5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(
-                        'assets/images/level_lock.png',
-                        height: 80,
-                      ),
+                      MyImage(
+                          width: 80,
+                          height: 80,
+                          imagePath: 'assets/images/level_lock.png'),
                       const SizedBox(
                         height: 10,
                       ),
-                      Text('Level 1',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                      Text('Questions 21',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+                      MyText(
+                          title: 'Level 1',
+                          size: 16,
+                          fontWeight: FontWeight.w500,
+                          colors: textColor),
+                      MyText(
+                          title: 'Questions 21',
+                          size: 16,
+                          fontWeight: FontWeight.w500,
+                          colors: textColor),
                     ],
                   ),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.grey,
                           blurRadius: 1.0,
                         ),
                       ]),
                 ),
-              );
-            }),
-      ),
+              ),
+            );
+          }),
     );
   }
 }

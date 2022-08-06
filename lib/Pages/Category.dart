@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Pages/level.dart';
 import 'package:quizapp/widget/myappbar.dart';
+import 'package:quizapp/widget/myimage.dart';
+import 'package:quizapp/widget/mytext.dart';
 
 import '../Theme/color.dart';
 
@@ -15,20 +16,24 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/login_bg.png"),
-            fit: BoxFit.cover,
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/login_bg.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: MyAppbar(
+            title: "Category",
           ),
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [getAppbar(), const SizedBox(height: 20), buildBody()],
-          ),
+        body: SafeArea(
+          child: buildBody(),
         ),
       ),
     );
@@ -50,7 +55,7 @@ class _CategoryState extends State<Category> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
-          itemCount: 16,
+          itemCount: 12,
           itemBuilder: (BuildContext ctx, index) {
             return GestureDetector(
               onTap: () {
@@ -63,18 +68,18 @@ class _CategoryState extends State<Category> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/category1.png',
-                      height: 80,
-                    ),
+                    MyImage(
+                        width: 80,
+                        height: 80,
+                        imagePath: 'assets/images/category1.png'),
                     const SizedBox(
                       height: 10,
                     ),
-                    Text('Category 1',
-                        style: GoogleFonts.poppins(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
+                    MyText(
+                        title: 'Category 1',
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: textColor),
                   ],
                 ),
                 decoration: BoxDecoration(

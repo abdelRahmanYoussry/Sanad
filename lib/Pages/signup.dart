@@ -79,7 +79,7 @@ class _SignUpState extends State<SignUp> {
               decoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/images/login_bg_white.png"),
-                      fit: BoxFit.cover)),
+                      fit: BoxFit.fill)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -33,18 +33,6 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  // Future<LoginModel> signIn() async {
-  //   String strEmail = emailController.text;
-  //   String strPass = passController.text;
-  //   final response =
-  //       await ApiService().login(strEmail, strPass, "1", "345354354");
-  //   if (response.statusCode == 200) {
-  //     return LoginModel.fromJson(jsonDecode(response.data));
-  //   } else {
-  //     throw Exception('Failed to load album');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -54,7 +42,7 @@ class _LoginState extends State<Login> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/images/login_bg.png"),
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
           height: MediaQuery.of(context).size.height,
@@ -71,7 +59,7 @@ class _LoginState extends State<Login> {
                             fit: BoxFit.fitHeight)),
                   )),
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: ClipRRect(
                   child: Container(
                     width: MediaQuery.of(context).size.width,

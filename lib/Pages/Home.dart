@@ -249,10 +249,10 @@ class _HomeState extends State<Home> {
                       Text("Join in",
                           style: GoogleFonts.poppins(
                               color: Colors.white, fontSize: 18)),
-                      Text("Contest",
+                      Text("Challenge",
                           style: GoogleFonts.poppins(
                               color: Colors.white,
-                              fontSize: 28,
+                              fontSize: 24,
                               fontWeight: FontWeight.w600)),
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
