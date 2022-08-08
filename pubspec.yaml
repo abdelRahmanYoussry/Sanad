@@ -45,6 +45,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   custom_timer: ^0.1.1
   dots_indicator: ^2.1.0
+  flutter_fortune_wheel: ^1.2.0
 
 
 dev_dependencies:

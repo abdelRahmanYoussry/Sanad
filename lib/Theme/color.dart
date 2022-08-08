@@ -42,6 +42,11 @@ const blue = Color(0xFF509BE4);
 const cyan = Color(0xFF4ac2dc);
 const darkerGreen = Color(0xFFb0d96d);
 
+const wheelOne = Color(0xFF39A1E8);
+const wheelTwo = Color(0xFF2FAF74);
+const wheelThree = Color(0xFFFBA629);
+const wheelFour = Color(0xFFE65051);
+
 const listColors = [
   green,
   purple,

@@ -17,17 +17,20 @@ class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(
-        title,
-        style: GoogleFonts.poppins(
-            color: white, fontSize: 22, fontWeight: FontWeight.w500),
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(60.0),
+      child: AppBar(
+        title: Text(
+          title,
+          style: GoogleFonts.poppins(
+              color: white, fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        backgroundColor: Colors.transparent,
       ),
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-        onPressed: () => Navigator.of(context).pop(),
-      ),
-      backgroundColor: Colors.transparent,
     );
   }
 }

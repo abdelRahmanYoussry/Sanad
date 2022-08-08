@@ -129,7 +129,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                                   maxline: 5,
                                   title: introSmalltext[pos],
                                   textalign: TextAlign.center,
-                                  size: 12,
+                                  size: 14,
                                   fontWeight: FontWeight.w600,
                                   fontstyle: FontStyle.normal),
                               const Spacer(),

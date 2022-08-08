@@ -26,7 +26,7 @@ class _ProfileState extends State<Profile> {
         children: [
           Stack(children: [
             Container(
-              height: 450,
+              height: 400,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
       title: Text(
         "Profile",
         style: GoogleFonts.poppins(
-            color: white, fontSize: 22, fontWeight: FontWeight.w500),
+            color: white, fontSize: 20, fontWeight: FontWeight.w500),
       ),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
@@ -75,7 +75,7 @@ class _ProfileState extends State<Profile> {
               },
               child: Image.asset(
                 "assets/images/ic_edit.png",
-                width: 25,
+                width: 20,
               ),
             )),
       ],
@@ -87,11 +87,11 @@ class _ProfileState extends State<Profile> {
       padding: const EdgeInsets.only(left: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         const SizedBox(height: 10),
-        Image.asset('assets/images/ic_user_default.png', height: 140),
+        Image.asset('assets/images/ic_user_default.png', height: 120),
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30),
-          child: Text("Bhavesh Prajapati",
+          child: Text("Arjun Patel",
               style: GoogleFonts.poppins(
                   fontSize: 22,
                   fontWeight: FontWeight.w500,
@@ -142,12 +142,12 @@ class _ProfileState extends State<Profile> {
               const Spacer(),
               Column(
                 children: [
-                  Text("19",
+                  Text("1600",
                       style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
                           color: Colors.white)),
-                  Text("Quizzes Played",
+                  Text("Points Earned",
                       style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -170,7 +170,7 @@ class _ProfileState extends State<Profile> {
           children: [
             const SizedBox(width: 20),
             const CircleAvatar(
-                minRadius: 30,
+                minRadius: 25,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage("assets/images/ic_mail.png")),
             const SizedBox(width: 20),
@@ -196,7 +196,7 @@ class _ProfileState extends State<Profile> {
           children: [
             const SizedBox(width: 20),
             const CircleAvatar(
-                minRadius: 30,
+                minRadius: 25,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage("assets/images/ic_mobile.png")),
             const SizedBox(width: 20),
@@ -222,7 +222,7 @@ class _ProfileState extends State<Profile> {
           children: [
             const SizedBox(width: 20),
             const CircleAvatar(
-                minRadius: 30,
+                minRadius: 25,
                 backgroundColor: Colors.transparent,
                 backgroundImage: AssetImage("assets/images/ic_location.png")),
             const SizedBox(width: 20),

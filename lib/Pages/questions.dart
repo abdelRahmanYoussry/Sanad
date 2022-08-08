@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/pages/levelresult.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
@@ -21,10 +22,34 @@ class _QuestionsState extends State<Questions> {
   double percent = 0.0;
   Timer? timer;
 
+  int quecnt = 0;
   int answercnt = 1;
-
   int selectAnswer = -1;
 
+  List question = [
+    "Which was first Indian movie released commercially in Italy?",
+    "Which was first Indian movie released commercially in India?",
+    "Which was first Indian movie released commercially in USA?",
+    "Which was first Indian movie released commercially in Africa?",
+    "Which was first Indian movie released commercially in Australia?",
+    "Which was first Indian movie released commercially in London?",
+    "Which was first Indian movie released commercially in UK?",
+    "Which was first Indian movie released commercially in China?",
+    "Which was first Indian movie released commercially in Singapore?",
+    "Which was first Indian movie released commercially in India?"
+  ];
+  List answer = [
+    "Mother India,Jocker,RRR,Pushpa",
+    "RRR,Bahubali,Pushpa,Jocker",
+    "Bahubali,RRR,Jocker,Pushpa",
+    "RRR,Bahubali,Pushpa,Jocker",
+    "Pushpa,RRR,Jocker,Bahubali",
+    "RRR,Bahubali,Pushpa,Jocker",
+    "Jocker,RRR,Bahubali,Pushpa",
+    "Pushpa,Bahubali,Jocker,RRR",
+    "RRR,Bahubali,Pushpa,Jocker",
+    "Bahubali,RRR,Jocker,Pushpa"
+  ];
   @override
   void initState() {
     super.initState();
@@ -148,6 +173,7 @@ class _QuestionsState extends State<Questions> {
                                 ),
                               ),
                             ),
+                            // Question Count
                             Positioned(
                               top: 50,
                               width: MediaQuery.of(context).size.width,
@@ -205,8 +231,7 @@ class _QuestionsState extends State<Questions> {
                       ),
                       const SizedBox(height: 15),
                       MyText(
-                        title:
-                            "Which was first Indian movie released commercially in italy?",
+                        title: question[quecnt].toString(),
                         fontWeight: FontWeight.w500,
                         size: 18,
                         maxline: 4,
@@ -299,7 +324,18 @@ class _QuestionsState extends State<Questions> {
                               child: SizedBox(
                                 height: 50,
                                 child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (quecnt < question.length - 1) {
+                                        quecnt++;
+                                      } else {
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const LevelResult()));
+                                      }
+                                      setState(() {});
+                                    },
                                     child: MyText(
                                       title: "Answer It",
                                       colors: white,
@@ -324,7 +360,18 @@ class _QuestionsState extends State<Questions> {
                               child: SizedBox(
                                 height: 50,
                                 child: TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (quecnt < question.length - 1) {
+                                        quecnt++;
+                                      } else {
+                                        Navigator.of(context).pushReplacement(
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const LevelResult()));
+                                      }
+                                      setState(() {});
+                                    },
                                     child: MyText(
                                       title: "Next",
                                       colors: black,

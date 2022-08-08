@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:quizapp/Pages/aboutUs.dart';
 import 'package:quizapp/Pages/share.dart';
 import 'package:quizapp/Pages/privacyPolicy.dart';
+import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/widget/myText.dart';
-import '../Theme/color.dart';
-import '../widget/MyAppbar.dart';
+import 'package:quizapp/widget/myappbar.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);
@@ -19,18 +19,23 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/images/login_bg.png"),
-            fit: BoxFit.cover,
-          ),
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/login_bg.png"),
+          fit: BoxFit.fill,
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [getAppbar(), const SizedBox(height: 30), buildBody()],
+      ),
+      child: Scaffold(
+        appBar: getAppbar(),
+        backgroundColor: Colors.transparent,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [const SizedBox(height: 30), buildBody()],
+            ),
           ),
         ),
       ),
@@ -38,8 +43,16 @@ class _SettingsState extends State<Settings> {
   }
 
   getAppbar() {
-    return const MyAppbar(
-      title: "Settings",
+    return AppBar(
+      title: const Text(
+        "Settings",
+        style: TextStyle(color: Colors.white, fontSize: 20),
+      ),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+      backgroundColor: Colors.transparent,
     );
   }
 
@@ -49,7 +62,8 @@ class _SettingsState extends State<Settings> {
       padding: const EdgeInsets.only(left: 5, right: 5),
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(40))),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
       child: Container(
         margin: const EdgeInsets.all(20),
         child: Column(children: [
@@ -82,10 +96,10 @@ class _SettingsState extends State<Settings> {
       },
       child: Column(
         children: [
-          const SizedBox(height: 25),
+          const SizedBox(height: 20),
           Row(
             children: [
-              MyText(title: title, size: 18, fontWeight: FontWeight.w600),
+              MyText(title: title, size: 14, fontWeight: FontWeight.w600),
               const Spacer(),
               if (title == 'Push Notification' ||
                   title == 'Enable Sound' ||

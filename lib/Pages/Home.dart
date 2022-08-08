@@ -9,6 +9,10 @@ import 'package:quizapp/Pages/wallet.dart';
 import 'package:quizapp/Pages/leaderboard.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/Theme/color.dart';
+import 'package:quizapp/pages/instrucation.dart';
+import 'package:quizapp/pages/login.dart';
+import 'package:quizapp/pages/referearn.dart';
+import 'package:quizapp/pages/spinwheel.dart';
 
 bool topBar = false;
 
@@ -22,7 +26,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: appBgColor,
       body: GestureDetector(
@@ -60,15 +63,21 @@ class _HomeState extends State<Home> {
         style: const TextStyle(color: Colors.white, fontSize: 20),
       ),
       leading: Container(
-        margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-        child: GestureDetector(
-          child: Image.asset('assets/images/ic_home.png', height: 50),
-          onTap: () {
-            debugPrint("Home click");
-            setState(() {
-              topBar = true;
-            });
-          },
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+          child: GestureDetector(
+            child: Image.asset(
+              'assets/images/ic_home.png',
+              width: 50,
+              height: 50,
+            ),
+            onTap: () {
+              debugPrint("Home click");
+              setState(() {
+                topBar = true;
+              });
+            },
+          ),
         ),
       ),
       backgroundColor: Colors.transparent,
@@ -76,7 +85,10 @@ class _HomeState extends State<Home> {
         Padding(
           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
           child: GestureDetector(
-            child: Image.asset('assets/images/ic_bell.png'),
+            child: Image.asset(
+              'assets/images/ic_bell.png',
+              width: 40,
+            ),
             onTap: () {
               debugPrint("Bell Click");
             },
@@ -95,7 +107,7 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.fromLTRB(25, 10, 25, 5),
             child: Text("Welcome Back",
                 style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Colors.white)),
           ),
@@ -104,7 +116,7 @@ class _HomeState extends State<Home> {
             child: Text(
               "DivineTechs Developer",
               style: GoogleFonts.poppins(
-                  fontSize: 28,
+                  fontSize: 26,
                   fontWeight: FontWeight.w500,
                   color: Colors.white),
             ),
@@ -135,10 +147,8 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Category()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Contest()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,
@@ -179,8 +189,10 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Contest()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Category()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,
@@ -269,39 +281,47 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               flex: 1,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.22,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/yellow_bg.png"),
-                      fit: BoxFit.fill),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Join in",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      const Text(
-                        "Quiz",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Image.asset(
-                          'assets/images/right_arrow.png',
-                          height: 35.0,
-                          width: 50.0,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Category()));
+                },
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.22,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/yellow_bg.png"),
+                        fit: BoxFit.fill),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Join in",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
-                      ),
-                    ],
+                        const Text(
+                          "Quiz",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Image.asset(
+                            'assets/images/right_arrow.png',
+                            height: 35.0,
+                            width: 50.0,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -427,23 +447,31 @@ class _HomeState extends State<Home> {
               Expanded(
                   child: Column(
                 children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/level_lock.png',
-                        height: 60,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text('Instruction',
-                          style: GoogleFonts.poppins(
-                              color: textColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Instrucation()));
+                    },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/images/level_lock.png',
+                          height: 60,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text('Instruction',
+                            style: GoogleFonts.poppins(
+                                color: textColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -494,7 +522,7 @@ class _HomeState extends State<Home> {
 
   getTopBar() {
     return Container(
-      height: 380,
+      height: 280,
       decoration: BoxDecoration(
         color: textBoxColor,
         borderRadius:
@@ -517,7 +545,14 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               GestureDetector(
-                onTap: () => debugPrint("test"),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SpinWheel()));
+                  topBar = false;
+                  setState(() {});
+                },
                 child: Column(
                   children: [
                     Image.asset(
@@ -550,6 +585,8 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Wallet()));
+                  topBar = false;
+                  setState(() {});
                 },
                 child: Column(
                   children: [
@@ -580,21 +617,31 @@ class _HomeState extends State<Home> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/images/level_lock.png',
-                    height: 60,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Refer & Earn',
-                      style: GoogleFonts.poppins(
-                          color: textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500)),
-                ],
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReferEarn()));
+                  topBar = false;
+                  setState(() {});
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Refer & Earn',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 15,
@@ -607,23 +654,31 @@ class _HomeState extends State<Home> {
               const SizedBox(
                 height: 15,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/level_lock.png',
-                    height: 60,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Logout',
-                      style: GoogleFonts.poppins(
-                          color: textColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500)),
-                ],
+              InkWell(
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => const Login()));
+                  topBar = false;
+                  setState(() {});
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Logout',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
               ),
             ],
           )),

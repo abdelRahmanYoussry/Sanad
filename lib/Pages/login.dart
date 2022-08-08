@@ -197,15 +197,30 @@ class _LoginState extends State<Login> {
                           children: [
                             IconButton(
                                 iconSize: 70,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Home()));
+                                },
                                 icon: Image.asset("assets/images/icon_fb.png")),
                             IconButton(
                                 iconSize: 70,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Home()));
+                                },
                                 icon: Image.asset("assets/images/icon_gm.png")),
                             IconButton(
                                 iconSize: 70,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Home()));
+                                },
                                 icon: Image.asset(
                                     "assets/images/icon_mobile.png")),
                           ],

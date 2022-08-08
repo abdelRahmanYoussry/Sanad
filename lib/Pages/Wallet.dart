@@ -32,7 +32,7 @@ class _WalletState extends State<Wallet> {
               children: [
                 Stack(children: [
                   Container(
-                    height: 300,
+                    height: 260,
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       image: DecorationImage(

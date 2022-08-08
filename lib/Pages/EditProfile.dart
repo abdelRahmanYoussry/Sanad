@@ -27,7 +27,7 @@ class _EditProfileState extends State<EditProfile> {
           children: [
             Stack(children: [
               Container(
-                height: 300,
+                height: 250,
                 width: MediaQuery.of(context).size.width,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -68,7 +68,7 @@ class _EditProfileState extends State<EditProfile> {
             Opacity(
                 opacity: 0.5,
                 child: Image.asset('assets/images/ic_user_default.png',
-                    height: 140)),
+                    height: 120)),
             const SizedBox(height: 10),
           ]),
           Positioned(
