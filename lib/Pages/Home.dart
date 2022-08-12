@@ -13,6 +13,7 @@ import 'package:quizapp/pages/instrucation.dart';
 import 'package:quizapp/pages/login.dart';
 import 'package:quizapp/pages/referearn.dart';
 import 'package:quizapp/pages/spinwheel.dart';
+import 'package:quizapp/utils/sharepref.dart';
 
 bool topBar = false;
 
@@ -24,6 +25,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  SharePref sharePref = SharePref();
+
+  @override
+  initState() {
+    getLogin();
+    super.initState();
+  }
+
+  getLogin() async {
+    String isLogin = await sharePref.read('is_login') ?? "0";
+    debugPrint('===>$isLogin');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 import 'package:quizapp/Pages/home.dart';
 import 'package:quizapp/Pages/forgotpass.dart';
 import 'package:quizapp/Pages/signup.dart';
+import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
 
@@ -19,6 +22,8 @@ class _LoginState extends State<Login> {
   TextEditingController passController = TextEditingController();
   List<SuccessModel>? loginList;
 
+  SharePref sharePref = SharePref();
+
   final loginuser = GetStorage();
 
   bool _isObscure = true;
@@ -31,6 +36,28 @@ class _LoginState extends State<Login> {
     emailController.dispose();
     passController.dispose();
     super.dispose();
+  }
+
+  Future<void> _login() async {
+    String email = emailController.text.trim();
+    String pass = passController.text.trim();
+
+    var provider = Provider.of<ApiProvider>(context, listen: false);
+    await provider.login(context, email, pass, "1", "1");
+    if (provider.loading) {
+      const CircularProgressIndicator();
+    } else {
+      print("==>${provider.loginModel.status}");
+      if (provider.loginModel.status == 200) {
+        sharePref.save('is_login', "1");
+        sharePref.save(
+            'userId', provider.loginModel.result?[0].id.toString() ?? "");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Home()));
+      } else {
+        print(provider.loginModel.message);
+      }
+    }
   }
 
   @override
@@ -78,8 +105,9 @@ class _LoginState extends State<Login> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const TextField(
-                                decoration: InputDecoration(
+                              TextField(
+                                controller: emailController,
+                                decoration: const InputDecoration(
                                     labelText: "Email Address",
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 10),
@@ -96,6 +124,7 @@ class _LoginState extends State<Login> {
                               ),
                               TextField(
                                 obscureText: _isObscure,
+                                controller: passController,
                                 decoration: InputDecoration(
                                     labelText: 'Password',
                                     suffixIcon: IconButton(
@@ -149,10 +178,7 @@ class _LoginState extends State<Login> {
                         // #signup_button
                         MaterialButton(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Home()));
+                            _login();
                           },
                           height: 45,
                           minWidth: MediaQuery.of(context).size.width / 1.4,

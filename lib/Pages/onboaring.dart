@@ -4,6 +4,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:quizapp/Theme/color.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/pages/login.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class OnBoardingPage extends StatefulWidget {
 
 class _OnBoardingPageState extends State<OnBoardingPage> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  SharePref sharePref = SharePref();
 
   List<String> introBigtext = <String>[
     "Participate in quiz and win the price also learn",
@@ -44,8 +46,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   int pos = 0;
 
   _storeOnboardInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('seen', true);
+    sharePref.save('seen', "1");
   }
 
   @override

@@ -1,20 +1,18 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:quizapp/Pages/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'Pages/onboaring.dart';
+import 'package:provider/provider.dart';
+import 'package:quizapp/pages/splash.dart';
+import 'package:quizapp/provider/apiprovider.dart';
 import 'Theme/theme_model.dart';
 
 bool? isviewed;
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await EasyLocalization.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  isviewed = (prefs.getBool('seen') ?? false);
-
-  runApp(const MyApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ApiProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'home',
-      home: isviewed != true ? const OnBoardingPage() : const Login(),
+      home: const Splash(),
       theme: ThemeModel().lightMode, // Provide light theme.
       darkTheme: ThemeModel().darkMode,
     );

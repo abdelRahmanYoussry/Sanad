@@ -28,14 +28,14 @@ class _QuestionsState extends State<Questions> {
 
   List question = [
     "Which was first Indian movie released commercially in Italy?",
-    "Which was first Indian movie released commercially in India?",
+    "Who is Prime Minister of India in 2022?",
     "Which was first Indian movie released commercially in USA?",
-    "Which was first Indian movie released commercially in Africa?",
-    "Which was first Indian movie released commercially in Australia?",
-    "Which was first Indian movie released commercially in London?",
+    "who is Indian Cricket Team Captain - 2022 ?",
+    "Who is Neeraj panday ?",
+    "Who is Indian Women Cricket Team Captain?",
     "Which was first Indian movie released commercially in UK?",
-    "Which was first Indian movie released commercially in China?",
-    "Which was first Indian movie released commercially in Singapore?",
+    "Who is God Of Cricket ?",
+    "Who is Gujarat CM ?",
     "Which was first Indian movie released commercially in India?"
   ];
   List answer = [

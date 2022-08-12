@@ -1,5 +1,5 @@
-class LoginModel {
-  LoginModel({
+class RegistrationModel {
+  RegistrationModel({
     this.status,
     this.message,
     this.result,
@@ -9,7 +9,8 @@ class LoginModel {
   String? message;
   List<Result>? result;
 
-  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+  factory RegistrationModel.fromJson(Map<String, dynamic> json) =>
+      RegistrationModel(
         status: json["status"],
         message: json["message"],
         result:
