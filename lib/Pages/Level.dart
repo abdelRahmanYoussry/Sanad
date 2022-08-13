@@ -1,23 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/Pages/questions.dart';
+import 'package:provider/provider.dart';
+
+import 'package:quizapp/pages/questions.dart';
+import 'package:quizapp/model/levelmodel.dart';
+import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
 
-import '../Theme/color.dart';
-import '../Theme/config.dart';
+import '../theme/color.dart';
 
+// ignore: must_be_immutable
 class Level extends StatefulWidget {
-  const Level({Key? key}) : super(key: key);
+  String catId;
+  Level({
+    Key? key,
+    required this.catId,
+  }) : super(key: key);
 
   @override
   _LevelState createState() => _LevelState();
 }
 
 class _LevelState extends State<Level> {
+  List<Result>? levelList = [];
+  SharePref sharePref = SharePref();
+  String? userId;
+
+  @override
+  initState() {
+    getUserId();
+    super.initState();
+  }
+
+  getUserId() async {
+    userId = await sharePref.read('userId') ?? "0";
+    debugPrint('userID===>${userId.toString()}');
+
+    final leveldata = Provider.of<ApiProvider>(context, listen: false);
+    leveldata.getLevel(context, widget.catId, userId.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
+    final leveldata = Provider.of<ApiProvider>(context);
+    if (!leveldata.loading) {
+      debugPrint('level===>$leveldata');
+      levelList = leveldata.levelModel.result as List<Result>;
+      debugPrint(levelList?.length.toString());
+    }
+
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -27,16 +60,20 @@ class _LevelState extends State<Level> {
         borderRadius:
             BorderRadius.vertical(bottom: Radius.elliptical(50.0, 50.0)),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
-          child: MyAppbar(
-            title: "Select Level",
-          ),
-        ),
-        body: buildBody(),
-      ),
+      child: leveldata.loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: const PreferredSize(
+                preferredSize: Size.fromHeight(60.0),
+                child: MyAppbar(
+                  title: "Select Level",
+                ),
+              ),
+              body: buildBody(),
+            ),
     );
   }
 
@@ -67,12 +104,17 @@ class _LevelState extends State<Level> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
-          itemCount: 14,
+          itemCount: levelList?.length ?? 0,
           itemBuilder: (BuildContext ctx, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Questions()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Questions(
+                              catId: widget.catId,
+                              levelId: levelList?[index].id.toString(),
+                            )));
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -91,13 +133,14 @@ class _LevelState extends State<Level> {
                         height: 10,
                       ),
                       MyText(
-                          title: 'Level 1',
+                          title: levelList?[index].name,
                           size: 16,
                           fontWeight: FontWeight.w500,
                           colors: textColor),
                       MyText(
-                          title: 'Questions 21',
-                          size: 16,
+                          title:
+                              'Questions ${levelList?[index].totalQuestion.toString()}',
+                          size: 14,
                           fontWeight: FontWeight.w500,
                           colors: textColor),
                     ],

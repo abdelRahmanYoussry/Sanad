@@ -15,7 +15,6 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return buildProfile();
   }
 

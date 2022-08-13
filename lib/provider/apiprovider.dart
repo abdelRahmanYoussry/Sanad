@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:quizapp/model/categorymodel.dart';
+import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
+import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/profilemodel.dart';
+import 'package:quizapp/model/questionmodel.dart';
+import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
 import 'package:quizapp/webservice/apiservice.dart';
 
@@ -11,10 +17,28 @@ class ApiProvider extends ChangeNotifier {
 
   RegistrationModel registrationModel = RegistrationModel();
 
+  CategoryModel categoryModel = CategoryModel();
+
+  LevelModel levelModel = LevelModel();
+
+  QuestionModel questionModel = QuestionModel();
+
+  ContentModel upcontentModel = ContentModel();
+  ContentModel livecontentModel = ContentModel();
+  ContentModel endcontentModel = ContentModel();
+
+  ProfileModel profileModel = ProfileModel();
+
+  ReferTranModel referTranModel = ReferTranModel();
+
   bool loading = false;
   String? email, password, type, deviceToken;
 
   String? firstname, lastname, mobilenumber, fullname, username;
+
+  String? catId;
+
+  int? selectQuestion = 0;
 
   getGeneralsetting(context) async {
     loading = true;
@@ -40,6 +64,75 @@ class ApiProvider extends ChangeNotifier {
         firstname, lastname, mobilenumber, refercode, fullname, username);
     debugPrint("${registrationModel.status}");
     loading = false;
+    notifyListeners();
+  }
+
+  getProfile(context, userId) async {
+    loading = true;
+    profileModel = await ApiService().profile(userId);
+    debugPrint("${profileModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getReferTransaction(context, userId) async {
+    loading = true;
+    referTranModel = await ApiService().referTran(userId);
+    debugPrint("${referTranModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getCategory(context) async {
+    loading = true;
+    categoryModel = await ApiService().category();
+    debugPrint("${categoryModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getLevel(context, catId, String userID) async {
+    loading = true;
+    levelModel = await ApiService().level(catId, userID);
+    debugPrint("${levelModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getQuestionByLevel(context, catId, String levelId) async {
+    loading = true;
+    questionModel = await ApiService().questionByLevel(catId, levelId);
+    debugPrint("${questionModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getUpContent(context, String listType, String userID) async {
+    loading = true;
+    upcontentModel = await ApiService().getContest(listType, userID);
+    debugPrint("${upcontentModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getLiveContent(context, String listType, String userID) async {
+    loading = true;
+    livecontentModel = await ApiService().getContest(listType, userID);
+    debugPrint("${livecontentModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getEndContent(context, String listType, String userID) async {
+    loading = true;
+    endcontentModel = await ApiService().getContest(listType, userID);
+    debugPrint("${endcontentModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  changeQuestion(int id) {
+    selectQuestion = id;
     notifyListeners();
   }
 }

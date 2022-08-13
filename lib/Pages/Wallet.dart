@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:quizapp/Theme/color.dart';
+import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myText.dart';
 import 'package:quizapp/widget/myappbar.dart';
 
@@ -14,13 +17,27 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
+  String? userId;
+  SharePref sharePref = SharePref();
+
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return buildViewPager();
+  initState() {
+    getUserId();
+
+    super.initState();
   }
 
-  buildViewPager() {
+  getUserId() async {
+    userId = await sharePref.read('userId') ?? "0";
+    debugPrint('userID===>${userId.toString()}');
+
+    final profiledata = Provider.of<ApiProvider>(context, listen: false);
+    profiledata.getProfile(context, userId);
+    profiledata.getReferTransaction(context, userId);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appBgColor,
@@ -65,44 +82,51 @@ class _WalletState extends State<Wallet> {
   }
 
   buildBody() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const SizedBox(height: 10),
-        Text("3265",
-            style: GoogleFonts.poppins(
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
-                color: Colors.white)),
-        Row(
-          children: [
+    return Consumer<ApiProvider>(
+      builder: (context, profiledata, child) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            const SizedBox(height: 10),
             Text(
-              "Points",
-              style: GoogleFonts.poppins(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white),
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.only(right: 20),
-              child: Text(
-                "1500 Points = 10 USD",
+                profiledata.profileModel.result?[0].totalPoints.toString() ??
+                    "00",
                 style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white)),
+            Row(
+              children: [
+                Text(
+                  "Points",
+                  style: GoogleFonts.poppins(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.white),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Text(
+                    "1500 Points = 10 USD",
+                    style: GoogleFonts.poppins(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white),
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 20),
+            Text("*minimum 100 points required for withdrawal request.",
+                style: GoogleFonts.poppins(
+                    fontSize: 16,
                     fontWeight: FontWeight.normal,
-                    color: Colors.white),
-              ),
-            )
-          ],
-        ),
-        const SizedBox(height: 20),
-        Text("*minimum 100 points required for withdrawal request.",
-            style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Colors.white)),
-      ]),
+                    color: Colors.white)),
+          ]),
+        );
+      },
     );
   }
 
@@ -129,7 +153,7 @@ class _WalletState extends State<Wallet> {
             children: <Widget>[
               rewardHistory(),
               rewardHistory(),
-              rewardHistory()
+              referHistory()
             ],
           ),
         )
@@ -211,6 +235,100 @@ class _WalletState extends State<Wallet> {
                     ],
                   ),
                 ),
+              );
+            },
+          ),
+        ),
+      ]),
+    );
+  }
+
+  referHistory() {
+    return Positioned.fill(
+      top: 350,
+      bottom: 80,
+      left: 0,
+      right: 0,
+      child: Stack(children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Consumer<ApiProvider>(
+            builder: (context, referdata, child) {
+              return ListView.builder(
+                padding: const EdgeInsets.only(top: 10),
+                itemCount: referdata.referTranModel.result?.length ?? 0,
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    margin: const EdgeInsets.only(
+                        left: 15, top: 5, right: 15, bottom: 5),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          const CircleAvatar(
+                              minRadius: 30,
+                              backgroundColor: Colors.transparent,
+                              backgroundImage: AssetImage(
+                                  "assets/images/ic_reward_coins.png")),
+                          Column(
+                            children: [
+                              Text(
+                                referdata.referTranModel.result?[index]
+                                        .referedPoint
+                                        .toString() ??
+                                    "",
+                                style: GoogleFonts.poppins(
+                                    color: appColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Text(
+                                "Points",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          Column(
+                            children: [
+                              Text(
+                                referdata.referTranModel.result?[index].userName
+                                        .toString() ??
+                                    "",
+                                style: const TextStyle(
+                                    color: black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                referdata.referTranModel.result?[index]
+                                        .referedDate
+                                        .toString() ??
+                                    "",
+                                style: const TextStyle(
+                                    color: textColorGrey, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          const Text(
+                            "Success",
+                            style: TextStyle(
+                                color: appgreen,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               );
             },
           ),

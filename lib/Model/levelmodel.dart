@@ -1,5 +1,5 @@
-class CategoryModel {
-  CategoryModel({
+class LevelModel {
+  LevelModel({
     this.status,
     this.message,
     this.result,
@@ -9,7 +9,7 @@ class CategoryModel {
   String? message;
   List<Result>? result;
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
+  factory LevelModel.fromJson(Map<String, dynamic> json) => LevelModel(
         status: json["status"],
         message: json["message"],
         result:
@@ -27,34 +27,46 @@ class Result {
   Result({
     this.id,
     this.name,
-    this.image,
-    this.status,
+    this.levelOrder,
+    this.score,
+    this.winQuestionCount,
+    this.totalQuestion,
     this.createdAt,
     this.updatedAt,
+    this.status,
   });
 
   int? id;
   String? name;
-  String? image;
-  String? status;
+  int? levelOrder;
+  int? score;
+  int? winQuestionCount;
+  int? totalQuestion;
   String? createdAt;
   String? updatedAt;
+  String? status;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
         name: json["name"],
-        image: json["image"],
-        status: json["status"],
+        levelOrder: json["level_order"],
+        score: json["score"],
+        winQuestionCount: json["win_question_count"],
+        totalQuestion: json["total_question"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        status: json["status"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "image": image,
-        "status": status,
+        "level_order": levelOrder,
+        "score": score,
+        "win_question_count": winQuestionCount,
+        "total_question": totalQuestion,
         "created_at": createdAt,
         "updated_at": updatedAt,
+        "status": status,
       };
 }

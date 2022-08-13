@@ -3,13 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/pages/splash.dart';
 import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/provider/commanprovider.dart';
 import 'Theme/theme_model.dart';
 
 bool? isviewed;
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ApiProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ApiProvider()),
+        ChangeNotifierProvider(create: (_) => CommanProvider())
+      ],
       child: const MyApp(),
     ),
   );

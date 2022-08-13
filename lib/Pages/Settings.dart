@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quizapp/Pages/aboutUs.dart';
-import 'package:quizapp/Pages/share.dart';
-import 'package:quizapp/Pages/privacyPolicy.dart';
+import 'package:quizapp/pages/aboutUs.dart';
+import 'package:quizapp/pages/share.dart';
+import 'package:quizapp/pages/privacyPolicy.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/widget/myText.dart';
 import 'package:quizapp/widget/myappbar.dart';

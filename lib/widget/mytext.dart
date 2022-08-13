@@ -27,7 +27,7 @@ class MyText extends StatelessWidget {
     return Text(
       title.toString(),
       textAlign: textalign,
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow,
       maxLines: maxline,
       style: GoogleFonts.inter(
           fontSize: size,

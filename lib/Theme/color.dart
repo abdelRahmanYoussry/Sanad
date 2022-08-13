@@ -47,6 +47,9 @@ const wheelTwo = Color(0xFF2FAF74);
 const wheelThree = Color(0xFFFBA629);
 const wheelFour = Color(0xFFE65051);
 
+const baseColor = Color(0xFFBDBDBD);
+const highlightColor = Color(0xFFE0E0E0);
+
 const listColors = [
   green,
   purple,

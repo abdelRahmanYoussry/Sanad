@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:quizapp/Pages/level.dart';
+import 'package:provider/provider.dart';
+import 'package:quizapp/model/categorymodel.dart';
+import 'package:quizapp/pages/level.dart';
+import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
-import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
-
-import '../Theme/color.dart';
+import 'package:quizapp/widget/mynetimage.dart';
 
 class Category extends StatefulWidget {
   const Category({Key? key}) : super(key: key);
@@ -14,8 +17,24 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
+  SharePref sharePref = SharePref();
+  List<Result>? categoryList = [];
+
+  @override
+  initState() {
+    final categorydata = Provider.of<ApiProvider>(context, listen: false);
+    categorydata.getCategory(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final categorydata = Provider.of<ApiProvider>(context);
+    if (!categorydata.loading) {
+      debugPrint('category===>$categorydata');
+      categoryList = categorydata.categoryModel.result as List<Result>;
+      debugPrint(categoryList?.length.toString());
+    }
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(
@@ -24,18 +43,22 @@ class _CategoryState extends State<Category> {
           fit: BoxFit.cover,
         ),
       ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60.0),
-          child: MyAppbar(
-            title: "Category",
-          ),
-        ),
-        body: SafeArea(
-          child: buildBody(),
-        ),
-      ),
+      child: categorydata.loading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: const PreferredSize(
+                preferredSize: Size.fromHeight(60.0),
+                child: MyAppbar(
+                  title: "Category",
+                ),
+              ),
+              body: SafeArea(
+                child: buildBody(),
+              ),
+            ),
     );
   }
 
@@ -55,12 +78,14 @@ class _CategoryState extends State<Category> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
           ),
-          itemCount: 12,
+          itemCount: categoryList?.length,
           itemBuilder: (BuildContext ctx, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Level()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => Level(
+                          catId: categoryList![index].id.toString(),
+                        )));
               },
               child: Container(
                 alignment: Alignment.center,
@@ -68,15 +93,16 @@ class _CategoryState extends State<Category> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    MyImage(
-                        width: 80,
-                        height: 80,
-                        imagePath: 'assets/images/category1.png'),
+                    MyNetImage(
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.fill,
+                        imagePath: categoryList?[index].image ?? ""),
                     const SizedBox(
                       height: 10,
                     ),
                     MyText(
-                        title: 'Category 1',
+                        title: categoryList?[index].name ?? "",
                         size: 16,
                         fontWeight: FontWeight.w500,
                         colors: textColor),

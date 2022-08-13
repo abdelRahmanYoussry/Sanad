@@ -79,12 +79,7 @@ class _LevelResultState extends State<LevelResult> {
                                     Expanded(
                                       child: TextButton(
                                           onPressed: () {
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            const Level()));
+                                            Navigator.of(context).pop();
                                           },
                                           child: MyText(
                                             title: "Play Next Level",
