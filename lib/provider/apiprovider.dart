@@ -8,6 +8,8 @@ import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
+import 'package:quizapp/model/successmodel.dart';
+import 'package:quizapp/model/todayleaderboardmodel.dart';
 import 'package:quizapp/webservice/apiservice.dart';
 
 class ApiProvider extends ChangeNotifier {
@@ -30,6 +32,8 @@ class ApiProvider extends ChangeNotifier {
   ProfileModel profileModel = ProfileModel();
 
   ReferTranModel referTranModel = ReferTranModel();
+  SuccessModel successModel = SuccessModel();
+  TodayLeaderBoardModel todayLeaderBoardModel = TodayLeaderBoardModel();
 
   bool loading = false;
   String? email, password, type, deviceToken;
@@ -133,6 +137,31 @@ class ApiProvider extends ChangeNotifier {
 
   changeQuestion(int id) {
     selectQuestion = id;
+    notifyListeners();
+  }
+
+  getSaveQuestionReport(
+      context,
+      String levelId,
+      String questionsAttended,
+      String totalQuestion,
+      String correctAnswers,
+      String userId,
+      String categoryId) async {
+    loading = true;
+    successModel = await ApiService().saveQuestionReport(levelId,
+        questionsAttended, totalQuestion, correctAnswers, userId, categoryId);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getTodayLeaderBoard(context, userId, String levelId) async {
+    loading = true;
+    todayLeaderBoardModel =
+        await ApiService().todayLeaderBoard(userId, levelId);
+    debugPrint("${todayLeaderBoardModel.status}");
+    loading = false;
     notifyListeners();
   }
 }

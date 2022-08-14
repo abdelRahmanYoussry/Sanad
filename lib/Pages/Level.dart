@@ -24,7 +24,6 @@ class Level extends StatefulWidget {
 }
 
 class _LevelState extends State<Level> {
-  List<Result>? levelList = [];
   SharePref sharePref = SharePref();
   String? userId;
 
@@ -44,13 +43,6 @@ class _LevelState extends State<Level> {
 
   @override
   Widget build(BuildContext context) {
-    final leveldata = Provider.of<ApiProvider>(context);
-    if (!leveldata.loading) {
-      debugPrint('level===>$leveldata');
-      levelList = leveldata.levelModel.result as List<Result>;
-      debugPrint(levelList?.length.toString());
-    }
-
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -60,20 +52,16 @@ class _LevelState extends State<Level> {
         borderRadius:
             BorderRadius.vertical(bottom: Radius.elliptical(50.0, 50.0)),
       ),
-      child: leveldata.loading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: const PreferredSize(
-                preferredSize: Size.fromHeight(60.0),
-                child: MyAppbar(
-                  title: "Select Level",
-                ),
-              ),
-              body: buildBody(),
-            ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(60.0),
+          child: MyAppbar(
+            title: "Select Level",
+          ),
+        ),
+        body: buildBody(),
+      ),
     );
   }
 
@@ -98,66 +86,76 @@ class _LevelState extends State<Level> {
           color: Colors.white,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-      child: GridView.builder(
-          padding: EdgeInsets.zero,
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          itemCount: levelList?.length ?? 0,
-          itemBuilder: (BuildContext ctx, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Questions(
-                              catId: widget.catId,
-                              levelId: levelList?[index].id.toString(),
-                            )));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  alignment: Alignment.center,
-                  margin: const EdgeInsets.only(
-                      left: 5, right: 5, bottom: 5, top: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MyImage(
-                          width: 80,
-                          height: 80,
-                          imagePath: 'assets/images/level_lock.png'),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      MyText(
-                          title: levelList?[index].name,
-                          size: 16,
-                          fontWeight: FontWeight.w500,
-                          colors: textColor),
-                      MyText(
-                          title:
-                              'Questions ${levelList?[index].totalQuestion.toString()}',
-                          size: 14,
-                          fontWeight: FontWeight.w500,
-                          colors: textColor),
-                    ],
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.grey,
-                          blurRadius: 1.0,
-                        ),
-                      ]),
-                ),
+      child: Consumer<ApiProvider>(
+        builder: (context, leveldata, child) {
+          return GridView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
               ),
-            );
-          }),
+              itemCount: leveldata.levelModel.result?.length ?? 0,
+              itemBuilder: (BuildContext ctx, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Questions(
+                                  catId: widget.catId,
+                                  levelId: leveldata
+                                          .levelModel.result?[index].id
+                                          .toString() ??
+                                      "",
+                                  levelname:
+                                      leveldata.levelModel.result?[index].name,
+                                )));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.only(
+                          left: 5, right: 5, bottom: 5, top: 5),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyImage(
+                              width: 80,
+                              height: 80,
+                              imagePath: 'assets/images/level_lock.png'),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          MyText(
+                              title: leveldata.levelModel.result?[index].name ??
+                                  "",
+                              size: 16,
+                              fontWeight: FontWeight.w500,
+                              colors: textColor),
+                          MyText(
+                              title:
+                                  'Questions ${leveldata.levelModel.result?[index].totalQuestion.toString() ?? ""}',
+                              size: 14,
+                              fontWeight: FontWeight.w500,
+                              colors: textColor),
+                        ],
+                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 1.0,
+                            ),
+                          ]),
+                    ),
+                  ),
+                );
+              });
+        },
+      ),
     );
   }
 }

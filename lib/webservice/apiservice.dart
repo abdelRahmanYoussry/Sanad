@@ -11,6 +11,8 @@ import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
+import 'package:quizapp/model/successmodel.dart';
+import 'package:quizapp/model/todayleaderboardmodel.dart';
 import 'package:quizapp/utils/constant.dart';
 
 class ApiService {
@@ -175,5 +177,50 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return contentModel;
+  }
+
+  Future<SuccessModel> saveQuestionReport(
+      String levelId,
+      String questionsAttended,
+      String totalQuestion,
+      String correctAnswers,
+      String userId,
+      String categoryId) async {
+    SuccessModel successModel;
+    String content = "save_question_report";
+    Response response = await dio.post('$baseurl$content',
+        data: ({
+          'level_id': levelId,
+          'user_id': userId,
+          'questions_attended': questionsAttended,
+          'total_question': totalQuestion,
+          'correct_answers': correctAnswers,
+          'user_id': userId,
+          'category_id': categoryId
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Save Question apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
+  Future<TodayLeaderBoardModel> todayLeaderBoard(
+      String userId, String levelId) async {
+    TodayLeaderBoardModel todayLeaderBoardModel;
+    String leaderboard = "getTodayLeaderBoard";
+    Response response = await dio.post('$baseurl$leaderboard',
+        data: ({'user_id': userId, 'level_id': levelId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("TodayLeaderBoard apiservice:===>${response.data}");
+      todayLeaderBoardModel = TodayLeaderBoardModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return todayLeaderBoardModel;
   }
 }
