@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
+import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
@@ -14,6 +15,8 @@ import 'package:quizapp/model/registrationmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
 import 'package:quizapp/model/todayleaderboardmodel.dart';
 import 'package:quizapp/utils/constant.dart';
+
+import '../model/leaderboardmodel.dart';
 
 class ApiService {
   String baseurl = Constant().baseurl;
@@ -179,6 +182,37 @@ class ApiService {
     return contentModel;
   }
 
+  Future<SuccessModel> joinContest(
+      String contestId, String userId, String coin) async {
+    SuccessModel successModel;
+    String content = "joinContest";
+    Response response = await dio.post('$baseurl$content',
+        data: ({'contest_id': contestId, 'user_id': userId, 'coin': coin}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("joinContest apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
+  Future<ContestQuestionModel> questionByContest(String contestId) async {
+    ContestQuestionModel contestQuestionModel;
+    String level = "question_by_contest";
+    Response response =
+        await dio.post('$baseurl$level', data: ({'contest_id': contestId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Question apiservice:===>${response.data}");
+      contestQuestionModel = ContestQuestionModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return contestQuestionModel;
+  }
+
   Future<SuccessModel> saveQuestionReport(
       String levelId,
       String questionsAttended,
@@ -208,6 +242,34 @@ class ApiService {
     return successModel;
   }
 
+  Future<SuccessModel> saveContestQuestionReport(
+      String contestId,
+      String questionsAttended,
+      String totalQuestion,
+      String correctAnswers,
+      String userId,
+      String questionJson) async {
+    SuccessModel successModel;
+    String content = "save_contest_question_report";
+    Response response = await dio.post('$baseurl$content',
+        data: ({
+          'contest_id': contestId,
+          'user_id': userId,
+          'questions_attended': questionsAttended,
+          'total_questions': totalQuestion,
+          'correct_answers': correctAnswers,
+          'question_json': questionJson
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Save Contest Question apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
   Future<TodayLeaderBoardModel> todayLeaderBoard(
       String userId, String levelId) async {
     TodayLeaderBoardModel todayLeaderBoardModel;
@@ -222,5 +284,20 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return todayLeaderBoardModel;
+  }
+
+  Future<LeaderBoardModel> leaderBoard(String userId, String type) async {
+    LeaderBoardModel leaderBoardModel;
+    String leaderboard = "getLeaderBoard";
+    Response response = await dio.post('$baseurl$leaderboard',
+        data: ({'user_id': userId, 'type': type}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("leaderBoard apiservice:===>${response.data}");
+      leaderBoardModel = LeaderBoardModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return leaderBoardModel;
   }
 }

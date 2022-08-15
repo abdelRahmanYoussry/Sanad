@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:quizapp/pages/contestquestions.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
+import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/MyAppbar.dart';
-import 'package:quizapp/widget/myText.dart';
+import 'package:quizapp/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Contest extends StatefulWidget {
@@ -64,7 +66,7 @@ class _ContestState extends State<Contest> {
                 getAppbar(),
                 const SizedBox(height: 10),
                 Container(
-                  height: 50,
+                  height: 45,
                   decoration: BoxDecoration(
                       color: tabbarunselect,
                       borderRadius: BorderRadius.circular(25.0)),
@@ -130,7 +132,7 @@ class _ContestState extends State<Contest> {
                   return Container(
                     margin: const EdgeInsets.only(
                         left: 5, top: 10, right: 5, bottom: 5),
-                    height: 220,
+                    height: 200,
                     decoration: const BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -158,22 +160,48 @@ class _ContestState extends State<Contest> {
                               ],
                             ),
                             const Spacer(),
-                            TextButton(
-                                onPressed: () {},
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(28.0))),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(appColor)),
-                                child: MyText(
-                                  title: ' Join Now ',
-                                  size: 16,
-                                  fontWeight: FontWeight.w500,
-                                  colors: white,
-                                )),
+                            (upcomingdata.upcontentModel.result?[index].isBuy ??
+                                        0) ==
+                                    0
+                                ? TextButton(
+                                    onPressed: () async {
+                                      final joinContest =
+                                          Provider.of<ApiProvider>(context,
+                                              listen: false);
+                                      await joinContest.getjoinContest(
+                                          context,
+                                          upcomingdata.upcontentModel
+                                                  .result?[index].id
+                                                  .toString() ??
+                                              "",
+                                          userId.toString(),
+                                          upcomingdata.upcontentModel
+                                                  .result?[index].price
+                                                  .toString() ??
+                                              "");
+                                      if (!joinContest.loading) {
+                                        Utility.toastMessage(joinContest
+                                            .successModel.message
+                                            .toString());
+                                      }
+                                    },
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        28.0))),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                appColor)),
+                                    child: MyText(
+                                      title: ' Join Now ',
+                                      size: 16,
+                                      fontWeight: FontWeight.w500,
+                                      colors: white,
+                                    ))
+                                : Container(),
                           ],
                         ),
                         const SizedBox(height: 15),
@@ -230,25 +258,27 @@ class _ContestState extends State<Contest> {
                         const SizedBox(height: 10),
                         const Divider(height: 0.5, color: textColorGrey),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            MyText(
-                                title: "5h 40m",
-                                size: 16,
-                                fontWeight: FontWeight.w600),
-                            const Spacer(),
-                            MyText(
-                                title:
-                                    "Entry Fee: ${upcomingdata.upcontentModel.result?[index].price ?? ""}",
-                                size: 16,
-                                fontWeight: FontWeight.w600),
-                            const Spacer(),
-                            MyText(
-                                title: "Winner Details",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                colors: appColor),
-                          ],
+                        SizedBox(
+                          height: 25,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MyText(
+                                  title: "5h 40m",
+                                  size: 16,
+                                  fontWeight: FontWeight.w600),
+                              const VerticalDivider(
+                                thickness: 2,
+                                width: 20,
+                                color: textColorGrey,
+                              ),
+                              MyText(
+                                  title:
+                                      "Entry Fee: ${upcomingdata.upcontentModel.result?[index].price ?? ""}",
+                                  size: 16,
+                                  fontWeight: FontWeight.w600),
+                            ],
+                          ),
                         )
                       ]),
                     ),
@@ -274,7 +304,7 @@ class _ContestState extends State<Contest> {
                       padding: const EdgeInsets.all(15.0),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: 160,
                         decoration: const BoxDecoration(
                             color: Colors.grey,
                             borderRadius:
@@ -291,7 +321,7 @@ class _ContestState extends State<Contest> {
                   return Container(
                     margin: const EdgeInsets.only(
                         left: 5, top: 10, right: 5, bottom: 5),
-                    height: 200,
+                    height: 150,
                     decoration: const BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -319,6 +349,52 @@ class _ContestState extends State<Contest> {
                               ],
                             ),
                             const Spacer(),
+                            (livecontent.livecontentModel.result?[index]
+                                            .isPlayed ??
+                                        0) ==
+                                    0
+                                ? TextButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ContestQuestions(
+                                                    contestId: livecontent
+                                                        .livecontentModel
+                                                        .result?[index]
+                                                        .id
+                                                        .toString(),
+                                                    contestName: livecontent
+                                                        .livecontentModel
+                                                        .result?[index]
+                                                        .name,
+                                                  )));
+                                    },
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        28.0))),
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                appColor)),
+                                    child: MyText(
+                                      title: ' Play Now ',
+                                      size: 16,
+                                      fontWeight: FontWeight.w500,
+                                      colors: white,
+                                    ))
+                                : MyText(
+                                    title: 'Already Played',
+                                    fontWeight: FontWeight.w500,
+                                    colors: red,
+                                    size: 14,
+                                    maxline: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                           ],
                         ),
                         const SizedBox(height: 15),
@@ -348,53 +424,29 @@ class _ContestState extends State<Contest> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        LinearPercentIndicator(
-                          animation: true,
-                          lineHeight: 5,
-                          animationDuration: 2500,
-                          percent: 0.8,
-                          linearStrokeCap: LinearStrokeCap.roundAll,
-                          progressColor: appColor,
-                        ),
+                        const Divider(height: 1, color: textColorGrey),
                         const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            MyText(
-                                title: "150 Left",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                colors: red),
-                            const Spacer(),
-                            MyText(
-                                title:
-                                    "${livecontent.livecontentModel.result?[index].noOfUser} Total",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                colors: textColorGrey),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(height: 0.5, color: textColorGrey),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            MyText(
-                                title: "5h 40m",
-                                size: 16,
-                                fontWeight: FontWeight.w600),
-                            const Spacer(),
-                            MyText(
-                                title:
-                                    "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
-                                size: 16,
-                                fontWeight: FontWeight.w600),
-                            const Spacer(),
-                            MyText(
-                                title: "Winner Details",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                colors: appColor),
-                          ],
+                        SizedBox(
+                          height: 25,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              MyText(
+                                  title: "5h 40m",
+                                  size: 16,
+                                  fontWeight: FontWeight.w600),
+                              const VerticalDivider(
+                                thickness: 2,
+                                width: 20,
+                                color: textColorGrey,
+                              ),
+                              MyText(
+                                  title:
+                                      "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
+                                  size: 16,
+                                  fontWeight: FontWeight.w600),
+                            ],
+                          ),
                         )
                       ]),
                     ),
@@ -415,7 +467,7 @@ class _ContestState extends State<Contest> {
             return Container(
               margin:
                   const EdgeInsets.only(left: 5, top: 10, right: 5, bottom: 5),
-              height: 165,
+              height: 160,
               decoration: const BoxDecoration(
                   color: white,
                   borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -476,7 +528,7 @@ class _ContestState extends State<Contest> {
                           colors: black)
                     ],
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
                   const Divider(height: 0.2, color: textColorGrey),
                   const SizedBox(height: 10),
                   Row(

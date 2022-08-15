@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
+import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
+import 'package:quizapp/model/leaderboardmodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
@@ -10,6 +12,7 @@ import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
 import 'package:quizapp/model/todayleaderboardmodel.dart';
+import 'package:quizapp/pages/leaderboard.dart';
 import 'package:quizapp/webservice/apiservice.dart';
 
 class ApiProvider extends ChangeNotifier {
@@ -24,6 +27,7 @@ class ApiProvider extends ChangeNotifier {
   LevelModel levelModel = LevelModel();
 
   QuestionModel questionModel = QuestionModel();
+  ContestQuestionModel contestQuestionModel = ContestQuestionModel();
 
   ContentModel upcontentModel = ContentModel();
   ContentModel livecontentModel = ContentModel();
@@ -34,6 +38,7 @@ class ApiProvider extends ChangeNotifier {
   ReferTranModel referTranModel = ReferTranModel();
   SuccessModel successModel = SuccessModel();
   TodayLeaderBoardModel todayLeaderBoardModel = TodayLeaderBoardModel();
+  LeaderBoardModel leaderBoardModel = LeaderBoardModel();
 
   bool loading = false;
   String? email, password, type, deviceToken;
@@ -135,6 +140,22 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getjoinContest(context, String contestId, String userID, String coin) async {
+    loading = true;
+    successModel = await ApiService().joinContest(contestId, userID, coin);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getQuestionByContest(context, catId) async {
+    loading = true;
+    contestQuestionModel = await ApiService().questionByContest(catId);
+    debugPrint("${contestQuestionModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
   changeQuestion(int id) {
     selectQuestion = id;
     notifyListeners();
@@ -156,11 +177,35 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getSaveContestQuestionReport(
+      context,
+      String contestId,
+      String questionsAttended,
+      String totalQuestion,
+      String correctAnswers,
+      String userId,
+      String questionJson) async {
+    loading = true;
+    successModel = await ApiService().saveContestQuestionReport(contestId,
+        questionsAttended, totalQuestion, correctAnswers, userId, questionJson);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
   getTodayLeaderBoard(context, userId, String levelId) async {
     loading = true;
     todayLeaderBoardModel =
         await ApiService().todayLeaderBoard(userId, levelId);
     debugPrint("${todayLeaderBoardModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getLeaderBoard(context, userId, String type) async {
+    loading = true;
+    leaderBoardModel = await ApiService().leaderBoard(userId, type);
+    debugPrint("${leaderBoardModel.status}");
     loading = false;
     notifyListeners();
   }
