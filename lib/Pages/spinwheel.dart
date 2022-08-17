@@ -84,11 +84,30 @@ class _SpinWheelState extends State<SpinWheel> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FortuneWheel(
-                        selected: controller.stream,
+                        indicators: const <FortuneIndicator>[
+                          FortuneIndicator(
+                            alignment: Alignment
+                                .topCenter, // <-- changing the position of the indicator
+                            child: TriangleIndicator(
+                              color:
+                                  primary, // <-- changing the color of the indicator
+                            ),
+                          ),
+                        ],
+                        physics: CircularPanPhysics(
+                          duration: Duration(seconds: 1),
+                          curve: Curves.decelerate,
+                        ),
+                        onFling: () {
+                          controller.add(1);
+                        },
+                        onAnimationEnd: () {
+                          debugPrint("end");
+                        },
                         items: const [
                           FortuneItem(
                             child: Text(
-                              '2000',
+                              '200',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -100,7 +119,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '1000',
+                              '100',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -112,7 +131,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '3000',
+                              '300',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -124,7 +143,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '4000',
+                              '400',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -136,7 +155,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '5000',
+                              '500',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -148,7 +167,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '6000',
+                              '600',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -160,7 +179,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '7000',
+                              '700',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -172,7 +191,7 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                           FortuneItem(
                             child: Text(
-                              '8000',
+                              '800',
                               style: TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),

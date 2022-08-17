@@ -2,20 +2,25 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:quizapp/model/categorymastermodel.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
+import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
+import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
+import 'package:quizapp/model/questionpraticemodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
 import 'package:quizapp/model/todayleaderboardmodel.dart';
 import 'package:quizapp/utils/constant.dart';
-
+import 'package:path/path.dart';
 import '../model/leaderboardmodel.dart';
 
 class ApiService {
@@ -152,6 +157,30 @@ class ApiService {
     return profileModel;
   }
 
+  Future<SuccessModel> updateProfile(
+      userId, fullname, email, contact, address, image) async {
+    SuccessModel successModel;
+    String profile = "update_profile";
+    Response response = await dio.post('$baseurl$profile',
+        data: FormData.fromMap({
+          'user_id': userId,
+          "fullname": fullname,
+          "email": email,
+          "mobile_number": contact,
+          "biodata": address,
+          "profile_img": await MultipartFile.fromFile(image.path,
+              filename: basename(image.path))
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Profile apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
   Future<ReferTranModel> referTran(String userId) async {
     ReferTranModel referTranModel;
     String profile = "refer_transaction";
@@ -188,6 +217,23 @@ class ApiService {
     String content = "joinContest";
     Response response = await dio.post('$baseurl$content',
         data: ({'contest_id': contestId, 'user_id': userId, 'coin': coin}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("joinContest apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
+  Future<SuccessModel> winnerbycontest(String contestId) async {
+    SuccessModel successModel;
+    String content = "get_winner_by_contest";
+    Response response = await dio.post('$baseurl$content',
+        data: ({
+          'contest_id': contestId,
+        }));
     debugPrint("${response.data}");
     if (response.statusCode == 200) {
       debugPrint("joinContest apiservice:===>${response.data}");
@@ -299,5 +345,119 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return leaderBoardModel;
+  }
+
+  Future<LevelMasterModel> questionLevelMaster() async {
+    LevelMasterModel levelMasterModel;
+    String level = "getQuestionLevelMaster";
+    Response response = await dio.post('$baseurl$level');
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Question level apiservice:===>${response.data}");
+      levelMasterModel = LevelMasterModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return levelMasterModel;
+  }
+
+  Future<CategoryMasterModel> categoryByLevelMaster(String masterId) async {
+    CategoryMasterModel categoryMasterModel;
+    String category = "getCategoryByLevelMaster";
+    Response response = await dio.post('$baseurl$category',
+        data: ({
+          'question_level_master_id': masterId,
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("categoryMasterModel apiservice:===>${response.data}");
+      categoryMasterModel = CategoryMasterModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return categoryMasterModel;
+  }
+
+  Future<LevelPraticeModel> practiceLavelByCategoryId(
+      String catId, String userId) async {
+    LevelPraticeModel levelPraticeModel;
+    String level = "getPracticeLavelByCategoryId";
+    Response response = await dio.post('$baseurl$level',
+        data: ({'category_id': catId, 'user_id': userId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("levelpratice apiservice:===>${response.data}");
+      levelPraticeModel = LevelPraticeModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return levelPraticeModel;
+  }
+
+  Future<QuestionPraticeModel> practiceQuestionByLavel(
+      String catId, String levelId, String levelMasterId) async {
+    QuestionPraticeModel questionPraticeModel;
+    String level = "getPracticeQuestionByLavel";
+    Response response = await dio.post('$baseurl$level',
+        data: ({
+          'category_id': catId,
+          'level_id': levelId,
+          'question_level_master_id': levelMasterId
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Question apiservice:===>${response.data}");
+      questionPraticeModel = QuestionPraticeModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return questionPraticeModel;
+  }
+
+  Future<SuccessModel> savePraticeQuestionReport(
+    String userId,
+    String masterId,
+    String categoryId,
+    String levelId,
+    String totalQuestion,
+    String questionsAttended,
+    String correctAnswers,
+  ) async {
+    SuccessModel successModel;
+    String content = "save_Practice_Question_Report";
+    Response response = await dio.post('$baseurl$content',
+        data: ({
+          'user_id': userId,
+          'question_level_master_id': masterId,
+          'category_id': categoryId,
+          'level_id': levelId,
+          'total_question': totalQuestion,
+          'questions_attended': questionsAttended,
+          'correct_answers': correctAnswers,
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Save Question apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
+  Future<PraticeLeaderboardModel> practiseLeaderBoard(String userId) async {
+    PraticeLeaderboardModel praticeLeaderboardModel;
+    String leaderboard = "getPractiseLeaderBoard";
+    Response response =
+        await dio.post('$baseurl$leaderboard', data: ({'user_id': userId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("PraticeLeaderBoard apiservice:===>${response.data}");
+      praticeLeaderboardModel =
+          PraticeLeaderboardModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return praticeLeaderboardModel;
   }
 }

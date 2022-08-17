@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:quizapp/model/categorymastermodel.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/leaderboardmodel.dart';
+import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
+import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
+import 'package:quizapp/model/questionpraticemodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
@@ -39,6 +46,13 @@ class ApiProvider extends ChangeNotifier {
   SuccessModel successModel = SuccessModel();
   TodayLeaderBoardModel todayLeaderBoardModel = TodayLeaderBoardModel();
   LeaderBoardModel leaderBoardModel = LeaderBoardModel();
+
+  LevelMasterModel levelMasterModel = LevelMasterModel();
+  CategoryMasterModel categoryMasterModel = CategoryMasterModel();
+  LevelPraticeModel levelPraticeModel = LevelPraticeModel();
+
+  QuestionPraticeModel questionPraticeModel = QuestionPraticeModel();
+  PraticeLeaderboardModel praticeLeaderboardModel = PraticeLeaderboardModel();
 
   bool loading = false;
   String? email, password, type, deviceToken;
@@ -84,6 +98,16 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getUpdateProfile(
+      userId, fullname, email, contact, address, File image) async {
+    loading = true;
+    successModel = await ApiService()
+        .updateProfile(userId, fullname, email, contact, address, image);
+    debugPrint("${profileModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
   getReferTransaction(context, userId) async {
     loading = true;
     referTranModel = await ApiService().referTran(userId);
@@ -96,6 +120,14 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     categoryModel = await ApiService().category();
     debugPrint("${categoryModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getCategoryByLevelMaster(context, masterId) async {
+    loading = true;
+    categoryMasterModel = await ApiService().categoryByLevelMaster(masterId);
+    debugPrint("${categoryMasterModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -143,6 +175,14 @@ class ApiProvider extends ChangeNotifier {
   getjoinContest(context, String contestId, String userID, String coin) async {
     loading = true;
     successModel = await ApiService().joinContest(contestId, userID, coin);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getContestWinnerList(String contestId) async {
+    loading = true;
+    successModel = await ApiService().winnerbycontest(contestId);
     debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
@@ -206,6 +246,58 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     leaderBoardModel = await ApiService().leaderBoard(userId, type);
     debugPrint("${leaderBoardModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getLevelMaster() async {
+    loading = true;
+    levelMasterModel = await ApiService().questionLevelMaster();
+    debugPrint("${levelMasterModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getLevelPratice(context, catId, String userID) async {
+    loading = true;
+    levelPraticeModel =
+        await ApiService().practiceLavelByCategoryId(catId, userID);
+    debugPrint("${levelPraticeModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getQuestionByLevelPratice(
+      context, catId, String levelId, String levelMasterId) async {
+    loading = true;
+    questionPraticeModel = await ApiService()
+        .practiceQuestionByLavel(catId, levelId, levelMasterId);
+    debugPrint("${questionModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getSavePraticeQuestionReport(
+      context,
+      String userId,
+      String masterId,
+      String categoryId,
+      String levelId,
+      String totalQuestion,
+      String questionsAttended,
+      String correctAnswers) async {
+    loading = true;
+    successModel = await ApiService().saveQuestionReport(levelId,
+        questionsAttended, totalQuestion, correctAnswers, userId, categoryId);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getPraticeLeaderBoard(userId) async {
+    loading = true;
+    praticeLeaderboardModel = await ApiService().practiseLeaderBoard(userId);
+    debugPrint("${praticeLeaderboardModel.status}");
     loading = false;
     notifyListeners();
   }

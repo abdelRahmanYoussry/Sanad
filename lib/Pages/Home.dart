@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/pages/category.dart';
 import 'package:quizapp/pages/contest.dart';
 import 'package:quizapp/pages/level.dart';
+import 'package:quizapp/pages/praticestage.dart';
 import 'package:quizapp/pages/profile.dart';
 import 'package:quizapp/pages/settings.dart';
 import 'package:quizapp/pages/wallet.dart';
@@ -206,7 +207,7 @@ class _HomeState extends State<Home> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Category()));
+                          builder: (context) => const PraticeStage()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,
@@ -297,10 +298,8 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Category()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Category()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,
@@ -670,10 +669,14 @@ class _HomeState extends State<Home> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => const Login()));
+                  sharePref.remove('is_login');
+                  sharePref.remove('userId');
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => const Login()),
+                      ModalRoute.withName('/'));
                   topBar = false;
-                  setState(() {});
                 },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

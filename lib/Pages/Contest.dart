@@ -7,6 +7,7 @@ import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/MyAppbar.dart';
+import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -545,11 +546,17 @@ class _ContestState extends State<Contest> {
                           fontWeight: FontWeight.w600,
                           colors: appColor),
                       const Spacer(),
-                      MyText(
-                          title: "Winner Details",
-                          size: 16,
-                          fontWeight: FontWeight.w600,
-                          colors: appColor),
+                      InkWell(
+                        onTap: () {
+                          winnerList(
+                              endcontent.endcontentModel.result?[index].id);
+                        },
+                        child: MyText(
+                            title: "Winner Details",
+                            size: 16,
+                            fontWeight: FontWeight.w600,
+                            colors: appColor),
+                      ),
                     ],
                   )
                 ]),
@@ -559,5 +566,119 @@ class _ContestState extends State<Contest> {
         );
       },
     );
+  }
+
+  void winnerList(var contestId) {
+    final winnerdata = Provider.of<ApiProvider>(context, listen: false);
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            decoration: const BoxDecoration(
+              color: white,
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: 40,
+                    color: primary,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: MyText(
+                          title: "Rank",
+                          textalign: TextAlign.center,
+                          size: 16,
+                          fontWeight: FontWeight.w600,
+                          maxline: 1,
+                          colors: white,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        Expanded(
+                            child: MyText(
+                          title: "Winnings",
+                          textalign: TextAlign.center,
+                          size: 16,
+                          colors: white,
+                          fontWeight: FontWeight.w600,
+                          maxline: 1,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        Expanded(
+                            child: MyText(
+                          title: "Percentage",
+                          textalign: TextAlign.center,
+                          size: 16,
+                          fontWeight: FontWeight.w600,
+                          maxline: 1,
+                          colors: white,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                      ],
+                    ),
+                  ),
+                  ListView.separated(
+                    itemCount: 20,
+                    shrinkWrap: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return SizedBox(
+                        height: 30,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: MyText(
+                              title: "1",
+                              textalign: TextAlign.center,
+                              size: 16,
+                              fontWeight: FontWeight.w600,
+                              maxline: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            Expanded(
+                                child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyImage(
+                                    width: 30,
+                                    height: 30,
+                                    imagePath: "assets/images/ic_icons.png"),
+                                MyText(
+                                  title: "1000",
+                                  textalign: TextAlign.center,
+                                  size: 16,
+                                  fontWeight: FontWeight.w600,
+                                  maxline: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            )),
+                            Expanded(
+                                child: MyText(
+                              title: "70%",
+                              textalign: TextAlign.center,
+                              size: 16,
+                              fontWeight: FontWeight.w600,
+                              maxline: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return const Divider(
+                        color: textColorGrey,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
