@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/category.dart';
-import 'package:quizapp/pages/pratisecategory.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/mytext.dart';
+
+import 'pratisecategory.dart';
 
 class PraticeStage extends StatefulWidget {
   const PraticeStage({Key? key}) : super(key: key);
@@ -17,7 +17,6 @@ class PraticeStage extends StatefulWidget {
 class _PraticeStageState extends State<PraticeStage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     final levelmaster = Provider.of<ApiProvider>(context, listen: false);
     levelmaster.getLevelMaster();
@@ -43,7 +42,6 @@ class _PraticeStageState extends State<PraticeStage> {
         body: buildBody(),
       ),
     );
-    ;
   }
 
   getAppbar() {

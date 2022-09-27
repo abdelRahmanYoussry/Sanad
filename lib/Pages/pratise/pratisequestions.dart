@@ -8,7 +8,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/model/questionpraticemodel.dart';
-import 'package:quizapp/pages/praticelevelresult.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/provider/commanprovider.dart';
 import 'package:quizapp/theme/color.dart';
@@ -17,6 +16,8 @@ import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mynetimage.dart';
 import 'package:quizapp/widget/mytext.dart';
+
+import 'praticelevelresult.dart';
 
 // Type 1 = 4 option & 2 = true/false
 // question_level_master_id 0=easy - medium etc

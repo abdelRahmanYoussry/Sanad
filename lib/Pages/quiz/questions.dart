@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_timer/custom_timer.dart';
@@ -8,7 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/model/questionmodel.dart';
-import 'package:quizapp/pages/levelresult.dart';
+import 'package:quizapp/pages/quiz/levelresult.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/provider/commanprovider.dart';
 import 'package:quizapp/theme/color.dart';
@@ -188,6 +189,7 @@ class _QuestionsState extends State<Questions> {
                         }
                         // _controller.start();
                       }
+                      log("===> Selection ${questiondata.selectQuestion}");
                       return questiondata.loading
                           ? const Center(
                               child: CircularProgressIndicator(),
@@ -1028,6 +1030,10 @@ class _QuestionsState extends State<Questions> {
                                                                   listen: false)
                                                               .answerclick(-1);
 
+                                                          Provider.of<ApiProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .selectQuestion = 0;
                                                           saveQuestionReport();
                                                         });
                                                       }

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/pages/category.dart';
-import 'package:quizapp/pages/contest.dart';
-import 'package:quizapp/pages/level.dart';
-import 'package:quizapp/pages/praticestage.dart';
 import 'package:quizapp/pages/profile.dart';
 import 'package:quizapp/pages/settings.dart';
 import 'package:quizapp/pages/wallet.dart';
@@ -15,6 +11,10 @@ import 'package:quizapp/pages/login.dart';
 import 'package:quizapp/pages/referearn.dart';
 import 'package:quizapp/pages/spinwheel.dart';
 import 'package:quizapp/utils/sharepref.dart';
+
+import 'contest/contest.dart';
+import 'pratise/praticestage.dart';
+import 'quiz/category.dart';
 
 bool topBar = false;
 
@@ -298,8 +298,10 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Category()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Category()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,

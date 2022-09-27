@@ -75,6 +75,8 @@ class _LevelResultState extends State<LevelResult> {
                                   ),
                                   const SizedBox(height: 10),
                                   CircleAvatar(
+                                    child: Image.asset(
+                                        "assets/images/ic_user_dummy.png"),
                                     radius: 40,
                                     backgroundColor: primary,
                                     backgroundImage: NetworkImage(userdata

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:quizapp/model/categorymastermodel.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
+import 'package:quizapp/model/contestleadermodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
+import 'package:quizapp/model/earnmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/leaderboardmodel.dart';
 import 'package:quizapp/model/levelmastermodel.dart';
@@ -17,9 +19,10 @@ import 'package:quizapp/model/questionmodel.dart';
 import 'package:quizapp/model/questionpraticemodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
+import 'package:quizapp/model/rewardmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
 import 'package:quizapp/model/todayleaderboardmodel.dart';
-import 'package:quizapp/pages/leaderboard.dart';
+import 'package:quizapp/model/winnermodel.dart';
 import 'package:quizapp/webservice/apiservice.dart';
 
 class ApiProvider extends ChangeNotifier {
@@ -39,10 +42,14 @@ class ApiProvider extends ChangeNotifier {
   ContentModel upcontentModel = ContentModel();
   ContentModel livecontentModel = ContentModel();
   ContentModel endcontentModel = ContentModel();
+  ContestLeaderModel contestLeaderModel = ContestLeaderModel();
+  WinnerModel winnerModel = WinnerModel();
 
   ProfileModel profileModel = ProfileModel();
 
   ReferTranModel referTranModel = ReferTranModel();
+  RewardModel rewardModel = RewardModel();
+  EarnModel earnModel = EarnModel();
   SuccessModel successModel = SuccessModel();
   TodayLeaderBoardModel todayLeaderBoardModel = TodayLeaderBoardModel();
   LeaderBoardModel leaderBoardModel = LeaderBoardModel();
@@ -104,6 +111,22 @@ class ApiProvider extends ChangeNotifier {
     successModel = await ApiService()
         .updateProfile(userId, fullname, email, contact, address, image);
     debugPrint("${profileModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getRewardPoints(context, userId) async {
+    loading = true;
+    rewardModel = await ApiService().rewardpoints(userId);
+    debugPrint("${referTranModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getEarnPoints(context, userId) async {
+    loading = true;
+    earnModel = await ApiService().earnpoints(userId);
+    debugPrint("${earnModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -182,8 +205,17 @@ class ApiProvider extends ChangeNotifier {
 
   getContestWinnerList(String contestId) async {
     loading = true;
-    successModel = await ApiService().winnerbycontest(contestId);
-    debugPrint("${successModel.status}");
+    winnerModel = await ApiService().winnerbycontest(contestId);
+    debugPrint("${winnerModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getContestLeaderBoard(userId, contestId) async {
+    loading = true;
+    contestLeaderModel =
+        await ApiService().contestleaderBoard(userId, contestId);
+    debugPrint("${contestLeaderModel.status}");
     loading = false;
     notifyListeners();
   }

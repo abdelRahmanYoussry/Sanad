@@ -24,7 +24,7 @@ class Utility {
     return Image.asset('assets/images/$assetName');
   }
 
-  static dateConversation(DateTime cDate) {
+  static dateConversation(String cDate) {
     var inputFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     var inputDate = inputFormat.parse(cDate.toString()); // <-- dd/MM 24H format
 
@@ -32,6 +32,12 @@ class Utility {
     var outputDate = outputFormat.format(inputDate);
     debugPrint(outputDate);
     return outputDate;
+  }
+
+  dateConvert(String date, String format) {
+    final DateTime now = DateTime.parse(date);
+    final DateFormat formatter = DateFormat(format);
+    return formatter.format(now);
   }
 
   static progressbarShow(BuildContext context) {

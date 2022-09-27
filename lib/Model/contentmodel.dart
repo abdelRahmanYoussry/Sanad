@@ -1,3 +1,10 @@
+import 'dart:convert';
+
+ContentModel contentModelFromJson(String str) =>
+    ContentModel.fromJson(json.decode(str));
+
+String contentModelToJson(ContentModel data) => json.encode(data.toJson());
+
 class ContentModel {
   ContentModel({
     this.status,

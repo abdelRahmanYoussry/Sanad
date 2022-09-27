@@ -38,9 +38,7 @@ class Result {
     this.optionB,
     this.optionC,
     this.optionD,
-    this.optione,
     this.answer,
-    this.note,
     this.createdAt,
     this.updatedAt,
   });
@@ -58,9 +56,7 @@ class Result {
   String? optionB;
   String? optionC;
   String? optionD;
-  String? optione;
   String? answer;
-  String? note;
   String? createdAt;
   String? updatedAt;
 
@@ -78,9 +74,7 @@ class Result {
         optionB: json["option_b"],
         optionC: json["option_c"],
         optionD: json["option_d"],
-        optione: json["optione"],
         answer: json["answer"],
-        note: json["note"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
       );
@@ -99,9 +93,7 @@ class Result {
         "option_b": optionB,
         "option_c": optionC,
         "option_d": optionD,
-        "optione": optione,
         "answer": answer,
-        "note": note,
         "created_at": createdAt,
         "updated_at": updatedAt
       };

@@ -1,38 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:quizapp/pages/praticelevel.dart';
+import 'package:quizapp/model/categorymodel.dart';
+import 'package:quizapp/pages/quiz/level.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
-import 'package:quizapp/widget/mynetimage.dart';
 import 'package:quizapp/widget/mytext.dart';
+import 'package:quizapp/widget/mynetimage.dart';
 
-import '../model/categorymastermodel.dart';
-
-class PratiseCategory extends StatefulWidget {
-  String? type;
-  String? masterId;
-  PratiseCategory({Key? key, this.type, this.masterId}) : super(key: key);
+class Category extends StatefulWidget {
+  const Category({Key? key}) : super(key: key);
 
   @override
-  _PratiseCategoryState createState() => _PratiseCategoryState();
+  _CategoryState createState() => _CategoryState();
 }
 
-class _PratiseCategoryState extends State<PratiseCategory> {
+class _CategoryState extends State<Category> {
   SharePref sharePref = SharePref();
   List<Result>? categoryList = [];
 
   @override
   initState() {
-    debugPrint('===>Type ${widget.type}');
-    debugPrint('===>MasterId ${widget.masterId}');
-    if (widget.type.toString() == 'practise') {
-      final categorydata = Provider.of<ApiProvider>(context, listen: false);
-      categorydata.getCategoryByLevelMaster(context, widget.masterId);
-      return;
-    }
+    final categorydata = Provider.of<ApiProvider>(context, listen: false);
+    categorydata.getCategory(context);
+    super.initState();
   }
 
   @override
@@ -40,10 +32,9 @@ class _PratiseCategoryState extends State<PratiseCategory> {
     final categorydata = Provider.of<ApiProvider>(context);
     if (!categorydata.loading) {
       debugPrint('category===>$categorydata');
-      categoryList = categorydata.categoryMasterModel.result as List<Result>;
+      categoryList = categorydata.categoryModel.result as List<Result>;
       debugPrint(categoryList?.length.toString());
     }
-
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(
@@ -92,9 +83,8 @@ class _PratiseCategoryState extends State<PratiseCategory> {
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => PraticeLevel(
+                    builder: (BuildContext context) => Level(
                           catId: categoryList![index].id.toString(),
-                          masterId: widget.masterId.toString(),
                         )));
               },
               child: Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:quizapp/pages/questions.dart';
+import 'package:quizapp/pages/quiz/questions.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/utils/sharepref.dart';
@@ -9,7 +9,7 @@ import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
 
-import '../theme/color.dart';
+import '../../theme/color.dart';
 
 // ignore: must_be_immutable
 class Level extends StatefulWidget {

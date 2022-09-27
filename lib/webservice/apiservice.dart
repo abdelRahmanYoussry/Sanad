@@ -6,6 +6,7 @@ import 'package:quizapp/model/categorymastermodel.dart';
 import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
+import 'package:quizapp/model/earnmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
@@ -17,10 +18,13 @@ import 'package:quizapp/model/questionmodel.dart';
 import 'package:quizapp/model/questionpraticemodel.dart';
 import 'package:quizapp/model/refertranmodel.dart';
 import 'package:quizapp/model/registrationmodel.dart';
+import 'package:quizapp/model/rewardmodel.dart';
 import 'package:quizapp/model/successmodel.dart';
 import 'package:quizapp/model/todayleaderboardmodel.dart';
+import 'package:quizapp/model/winnermodel.dart';
 import 'package:quizapp/utils/constant.dart';
 import 'package:path/path.dart';
+import '../model/contestleadermodel.dart';
 import '../model/leaderboardmodel.dart';
 
 class ApiService {
@@ -196,6 +200,36 @@ class ApiService {
     return referTranModel;
   }
 
+  Future<EarnModel> earnpoints(String userId) async {
+    EarnModel earnModel;
+    String profile = "get_earn_transaction";
+    Response response =
+        await dio.post('$baseurl$profile', data: ({'user_id': userId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Earn apiservice:===>${response.data}");
+      earnModel = EarnModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return earnModel;
+  }
+
+  Future<RewardModel> rewardpoints(String userId) async {
+    RewardModel rewardModel;
+    String profile = "get_reward_points";
+    Response response =
+        await dio.post('$baseurl$profile', data: ({'user_id': userId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Refer apiservice:===>${response.data}");
+      rewardModel = RewardModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return rewardModel;
+  }
+
   Future<ContentModel> getContest(String listType, String userId) async {
     ContentModel contentModel;
     String content = "getContest";
@@ -227,8 +261,24 @@ class ApiService {
     return successModel;
   }
 
-  Future<SuccessModel> winnerbycontest(String contestId) async {
-    SuccessModel successModel;
+  Future<ContestLeaderModel> contestleaderBoard(
+      String userId, int contestId) async {
+    ContestLeaderModel contestLeaderModel;
+    String contestleaderboard = "getContestLeaderBoard";
+    Response response = await dio.post('$baseurl$contestleaderboard',
+        data: ({'user_id': userId, 'contest_id': contestId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Contest leaderBoard apiservice:===>${response.data}");
+      contestLeaderModel = ContestLeaderModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return contestLeaderModel;
+  }
+
+  Future<WinnerModel> winnerbycontest(String contestId) async {
+    WinnerModel winnerModel;
     String content = "get_winner_by_contest";
     Response response = await dio.post('$baseurl$content',
         data: ({
@@ -236,12 +286,12 @@ class ApiService {
         }));
     debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("joinContest apiservice:===>${response.data}");
-      successModel = SuccessModel.fromJson((response.data));
+      debugPrint("winnerModel apiservice:===>${response.data}");
+      winnerModel = WinnerModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
     }
-    return successModel;
+    return winnerModel;
   }
 
   Future<ContestQuestionModel> questionByContest(String contestId) async {

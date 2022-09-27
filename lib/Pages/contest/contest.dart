@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/contestquestions.dart';
+import 'package:quizapp/pages/contest/contestleaderboard.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
@@ -10,6 +10,8 @@ import 'package:quizapp/widget/MyAppbar.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
+
+import 'contestquestions.dart';
 
 class Contest extends StatefulWidget {
   const Contest({Key? key}) : super(key: key);
@@ -130,10 +132,21 @@ class _ContestState extends State<Contest> {
                 padding: EdgeInsets.zero,
                 itemCount: upcomingdata.upcontentModel.result?.length ?? 0,
                 itemBuilder: (context, index) {
+                  DateTime date1 = DateTime.parse(
+                      (upcomingdata.upcontentModel.result?[index].startDate ??
+                          ""));
+                  DateTime now = DateTime.now();
+                  debugPrint(now.toString());
+                  debugPrint(date1.toString());
+
+                  Duration diff = date1.difference(now);
+
+                  debugPrint('===> ${diff.inDays}');
+
                   return Container(
                     margin: const EdgeInsets.only(
                         left: 5, top: 10, right: 5, bottom: 5),
-                    height: 200,
+                    height: 210,
                     decoration: const BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -260,24 +273,99 @@ class _ContestState extends State<Contest> {
                         const Divider(height: 0.5, color: textColorGrey),
                         const SizedBox(height: 10),
                         SizedBox(
-                          height: 25,
+                          height: 40,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              MyText(
-                                  title: "5h 40m",
-                                  size: 16,
-                                  fontWeight: FontWeight.w600),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: MyText(
+                                          title: 'Start :',
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Expanded(
+                                      child: MyText(
+                                          title: diff.inDays > 1
+                                              ? Utility().dateConvert(
+                                                  upcomingdata
+                                                          .upcontentModel
+                                                          .result?[index]
+                                                          .startDate ??
+                                                      "",
+                                                  "dd-MMM-yy")
+                                              : diff.inHours.toString() +
+                                                  " h - " +
+                                                  diff.inMinutes.toString() +
+                                                  " m - " +
+                                                  diff.inSeconds.toString() +
+                                                  " m - ",
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               const VerticalDivider(
-                                thickness: 2,
-                                width: 20,
+                                thickness: 1,
+                                width: 1,
                                 color: textColorGrey,
                               ),
-                              MyText(
-                                  title:
-                                      "Entry Fee: ${upcomingdata.upcontentModel.result?[index].price ?? ""}",
-                                  size: 16,
-                                  fontWeight: FontWeight.w600),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: MyText(
+                                          title: 'Entry Fee :',
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Expanded(
+                                      child: MyText(
+                                          title:
+                                              "${upcomingdata.upcontentModel.result?[index].price ?? ""}",
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const VerticalDivider(
+                                thickness: 1,
+                                width: 1,
+                                color: textColorGrey,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: MyText(
+                                          title: 'End :',
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Expanded(
+                                      child: MyText(
+                                          title: Utility().dateConvert(
+                                              upcomingdata.upcontentModel
+                                                      .result?[index].endDate ??
+                                                  "",
+                                              "dd-MMM-yy"),
+                                          size: 12,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         )
@@ -408,7 +496,8 @@ class _ContestState extends State<Contest> {
                             ),
                             const SizedBox(width: 5),
                             MyText(
-                                title: "WINNERS: 20",
+                                title:
+                                    "WINNERS: ${livecontent.livecontentModel.result?[index].noOfUserPrize}",
                                 size: 16,
                                 fontWeight: FontWeight.w400,
                                 colors: textColorGree),
@@ -515,7 +604,8 @@ class _ContestState extends State<Contest> {
                       ),
                       const SizedBox(width: 5),
                       MyText(
-                          title: "WINNERS: 20",
+                          title:
+                              "WINNERS: ${endcontent.endcontentModel.result?[index].noOfUserPrize.toString() ?? ""}",
                           size: 16,
                           fontWeight: FontWeight.w400,
                           colors: textColorGree),
@@ -534,11 +624,22 @@ class _ContestState extends State<Contest> {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      MyText(
-                          title: "Leaderboard",
-                          size: 16,
-                          fontWeight: FontWeight.w600,
-                          colors: appColor),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContestLeaderBoard(
+                                        contestId: endcontent
+                                            .endcontentModel.result?[index].id,
+                                      )));
+                        },
+                        child: MyText(
+                            title: "Leaderboard",
+                            size: 16,
+                            fontWeight: FontWeight.w600,
+                            colors: appColor),
+                      ),
                       const Spacer(),
                       MyText(
                           title: "Statistics",
@@ -570,6 +671,8 @@ class _ContestState extends State<Contest> {
 
   void winnerList(var contestId) {
     final winnerdata = Provider.of<ApiProvider>(context, listen: false);
+    winnerdata.getContestWinnerList(contestId.toString());
+
     showModalBottomSheet(
         context: context,
         builder: (builder) {
@@ -597,6 +700,16 @@ class _ContestState extends State<Contest> {
                         )),
                         Expanded(
                             child: MyText(
+                          title: "Name",
+                          textalign: TextAlign.center,
+                          size: 16,
+                          fontWeight: FontWeight.w600,
+                          maxline: 1,
+                          colors: white,
+                          overflow: TextOverflow.ellipsis,
+                        )),
+                        Expanded(
+                            child: MyText(
                           title: "Winnings",
                           textalign: TextAlign.center,
                           size: 16,
@@ -605,21 +718,11 @@ class _ContestState extends State<Contest> {
                           maxline: 1,
                           overflow: TextOverflow.ellipsis,
                         )),
-                        Expanded(
-                            child: MyText(
-                          title: "Percentage",
-                          textalign: TextAlign.center,
-                          size: 16,
-                          fontWeight: FontWeight.w600,
-                          maxline: 1,
-                          colors: white,
-                          overflow: TextOverflow.ellipsis,
-                        )),
                       ],
                     ),
                   ),
                   ListView.separated(
-                    itemCount: 20,
+                    itemCount: winnerdata.winnerModel.result?.length ?? 0,
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -630,7 +733,10 @@ class _ContestState extends State<Contest> {
                           children: [
                             Expanded(
                                 child: MyText(
-                              title: "1",
+                              title:
+                                  (winnerdata.winnerModel.result?[index].rank ??
+                                          0)
+                                      .toString(),
                               textalign: TextAlign.center,
                               size: 16,
                               fontWeight: FontWeight.w600,
@@ -647,7 +753,10 @@ class _ContestState extends State<Contest> {
                                     height: 30,
                                     imagePath: "assets/images/ic_icons.png"),
                                 MyText(
-                                  title: "1000",
+                                  title: (winnerdata.winnerModel.result?[index]
+                                              .fullname ??
+                                          "")
+                                      .toString(),
                                   textalign: TextAlign.center,
                                   size: 16,
                                   fontWeight: FontWeight.w600,
@@ -658,7 +767,10 @@ class _ContestState extends State<Contest> {
                             )),
                             Expanded(
                                 child: MyText(
-                              title: "70%",
+                              title: (winnerdata
+                                          .winnerModel.result?[index].price ??
+                                      0)
+                                  .toString(),
                               textalign: TextAlign.center,
                               size: 16,
                               fontWeight: FontWeight.w600,

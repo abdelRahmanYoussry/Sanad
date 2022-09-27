@@ -49,8 +49,8 @@ class _LoginState extends State<Login> {
     } else {
       print("==>${provider.loginModel.status}");
       if (provider.loginModel.status == 200) {
-        sharePref.save('is_login', "1");
-        sharePref.save(
+        await sharePref.save('is_login', "1");
+        await sharePref.save(
             'userId', provider.loginModel.result?[0].id.toString() ?? "");
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Home()));
