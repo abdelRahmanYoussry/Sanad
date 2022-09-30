@@ -67,6 +67,7 @@ class _SignUpState extends State<SignUp> {
             context, MaterialPageRoute(builder: (context) => const Home()));
       } else {
         print(provider.registrationModel.message);
+        Utility.toastMessage('${provider.registrationModel.message}');
       }
     }
   }

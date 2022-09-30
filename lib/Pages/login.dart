@@ -6,7 +6,9 @@ import 'package:quizapp/pages/home.dart';
 import 'package:quizapp/pages/forgotpass.dart';
 import 'package:quizapp/pages/signup.dart';
 import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
+import 'package:quizapp/utils/utility.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
 
@@ -38,24 +40,31 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  Future<void> _login() async {
+  _login() async {
     String email = emailController.text.trim();
     String pass = passController.text.trim();
-
-    var provider = Provider.of<ApiProvider>(context, listen: false);
-    await provider.login(context, email, pass, "1", "1");
-    if (provider.loading) {
-      const CircularProgressIndicator();
+    if (email.isEmpty) {
+      Utility.toastMessage("Please enter email address");
+    } else if (pass.isEmpty) {
+      Utility.toastMessage("Please enter passoword");
     } else {
-      print("==>${provider.loginModel.status}");
-      if (provider.loginModel.status == 200) {
-        await sharePref.save('is_login', "1");
-        await sharePref.save(
-            'userId', provider.loginModel.result?[0].id.toString() ?? "");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Home()));
+      var provider = Provider.of<ApiProvider>(context, listen: false);
+      await provider.login(context, email, pass, "1", "1");
+
+      if (provider.loading) {
+        const CircularProgressIndicator();
       } else {
-        print(provider.loginModel.message);
+        print("==>${provider.loginModel.status}");
+        if (provider.loginModel.status == 200) {
+          await sharePref.save('is_login', "1");
+          await sharePref.save(
+              'userId', provider.loginModel.result?[0].id.toString() ?? "");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Home()));
+        } else {
+          print(provider.loginModel.message);
+          Utility.toastMessage("${provider.loginModel.message}");
+        }
       }
     }
   }

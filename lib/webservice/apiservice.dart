@@ -12,6 +12,7 @@ import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/packagesmodel.dart';
 import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
@@ -509,5 +510,18 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return praticeLeaderboardModel;
+  }
+
+  Future<PackagesModel> packages() async {
+    PackagesModel packagesModel;
+    String profile = "get_packages";
+    Response response = await dio.get('$baseurl$profile');
+    if (response.statusCode == 200) {
+      debugPrint("Package apiservice:===>${response.data}");
+      packagesModel = PackagesModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return packagesModel;
   }
 }

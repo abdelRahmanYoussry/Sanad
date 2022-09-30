@@ -13,6 +13,7 @@ import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/packagesmodel.dart';
 import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
 import 'package:quizapp/model/questionmodel.dart';
@@ -60,6 +61,7 @@ class ApiProvider extends ChangeNotifier {
 
   QuestionPraticeModel questionPraticeModel = QuestionPraticeModel();
   PraticeLeaderboardModel praticeLeaderboardModel = PraticeLeaderboardModel();
+  PackagesModel packagesModel = PackagesModel();
 
   bool loading = false;
   String? email, password, type, deviceToken;
@@ -330,6 +332,14 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     praticeLeaderboardModel = await ApiService().practiseLeaderBoard(userId);
     debugPrint("${praticeLeaderboardModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getPackage(context, userId) async {
+    loading = true;
+    packagesModel = await ApiService().packages();
+    debugPrint("${profileModel.status}");
     loading = false;
     notifyListeners();
   }

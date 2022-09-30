@@ -53,6 +53,7 @@ dependencies:
   auto_size_text: ^3.0.0
   just_audio: ^0.9.28
   image_picker: ^0.8.5+3
+  in_app_purchase: ^3.0.7
   
 
 
