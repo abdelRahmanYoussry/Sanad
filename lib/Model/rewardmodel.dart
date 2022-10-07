@@ -38,6 +38,7 @@ class Result {
     this.type,
     this.createdAt,
     this.updatedAt,
+    this.typename,
   });
 
   int? id;
@@ -46,6 +47,7 @@ class Result {
   String? type;
   String? createdAt;
   String? updatedAt;
+  String? typename;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
@@ -54,6 +56,7 @@ class Result {
         type: json["type"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        typename: json["type_name"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,5 +66,6 @@ class Result {
         "type": type,
         "created_at": createdAt,
         "updated_at": updatedAt,
+        "type_name": typename,
       };
 }

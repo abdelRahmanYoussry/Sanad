@@ -30,9 +30,11 @@ class _ProfileState extends State<Profile> {
     userId = await sharePref.read('userId') ?? "0";
     debugPrint('userID===>${userId.toString()}');
 
-    final profiledata = Provider.of<ApiProvider>(context, listen: false);
-    profiledata.getProfile(context, userId);
-    profiledata.getReferTransaction(context, userId);
+    if (userId != "" || userId != "0") {
+      final profiledata = Provider.of<ApiProvider>(context, listen: false);
+      profiledata.getProfile(context, userId);
+      profiledata.getReferTransaction(context, userId);
+    }
   }
 
   @override
@@ -122,8 +124,13 @@ class _ProfileState extends State<Profile> {
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: MyText(
                 title:
-                    profiledata.profileModel.result?[0].fullname.toString() ??
-                        "",
+                    (profiledata.profileModel.result?[0].fullname.toString() ??
+                                "")
+                            .isNotEmpty
+                        ? (profiledata.profileModel.result?[0].fullname
+                                .toString() ??
+                            "")
+                        : profiledata.profileModel.result?[0].email.toString(),
                 size: 22,
                 fontWeight: FontWeight.w500,
                 colors: Colors.white,
@@ -282,9 +289,9 @@ class _ProfileState extends State<Profile> {
                             fontWeight: FontWeight.w400,
                             color: textColorGrey)),
                     MyText(
-                      title: profiledata.profileModel.result?[0].biodata
+                      title: (profiledata.profileModel.result?[0].biodata
                               .toString() ??
-                          "",
+                          ""),
                       size: 16,
                       fontWeight: FontWeight.w500,
                       colors: black,

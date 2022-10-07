@@ -50,13 +50,15 @@ class ApiService {
     return generalSettingModel;
   }
 
-  Future<LoginModel> login(
-      String email, String pass, String type, String devicetoken) async {
+  Future<LoginModel> login(String email, String username, String profileImg,
+      String pass, String type, String devicetoken) async {
     LoginModel loginmodel;
     String login = "login";
     Response response = await dio.post('$baseurl$login',
         data: ({
           'email': email,
+          'username': username,
+          'profile_img': profileImg,
           'password': pass,
           'type': type,
           'device_token': devicetoken
@@ -69,6 +71,36 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return loginmodel;
+  }
+
+  Future<LoginModel> loginwithotp(mobile) async {
+    LoginModel loginmodel;
+    String login = "loginwithotp";
+    Response response = await dio.post('$baseurl$login',
+        data: FormData.fromMap({
+          'mobile_number': mobile,
+        }));
+    if (response.statusCode == 200) {
+      loginmodel = LoginModel.fromJson(response.data);
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return loginmodel;
+  }
+
+  Future<SuccessModel> forgotpassword(String email) async {
+    SuccessModel successModel;
+    String login = "forgot_password";
+    Response response =
+        await dio.post('$baseurl$login', data: ({'email': email}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("ForgotPassword apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
   }
 
   Future<RegistrationModel> registration(
@@ -523,5 +555,26 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return packagesModel;
+  }
+
+  Future<SuccessModel> addTransacation(
+      String userId, String planId, String amount, String coin) async {
+    SuccessModel successModel;
+    String content = "add_transaction";
+    Response response = await dio.post('$baseurl$content',
+        data: ({
+          'user_id': userId,
+          'plan_subscription_id': planId,
+          'transaction_amount': amount,
+          'coin': coin
+        }));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("add_transaction apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
   }
 }

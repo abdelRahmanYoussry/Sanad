@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +21,12 @@ class Wallet extends StatefulWidget {
 }
 
 class _WalletState extends State<Wallet> {
-  String? userId, strEarnpoint, strEarnamount, strMinimumpoint, strCurrency;
+  String? userId,
+      strEarnpoint,
+      strEarnamount,
+      strMinimumpoint,
+      strCurrency,
+      strWalletVisible;
 
   SharePref sharePref = SharePref();
 
@@ -37,16 +44,20 @@ class _WalletState extends State<Wallet> {
     strEarnamount = await sharePref.read('earning_amount') ?? "0";
     strMinimumpoint = await sharePref.read('min_earning_point') ?? "0";
     strCurrency = await sharePref.read('currency') ?? "0";
+    strWalletVisible =
+        await sharePref.read('wallet_withdraw_visibility') ?? "0";
+    debugPrint('strEarnpoint===>${strEarnpoint.toString()}');
 
     final profiledata = Provider.of<ApiProvider>(context, listen: false);
     profiledata.getProfile(context, userId);
-    profiledata.getReferTransaction(context, userId);
     profiledata.getRewardPoints(context, userId);
     profiledata.getEarnPoints(context, userId);
+    profiledata.getReferTransaction(context, userId);
   }
 
   @override
   Widget build(BuildContext context) {
+    log("called");
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: appBgColor,
@@ -112,16 +123,18 @@ class _WalletState extends State<Wallet> {
                           fontWeight: FontWeight.w500,
                           color: Colors.white)),
                   const Spacer(),
-                  TextButton.icon(
-                    icon: const Icon(Icons.currency_exchange),
-                    onPressed: () {},
-                    label: MyText(title: "Redeem"),
-                    // child: MyText(title: "Add Coins"),
-                    style: TextButton.styleFrom(
-                        backgroundColor: white,
-                        textStyle:
-                            const TextStyle(fontSize: 16, color: appColor)),
-                  ),
+                  strWalletVisible == "yes"
+                      ? TextButton.icon(
+                          icon: const Icon(Icons.currency_exchange),
+                          onPressed: () {},
+                          label: MyText(title: "Redeem"),
+                          // child: MyText(title: "Add Coins"),
+                          style: TextButton.styleFrom(
+                              backgroundColor: white,
+                              textStyle: const TextStyle(
+                                  fontSize: 16, color: appColor)),
+                        )
+                      : Container(),
                   const SizedBox(width: 5),
                   TextButton.icon(
                     icon: const Icon(Icons.currency_exchange),
@@ -259,7 +272,7 @@ class _WalletState extends State<Wallet> {
                               children: [
                                 MyText(
                                     title: rewardpoint.rewardModel
-                                            .result?[index].rewardPoints ??
+                                            .result?[index].typename ??
                                         "",
                                     size: 18,
                                     fontWeight: FontWeight.w500,
@@ -351,7 +364,8 @@ class _WalletState extends State<Wallet> {
                             Column(
                               children: [
                                 Text(
-                                  earnpoint.earnModel.result?[index].point ??
+                                  earnpoint.earnModel.result?[index]
+                                          .contestName ??
                                       "",
                                   style: const TextStyle(
                                       color: black,

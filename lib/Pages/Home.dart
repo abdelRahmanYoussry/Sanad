@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quizapp/pages/profile.dart';
 import 'package:quizapp/pages/settings.dart';
 import 'package:quizapp/pages/wallet.dart';
@@ -7,7 +8,7 @@ import 'package:quizapp/pages/leaderboard.dart';
 import 'package:quizapp/Theme/config.dart';
 import 'package:quizapp/Theme/color.dart';
 import 'package:quizapp/pages/instrucation.dart';
-import 'package:quizapp/pages/login.dart';
+import 'package:quizapp/pages/login/login.dart';
 import 'package:quizapp/pages/referearn.dart';
 import 'package:quizapp/pages/spinwheel.dart';
 import 'package:quizapp/utils/sharepref.dart';
@@ -18,6 +19,13 @@ import 'quiz/category.dart';
 
 bool topBar = false;
 
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  scopes: <String>[
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ],
+);
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -27,6 +35,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   SharePref sharePref = SharePref();
+  String? userId;
 
   @override
   initState() {
@@ -35,9 +44,16 @@ class _HomeState extends State<Home> {
   }
 
   getLogin() async {
+    userId = await sharePref.read('userId') ?? "";
+    debugPrint('userID===>${userId.toString()}');
     String isLogin = await sharePref.read('is_login') ?? "0";
     debugPrint('===>$isLogin');
+    _googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) {});
+    _googleSignIn.signInSilently();
   }
+
+  Future<void> _handleSignOut() => _googleSignIn.disconnect();
 
   @override
   Widget build(BuildContext context) {
@@ -430,10 +446,17 @@ class _HomeState extends State<Home> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Profile()));
+                      if (userId!.isNotEmpty || userId != "" || userId != "0") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Profile()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Login()));
+                      }
                     },
                     child: Column(
                       children: [
@@ -671,8 +694,8 @@ class _HomeState extends State<Home> {
               ),
               InkWell(
                 onTap: () {
-                  sharePref.remove('is_login');
-                  sharePref.remove('userId');
+                  sharePref.clear();
+                  _handleSignOut();
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

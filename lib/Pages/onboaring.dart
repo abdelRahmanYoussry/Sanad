@@ -2,7 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/pages/login.dart';
+import 'package:quizapp/pages/login/login.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:quizapp/widget/mytext.dart';

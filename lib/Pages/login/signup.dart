@@ -9,8 +9,8 @@ import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 
-import '../model/successmodel.dart';
-import '../theme/config.dart';
+import '../../model/successmodel.dart';
+import '../../theme/config.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -34,7 +34,7 @@ class _SignUpState extends State<SignUp> {
   SharePref sharePref = SharePref();
 
   bool _isObscure = true;
-
+  bool isloading = false;
   bool isChecked = true;
 
   @override
@@ -52,22 +52,28 @@ class _SignUpState extends State<SignUp> {
     String phone = phonenumberController.text.trim();
     String refer = referController.text.trim();
 
-    var provider = Provider.of<ApiProvider>(context, listen: false);
-    await provider.registration(context, email, pass, username, username, phone,
-        refer, username, username);
-    if (provider.loading) {
-      const CircularProgressIndicator();
+    if (username.isEmpty) {
+      Utility.toastMessage("Please enter username");
+    } else if (email.isEmpty) {
+      Utility.toastMessage("Please enter email");
     } else {
-      print("==>${provider.registrationModel.status}");
-      if (provider.registrationModel.status == 200) {
-        sharePref.save('is_login', "1");
-        sharePref.save('userId',
-            provider.registrationModel.result?[0].id.toString() ?? "");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Home()));
-      } else {
-        print(provider.registrationModel.message);
-        Utility.toastMessage('${provider.registrationModel.message}');
+      var provider = Provider.of<ApiProvider>(context, listen: false);
+      await provider.registration(context, email, pass, username, username,
+          phone, refer, username, username);
+      if (!provider.loading) {
+        isloading = false;
+        setState(() {});
+        print("==>${provider.registrationModel.status}");
+        if (provider.registrationModel.status == 200) {
+          sharePref.save('is_login', "1");
+          sharePref.save('userId',
+              provider.registrationModel.result?[0].id.toString() ?? "");
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const Home()));
+        } else {
+          print(provider.registrationModel.message);
+          Utility.toastMessage('${provider.registrationModel.message}');
+        }
       }
     }
   }
@@ -222,6 +228,7 @@ class _SignUpState extends State<SignUp> {
                             height: size.height * 0.02,
                           ),
                           TextField(
+                            keyboardType: TextInputType.number,
                             controller: phonenumberController,
                             decoration: const InputDecoration(
                                 labelText: "Phone Number",
@@ -261,6 +268,8 @@ class _SignUpState extends State<SignUp> {
                               String pass = passController.text.trim();
                               String confirm = confirmController.text.trim();
                               if (pass == confirm) {
+                                isloading = true;
+                                setState(() {});
                                 _registration();
                               } else {
                                 Utility.toastMessage(
@@ -271,13 +280,15 @@ class _SignUpState extends State<SignUp> {
                             minWidth: MediaQuery.of(context).size.width / 1.4,
                             shape: const StadiumBorder(),
                             color: Config().appColor,
-                            child: const Text(
-                              "Sign Up",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
+                            child: isloading
+                                ? const CircularProgressIndicator()
+                                : const Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                           ),
                           SizedBox(
                             height: size.height * 0.02,

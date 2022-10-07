@@ -11,6 +11,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/model/packagesmodel.dart';
+import 'package:quizapp/pages/wallet.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
@@ -139,13 +140,14 @@ class _SubscriptionState extends State<Subscription> {
   Widget build(BuildContext context) {
     final packageProvider = Provider.of<ApiProvider>(context);
     if (packageProvider.loading) {
-      return const CircularProgressIndicator();
+      return const Scaffold(
+          backgroundColor: white,
+          body: Center(child: CircularProgressIndicator(value: 40)));
     } else {
       if (packageProvider.packagesModel.status == 200 &&
           (packageProvider.packagesModel.result?.length ?? 0) > 0) {
         packagelist = packageProvider.packagesModel.result;
         log("===>package ${packagelist?.length}");
-
         return Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: appBgColor,
@@ -196,6 +198,7 @@ class _SubscriptionState extends State<Subscription> {
                             .add(packagelist?[index].productPackage ?? "");
                         log("===> _kProductIds ${_kProductIds.length}");
                         purchaseItem();
+                        // addPurchase();
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -323,6 +326,7 @@ class _SubscriptionState extends State<Subscription> {
       await ConsumableStore.save(purchaseDetails.purchaseID!);
       final List<String> consumables = await ConsumableStore.load();
       log("===> consumables ${consumables}");
+      addPurchase();
       setState(() {
         _purchasePending = false;
         _consumables = consumables;
@@ -357,6 +361,24 @@ class _SubscriptionState extends State<Subscription> {
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
     // handle invalid purchase here if  _verifyPurchase` failed.
     log("===> invalid Purchase ${purchaseDetails}");
+  }
+
+  addPurchase() async {
+    final provider = Provider.of<ApiProvider>(context, listen: false);
+    await provider.getaddTranscation(
+        userId.toString(),
+        packagelist?[selectIndex].id.toString() ?? "",
+        packagelist?[selectIndex].price.toString() ?? "",
+        packagelist?[selectIndex].coin.toString() ?? "");
+    debugPrint('===>get responce${provider.successModel.status}');
+    if (provider.loading) {
+      const CircularProgressIndicator();
+    } else {
+      if (provider.successModel.status == 200) {
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const Wallet()));
+      }
+    }
   }
 }
 

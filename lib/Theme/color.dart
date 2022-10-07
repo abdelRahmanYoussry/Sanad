@@ -50,6 +50,10 @@ const wheelFour = Color(0xFFE65051);
 const baseColor = Color(0xFFBDBDBD);
 const highlightColor = Color(0xFFE0E0E0);
 
+const textfieldlogin = Color(0xff36194E);
+const otpBg = Color(0xffCD97FD);
+const otpdivider = Color(0xff6E369C);
+
 const listColors = [
   green,
   purple,

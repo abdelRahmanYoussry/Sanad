@@ -67,8 +67,8 @@ class Result {
   String? address;
   String? referenceCode;
   String? parentReferenceCode;
-  String? praticeQuizScore;
-  String? totalScore;
+  int? praticeQuizScore;
+  int? totalScore;
   int? totalPoints;
   String? deviceToken;
   String? status;

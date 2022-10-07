@@ -1,4 +1,4 @@
-package com.divinetechs.quizapp
+package com.divinetechs.quiz
 
 import io.flutter.embedding.android.FlutterActivity
 

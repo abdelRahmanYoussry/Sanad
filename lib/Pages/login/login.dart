@@ -1,16 +1,21 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/pages/home.dart';
 import 'package:quizapp/pages/forgotpass.dart';
-import 'package:quizapp/pages/signup.dart';
+import 'package:quizapp/pages/login/otp.dart';
+import 'package:quizapp/pages/login/signup.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
-import '../Model/SuccessModel.dart';
-import '../Theme/config.dart';
+import '../../Model/SuccessModel.dart';
+import '../../Theme/config.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -29,7 +34,7 @@ class _LoginState extends State<Login> {
   final loginuser = GetStorage();
 
   bool _isObscure = true;
-
+  bool isloading = false;
   bool isChecked = true;
 
   @override
@@ -40,31 +45,25 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  _login() async {
-    String email = emailController.text.trim();
-    String pass = passController.text.trim();
-    if (email.isEmpty) {
-      Utility.toastMessage("Please enter email address");
-    } else if (pass.isEmpty) {
-      Utility.toastMessage("Please enter passoword");
-    } else {
-      var provider = Provider.of<ApiProvider>(context, listen: false);
-      await provider.login(context, email, pass, "1", "1");
+  _login(String email, String username, String profileImg, String password,
+      String type) async {
+    var provider = Provider.of<ApiProvider>(context, listen: false);
+    await provider.login(
+        context, email, username, profileImg, password, type, "1");
 
-      if (provider.loading) {
-        const CircularProgressIndicator();
+    if (!provider.loading) {
+      isloading = true;
+      setState(() {});
+      print("==>${provider.loginModel.status}");
+      if (provider.loginModel.status == 200) {
+        await sharePref.save('is_login', "1");
+        await sharePref.save(
+            'userId', provider.loginModel.result?[0].id.toString() ?? "");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Home()));
       } else {
-        print("==>${provider.loginModel.status}");
-        if (provider.loginModel.status == 200) {
-          await sharePref.save('is_login', "1");
-          await sharePref.save(
-              'userId', provider.loginModel.result?[0].id.toString() ?? "");
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const Home()));
-        } else {
-          print(provider.loginModel.message);
-          Utility.toastMessage("${provider.loginModel.message}");
-        }
+        print(provider.loginModel.message);
+        Utility.toastMessage("${provider.loginModel.message}");
       }
     }
   }
@@ -187,19 +186,32 @@ class _LoginState extends State<Login> {
                         // #signup_button
                         MaterialButton(
                           onPressed: () {
-                            _login();
+                            String email = emailController.text.trim();
+                            String pass = passController.text.trim();
+                            if (email.isEmpty) {
+                              Utility.toastMessage(
+                                  "Please enter email address");
+                            } else if (pass.isEmpty) {
+                              Utility.toastMessage("Please enter passoword");
+                            } else {
+                              isloading = true;
+                              setState(() {});
+                              _login(email, email, "", pass, "1");
+                            }
                           },
                           height: 45,
                           minWidth: MediaQuery.of(context).size.width / 1.4,
                           shape: const StadiumBorder(),
                           color: Config().appColor,
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          child: isloading
+                              ? const CircularProgressIndicator()
+                              : const Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                         SizedBox(
                           height: size.height * 0.03,
@@ -232,29 +244,25 @@ class _LoginState extends State<Login> {
                           children: [
                             IconButton(
                                 iconSize: 70,
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Home()));
-                                },
-                                icon: Image.asset("assets/images/icon_fb.png")),
-                            IconButton(
-                                iconSize: 70,
-                                onPressed: () {
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Home()));
+                                onPressed: () async {
+                                  final googleUser =
+                                      await GoogleSignIn().signIn();
+                                  if (googleUser == null) return;
+
+                                  GoogleSignInAccount _user = googleUser;
+
+                                  log('===>email ${_user.email}');
+                                  String email = _user.email;
+                                  googleSignInUser(email);
                                 },
                                 icon: Image.asset("assets/images/icon_gm.png")),
                             IconButton(
                                 iconSize: 70,
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Home()));
+                                          builder: (context) => const OTP()));
                                 },
                                 icon: Image.asset(
                                     "assets/images/icon_mobile.png")),
@@ -308,5 +316,50 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  googleSignInUser(String mail) async {
+    log(mail);
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: mail, password: '123456');
+      log(userCredential.user!.uid);
+      String firebasedid = userCredential.user!.uid;
+
+      User? user = userCredential.user;
+      log('===>mail $mail');
+      log('===>display ${userCredential.user?.displayName.toString()}');
+      log('===>photoURL ${userCredential.user?.photoURL.toString()}');
+
+      _login(mail, user?.displayName.toString() ?? "",
+          user?.photoURL.toString() ?? "", "123456", "2");
+    } on FirebaseAuthException catch (e) {
+      log('===>Exp${e.code.toString()}');
+      log('===>Exp${e.message.toString()}');
+      if (e.code.toString() == "user-not-found") {
+        registerFirebaseUser(mail);
+      }
+    }
+  }
+
+  registerFirebaseUser(String mail) async {
+    log(mail);
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: mail, password: '123456')
+          .whenComplete(() {});
+      log('Register User : ${userCredential.user!.email.toString()}');
+      log(userCredential.user!.uid);
+      String firebasedid = userCredential.user!.uid;
+      log("===> firebaseID $firebasedid");
+      googleSignInUser(userCredential.user!.email.toString());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        log('The password provided is too weak.');
+        Utility.showAlertDialog(context, 'The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }

@@ -80,11 +80,21 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  login(context, email, password, type, deviceToken) async {
+  login(
+      context, email, username, profileImg, password, type, deviceToken) async {
     loading = true;
-    loginModel = await ApiService().login(email, password, type, deviceToken);
+    loginModel = await ApiService()
+        .login(email, username, profileImg, password, type, deviceToken);
     debugPrint("${loginModel.status}");
     loading = false;
+    notifyListeners();
+  }
+
+  loginwithotp(mobile) async {
+    loading = false;
+    loginModel = await ApiService().loginwithotp(mobile);
+    debugPrint("login status :== ${loginModel.status}");
+    loading = true;
     notifyListeners();
   }
 
@@ -95,6 +105,14 @@ class ApiProvider extends ChangeNotifier {
     registrationModel = await ApiService().registration(email, password,
         firstname, lastname, mobilenumber, refercode, fullname, username);
     debugPrint("${registrationModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  forgotPassword(email) async {
+    loading = true;
+    successModel = await ApiService().forgotpassword(email);
+    debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -340,6 +358,16 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     packagesModel = await ApiService().packages();
     debugPrint("${profileModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getaddTranscation(
+      String userId, String planId, String amount, String coin) async {
+    loading = true;
+    successModel =
+        await ApiService().addTransacation(userId, planId, amount, coin);
+    debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }

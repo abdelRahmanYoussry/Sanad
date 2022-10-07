@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/pages/home.dart';
-import 'package:quizapp/pages/login.dart';
+import 'package:quizapp/pages/login/login.dart';
 import 'package:quizapp/pages/onboaring.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/utils/sharepref.dart';
@@ -22,23 +22,27 @@ class SplashState extends State<Splash> {
   // ignore: prefer_typing_uninitialized_variables
   @override
   initState() {
-    final bannerdata = Provider.of<ApiProvider>(context, listen: false);
-    bannerdata.getGeneralsetting(context);
+    getGeneral();
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final bannerdata = Provider.of<ApiProvider>(context);
+  getGeneral() async {
+    final bannerdata = Provider.of<ApiProvider>(context, listen: false);
+    await bannerdata.getGeneralsetting(context);
     if (!bannerdata.loading) {
-      debugPrint('General===>$bannerdata');
       for (var i = 0; i < bannerdata.generalSettingModel.result!.length; i++) {
-        sharePref.save(bannerdata.generalSettingModel.result?[i].key ?? "",
+        debugPrint(
+            '===>${bannerdata.generalSettingModel.result?[i].key} ===> ${bannerdata.generalSettingModel.result?[i].value}');
+        await sharePref.save(
+            bannerdata.generalSettingModel.result?[i].key ?? "",
             bannerdata.generalSettingModel.result?[i].value ?? "");
       }
       idFirstChack();
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:quizapp/utils/utility.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
+import '../provider/apiprovider.dart';
 
 class ForgotPass extends StatefulWidget {
   const ForgotPass({Key? key}) : super(key: key);
@@ -103,8 +106,9 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(
                           height: size.height * 0.02,
                         ),
-                        const TextField(
-                          decoration: InputDecoration(
+                        TextField(
+                          controller: emailController,
+                          decoration: const InputDecoration(
                               labelText: "Email Address",
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 10),
@@ -120,7 +124,14 @@ class _ForgotPassState extends State<ForgotPass> {
                           height: size.height * 0.03,
                         ),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (emailController.text.toString().isEmpty) {
+                              Utility.toastMessage(
+                                  "Please enter register email");
+                            } else {
+                              forgotPass(emailController.text.toString());
+                            }
+                          },
                           height: 45,
                           minWidth: MediaQuery.of(context).size.width / 1.4,
                           shape: const StadiumBorder(),
@@ -146,5 +157,23 @@ class _ForgotPassState extends State<ForgotPass> {
         ),
       ),
     );
+  }
+
+  forgotPass(String email) async {
+    var provider = Provider.of<ApiProvider>(context, listen: false);
+    await provider.forgotPassword(email);
+
+    if (provider.loading) {
+      const CircularProgressIndicator();
+    } else {
+      print("==>${provider.successModel.status}");
+      if (provider.loginModel.status == 200) {
+        Utility.toastMessage("${provider.successModel.message}");
+        Navigator.of(context).pop();
+      } else {
+        print(provider.loginModel.message);
+        Utility.toastMessage("${provider.successModel.message}");
+      }
+    }
   }
 }
