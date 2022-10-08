@@ -4,6 +4,7 @@ import 'package:quizapp/pages/home.dart';
 import 'package:quizapp/pages/login/login.dart';
 import 'package:quizapp/pages/onboaring.dart';
 import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myimage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +24,7 @@ class SplashState extends State<Splash> {
   @override
   initState() {
     getGeneral();
+    AdHelper.getAds();
     super.initState();
   }
 

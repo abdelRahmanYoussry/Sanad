@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:quizapp/theme/color.dart';
@@ -14,6 +15,9 @@ class SpinWheel extends StatefulWidget {
 
 class _SpinWheelState extends State<SpinWheel> {
   final StreamController<int> controller = StreamController<int>();
+  var list = [1, 2, 3, 4, 5, 6, 7, 8];
+  final _random = new Random();
+  int? index;
 
   @override
   void initState() {
@@ -22,6 +26,7 @@ class _SpinWheelState extends State<SpinWheel> {
 
   @override
   Widget build(BuildContext context) {
+    index = list[_random.nextInt(list.length)];
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: const BoxDecoration(
@@ -84,6 +89,7 @@ class _SpinWheelState extends State<SpinWheel> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FortuneWheel(
+                        selected: Stream.value(index!),
                         indicators: const <FortuneIndicator>[
                           FortuneIndicator(
                             alignment: Alignment
@@ -95,12 +101,12 @@ class _SpinWheelState extends State<SpinWheel> {
                           ),
                         ],
                         physics: CircularPanPhysics(
-                          duration: Duration(seconds: 1),
+                          duration: const Duration(seconds: 1),
                           curve: Curves.decelerate,
                         ),
-                        onFling: () {
-                          controller.add(1);
-                        },
+                        // onFling: () {
+                        //   controller.add(1);
+                        // },
                         onAnimationEnd: () {
                           debugPrint("end");
                         },
@@ -204,29 +210,29 @@ class _SpinWheelState extends State<SpinWheel> {
                         ],
                       )),
                 ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.06,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  child: TextButton(
-                      onPressed: () {
-                        controller.stream;
-                      },
-                      child: MyText(
-                        title: "Spin",
-                        colors: white,
-                        fontWeight: FontWeight.w500,
-                        size: 18,
-                      ),
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(primary),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                      side:
-                                          const BorderSide(color: primary))))),
-                )
+                // const SizedBox(height: 20),
+                // SizedBox(
+                //   height: MediaQuery.of(context).size.height * 0.06,
+                //   width: MediaQuery.of(context).size.width * 0.4,
+                //   child: TextButton(
+                //       onPressed: () {
+                //         setState(() {});
+                //       },
+                //       child: MyText(
+                //         title: "Spin",
+                //         colors: white,
+                //         fontWeight: FontWeight.w500,
+                //         size: 18,
+                //       ),
+                //       style: ButtonStyle(
+                //           backgroundColor: MaterialStateProperty.all(primary),
+                //           shape:
+                //               MaterialStateProperty.all<RoundedRectangleBorder>(
+                //                   RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(25.0),
+                //                       side:
+                //                           const BorderSide(color: primary))))),
+                // )
               ],
             ),
           )),

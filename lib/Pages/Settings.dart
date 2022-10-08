@@ -70,9 +70,8 @@ class _SettingsState extends State<Settings> {
           menuItem("About Us"),
           menuItem("Privacy Policy"),
           menuItem("Push Notification"),
-          menuItem("App Language"),
-          menuItem("Enable Sound"),
-          menuItem("Enable Vibration"),
+          // menuItem("App Language"),
+          // menuItem("Enable Sound"),
           menuItem("Share App"),
           menuItem("Rate App")
         ]),

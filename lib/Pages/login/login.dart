@@ -54,11 +54,15 @@ class _LoginState extends State<Login> {
     if (!provider.loading) {
       isloading = true;
       setState(() {});
-      print("==>${provider.loginModel.status}");
+
+      log("===>reference ${provider.loginModel.result?[0].referenceCode.toString()}");
+
       if (provider.loginModel.status == 200) {
         await sharePref.save('is_login', "1");
         await sharePref.save(
             'userId', provider.loginModel.result?[0].id.toString() ?? "");
+        await sharePref.save('reference',
+            provider.loginModel.result?[0].referenceCode.toString() ?? "");
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Home()));
       } else {
@@ -328,8 +332,8 @@ class _LoginState extends State<Login> {
 
       User? user = userCredential.user;
       log('===>mail $mail');
-      log('===>display ${userCredential.user?.displayName.toString()}');
-      log('===>photoURL ${userCredential.user?.photoURL.toString()}');
+      log('===>display ${user?.displayName.toString()}');
+      log('===>photoURL ${user?.photoURL.toString()}');
 
       _login(mail, user?.displayName.toString() ?? "",
           user?.photoURL.toString() ?? "", "123456", "2");
@@ -338,6 +342,9 @@ class _LoginState extends State<Login> {
       log('===>Exp${e.message.toString()}');
       if (e.code.toString() == "user-not-found") {
         registerFirebaseUser(mail);
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided.');
+        Utility.toastMessage('Wrong password provided.');
       }
     }
   }

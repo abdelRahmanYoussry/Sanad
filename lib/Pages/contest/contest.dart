@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/pages/contest/contestleaderboard.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/MyAppbar.dart';
@@ -23,6 +27,8 @@ class Contest extends StatefulWidget {
 class _ContestState extends State<Contest> {
   SharePref sharePref = SharePref();
   String? userId;
+  var bannerad = "";
+  var banneradIos = "";
 
   @override
   initState() {
@@ -33,6 +39,8 @@ class _ContestState extends State<Contest> {
   getUserId() async {
     userId = await sharePref.read('userId') ?? "0";
     debugPrint('userID===>${userId.toString()}');
+    bannerad = await sharePref.read("banner_ad") ?? "";
+    banneradIos = await sharePref.read("ios_banner_ad") ?? "";
 
     final upcomingdata = Provider.of<ApiProvider>(context, listen: false);
     upcomingdata.getUpContent(context, 'upcoming', userId.toString());
@@ -94,7 +102,21 @@ class _ContestState extends State<Contest> {
                 Expanded(
                     child: TabBarView(
                   children: [upcoming(), live(), ended()],
-                ))
+                )),
+                if (Platform.isAndroid && bannerad == '1')
+                  SizedBox(
+                    height: 60,
+                    child: AdWidget(
+                        ad: AdHelper.createBannerAd()..load(),
+                        key: UniqueKey()),
+                  ),
+                if (Platform.isIOS && banneradIos == '1')
+                  SizedBox(
+                    height: 60,
+                    child: AdWidget(
+                        ad: AdHelper.createBannerAd()..load(),
+                        key: UniqueKey()),
+                  ),
               ],
             ),
           ),

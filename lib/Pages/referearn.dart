@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quizapp/Theme/color.dart';
+import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/myimage.dart';
 
@@ -17,6 +18,21 @@ class ReferEarn extends StatefulWidget {
 }
 
 class _ReferEarnState extends State<ReferEarn> {
+  SharePref sharePref = SharePref();
+  String? reference;
+
+  @override
+  void initState() {
+    getSharedPre();
+    super.initState();
+  }
+
+  getSharedPre() async {
+    reference = await sharePref.read('reference') ?? "";
+    debugPrint('reference===>${reference.toString()}');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildViewPager();
@@ -86,7 +102,7 @@ class _ReferEarnState extends State<ReferEarn> {
           color: tabbarunselect,
           child: Center(
             child: MyText(
-              title: "VhoWIH",
+              title: reference ?? "",
               size: 24,
               fontWeight: FontWeight.w600,
               colors: white,

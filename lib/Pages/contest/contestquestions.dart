@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +16,7 @@ import 'package:quizapp/model/questionjson.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/provider/commanprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/myimage.dart';
@@ -51,9 +55,13 @@ class _ContestQuestionsState extends State<ContestQuestions> {
 
   List<Result>? questionList = [];
 
+  var bannerad = "";
+  var banneradIos = "";
+
   @override
   void initState() {
     super.initState();
+    getUserId();
     final contestquestiondata =
         Provider.of<ApiProvider>(context, listen: false);
     contestquestiondata.getQuestionByContest(context, widget.contestId);
@@ -62,6 +70,9 @@ class _ContestQuestionsState extends State<ContestQuestions> {
 
   getUserId() async {
     userId = await sharePref.read('userId') ?? "0";
+    bannerad = await sharePref.read("banner_ad") ?? "";
+    banneradIos = await sharePref.read("ios_banner_ad") ?? "";
+    log("===>bannerad $bannerad");
   }
 
   playSound(int pos) async {
@@ -1185,14 +1196,18 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 80,
-                child: MyImage(
-                  height: 80,
-                  width: 80,
-                  imagePath: "assets/images/ic_close.png",
+              if (Platform.isAndroid && bannerad == '1')
+                SizedBox(
+                  height: 60,
+                  child: AdWidget(
+                      ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
                 ),
-              )
+              if (Platform.isIOS && banneradIos == '1')
+                SizedBox(
+                  height: 60,
+                  child: AdWidget(
+                      ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+                )
             ],
           ),
         ),

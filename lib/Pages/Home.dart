@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:quizapp/pages/profile.dart';
 import 'package:quizapp/pages/settings.dart';
 import 'package:quizapp/pages/wallet.dart';
@@ -11,6 +15,8 @@ import 'package:quizapp/pages/instrucation.dart';
 import 'package:quizapp/pages/login/login.dart';
 import 'package:quizapp/pages/referearn.dart';
 import 'package:quizapp/pages/spinwheel.dart';
+import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 
 import 'contest/contest.dart';
@@ -36,11 +42,27 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   SharePref sharePref = SharePref();
   String? userId;
+  int selectedIndex = 0;
+  var androidBannerAdsId = "";
+  var iosBannerAdsId = "";
+  var bannerad = "";
+  var banneradIos = "";
 
   @override
   initState() {
     getLogin();
+    getId();
     super.initState();
+  }
+
+  getId() async {
+    androidBannerAdsId = await sharePref.read("banner_adid") ?? "";
+    iosBannerAdsId = await sharePref.read("ios_banner_adid") ?? "";
+    bannerad = await sharePref.read("banner_ad") ?? "";
+    banneradIos = await sharePref.read("ios_banner_ad") ?? "";
+
+    debugPrint("Android id:====$bannerad");
+    debugPrint("ios id:====$banneradIos");
   }
 
   getLogin() async {
@@ -48,9 +70,17 @@ class _HomeState extends State<Home> {
     debugPrint('userID===>${userId.toString()}');
     String isLogin = await sharePref.read('is_login') ?? "0";
     debugPrint('===>$isLogin');
+
+    if (userId != "" || userId != "0") {
+      final profiledata = Provider.of<ApiProvider>(context, listen: false);
+      profiledata.getProfile(context, userId);
+    }
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) {});
     _googleSignIn.signInSilently();
+
+    AdHelper.createInterstitialAd();
+    AdHelper.createRewardedAd();
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
@@ -76,9 +106,11 @@ class _HomeState extends State<Home> {
                     bottom: Radius.elliptical(50.0, 50.0)),
               ),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [getAppbar(), buildBody()],
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [getAppbar(), buildBody()],
+              ),
             ),
             topBar ? getTopBar() : Container(),
           ],
@@ -144,12 +176,22 @@ class _HomeState extends State<Home> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 5),
-            child: Text(
-              "DivineTechs Developer",
-              style: GoogleFonts.poppins(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white),
+            child: Consumer<ApiProvider>(
+              builder: (context, profiledata, child) {
+                String? username =
+                    profiledata.profileModel.result?[0].username.toString() ??
+                        "";
+                String? email =
+                    profiledata.profileModel.result?[0].email.toString() ?? "";
+
+                return Text(
+                  username.isNotEmpty ? username : email,
+                  style: GoogleFonts.poppins(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                );
+              },
             ),
           ),
           const SizedBox(
@@ -161,6 +203,178 @@ class _HomeState extends State<Home> {
           ),
           getBottom(),
         ]),
+      ),
+    );
+  }
+
+  getTopBar() {
+    return Container(
+      height: 280,
+      decoration: BoxDecoration(
+        color: textBoxColor,
+        borderRadius:
+            const BorderRadius.vertical(bottom: Radius.elliptical(30.0, 30.0)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.9),
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 3), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const SizedBox(width: 20),
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SpinWheel()));
+                  topBar = false;
+                  setState(() {});
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Spin & Win',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                color: Colors.grey,
+                height: 0.3,
+                width: 100,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Wallet()));
+                  topBar = false;
+                  setState(() {});
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Wallet',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+            ],
+          )),
+          Container(
+            color: Colors.grey,
+            width: 0.3,
+            height: 150,
+          ),
+          Expanded(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ReferEarn()));
+                  topBar = false;
+                  setState(() {});
+                },
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Refer & Earn',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                color: Colors.grey,
+                height: 0.3,
+                width: 100,
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              InkWell(
+                onTap: () {
+                  sharePref.clear();
+                  _handleSignOut();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => const Login()),
+                      ModalRoute.withName('/'));
+                  topBar = false;
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/level_lock.png',
+                      height: 60,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text('Logout',
+                        style: GoogleFonts.poppins(
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500)),
+                  ],
+                ),
+              ),
+            ],
+          )),
+          const SizedBox(width: 20),
+        ],
       ),
     );
   }
@@ -178,6 +392,7 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
+                  AdHelper.showInterstitialAd();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const Contest()));
                 },
@@ -220,6 +435,7 @@ class _HomeState extends State<Home> {
               flex: 1,
               child: GestureDetector(
                 onTap: () {
+                  AdHelper.showInterstitialAd();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -272,48 +488,49 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const SizedBox(
-              width: 15,
+              width: 5,
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                height: MediaQuery.of(context).size.height * 0.22,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/green_bg.png"),
-                      fit: BoxFit.fill),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Join in",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white, fontSize: 18)),
-                      Text("Challenge",
-                          style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w600)),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Image.asset(
-                          'assets/images/right_arrow.png',
-                          height: 40.0,
-                          width: 55.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            // Expanded(
+            //   flex: 1,
+            //   child: Container(
+            //     height: MediaQuery.of(context).size.height * 0.22,
+            //     decoration: const BoxDecoration(
+            //       image: DecorationImage(
+            //           image: AssetImage("assets/images/green_bg.png"),
+            //           fit: BoxFit.fill),
+            //     ),
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(left: 30),
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text("Join in",
+            //               style: GoogleFonts.poppins(
+            //                   color: Colors.white, fontSize: 18)),
+            //           Text("Challenge",
+            //               style: GoogleFonts.poppins(
+            //                   color: Colors.white,
+            //                   fontSize: 24,
+            //                   fontWeight: FontWeight.w600)),
+            //           Padding(
+            //             padding: const EdgeInsets.only(top: 15),
+            //             child: Image.asset(
+            //               'assets/images/right_arrow.png',
+            //               height: 40.0,
+            //               width: 55.0,
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Expanded(
               flex: 1,
               child: InkWell(
                 onTap: () {
+                  AdHelper.showRewardedAd();
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -327,7 +544,7 @@ class _HomeState extends State<Home> {
                         fit: BoxFit.fill),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 30),
+                    padding: const EdgeInsets.only(left: 50),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -358,7 +575,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(
-              width: 15,
+              width: 5,
             ),
           ],
         ),
@@ -370,6 +587,18 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          if (Platform.isAndroid && bannerad == '1')
+            SizedBox(
+              height: 60,
+              child: AdWidget(
+                  ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+            ),
+          if (Platform.isIOS && banneradIos == '1')
+            SizedBox(
+              height: 60,
+              child: AdWidget(
+                  ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+            ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -552,179 +781,7 @@ class _HomeState extends State<Home> {
               )),
               const SizedBox(width: 20),
             ],
-          )
-        ],
-      ),
-    );
-  }
-
-  getTopBar() {
-    return Container(
-      height: 280,
-      decoration: BoxDecoration(
-        color: textBoxColor,
-        borderRadius:
-            const BorderRadius.vertical(bottom: Radius.elliptical(30.0, 30.0)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.9),
-            spreadRadius: 5,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          const SizedBox(width: 20),
-          Expanded(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SpinWheel()));
-                  topBar = false;
-                  setState(() {});
-                },
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/level_lock.png',
-                      height: 60,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text('Spin & Win',
-                        style: GoogleFonts.poppins(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                color: Colors.grey,
-                height: 0.3,
-                width: 100,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Wallet()));
-                  topBar = false;
-                  setState(() {});
-                },
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/level_lock.png',
-                      height: 60,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text('Wallet',
-                        style: GoogleFonts.poppins(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-            ],
-          )),
-          Container(
-            color: Colors.grey,
-            width: 0.3,
-            height: 150,
-          ),
-          Expanded(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ReferEarn()));
-                  topBar = false;
-                  setState(() {});
-                },
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/level_lock.png',
-                      height: 60,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text('Refer & Earn',
-                        style: GoogleFonts.poppins(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Container(
-                color: Colors.grey,
-                height: 0.3,
-                width: 100,
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                onTap: () {
-                  sharePref.clear();
-                  _handleSignOut();
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => const Login()),
-                      ModalRoute.withName('/'));
-                  topBar = false;
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/level_lock.png',
-                      height: 60,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text('Logout',
-                        style: GoogleFonts.poppins(
-                            color: textColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500)),
-                  ],
-                ),
-              ),
-            ],
-          )),
-          const SizedBox(width: 20),
         ],
       ),
     );
