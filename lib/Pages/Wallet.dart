@@ -126,7 +126,9 @@ class _WalletState extends State<Wallet> {
                   strWalletVisible == "yes"
                       ? TextButton.icon(
                           icon: const Icon(Icons.currency_exchange),
-                          onPressed: () {},
+                          onPressed: () {
+                            Utility.toastMessage("Coming soon next version");
+                          },
                           label: MyText(title: "Redeem"),
                           // child: MyText(title: "Add Coins"),
                           style: TextButton.styleFrom(
@@ -255,7 +257,8 @@ class _WalletState extends State<Wallet> {
                               children: [
                                 MyText(
                                     title: rewardpoint.rewardModel
-                                            .result?[index].rewardPoints ??
+                                            .result?[index].rewardPoints
+                                            .toString() ??
                                         "",
                                     size: 16,
                                     fontWeight: FontWeight.w500,

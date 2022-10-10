@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/mynetimage.dart';
@@ -77,58 +79,69 @@ class _PratiseCategoryState extends State<PratiseCategory> {
   }
 
   buildBody() {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      padding: const EdgeInsets.only(left: 5, right: 5),
-      child: GridView.builder(
-          padding: EdgeInsets.zero, // set padding to zero
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-          ),
-          itemCount: categoryList?.length,
-          itemBuilder: (BuildContext ctx, index) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => PraticeLevel(
-                          catId: categoryList![index].id.toString(),
-                          masterId: widget.masterId.toString(),
-                        )));
-              },
-              child: Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.all(10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    MyNetImage(
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.fill,
-                        imagePath: categoryList?[index].image ?? ""),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    MyText(
-                        title: categoryList?[index].name ?? "",
-                        size: 16,
-                        fontWeight: FontWeight.w500,
-                        colors: textColor),
-                  ],
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.only(left: 5, right: 5),
+            child: GridView.builder(
+                padding: EdgeInsets.zero, // set padding to zero
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
                 ),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 5.0,
+                itemCount: categoryList?.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => PraticeLevel(
+                                catId: categoryList![index].id.toString(),
+                                masterId: widget.masterId.toString(),
+                              )));
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: const EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          MyNetImage(
+                              width: 100,
+                              height: 100,
+                              fit: BoxFit.fill,
+                              imagePath: categoryList?[index].image ?? ""),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          MyText(
+                              title: categoryList?[index].name ?? "",
+                              size: 16,
+                              fontWeight: FontWeight.w500,
+                              colors: textColor),
+                        ],
                       ),
-                    ]),
-              ),
-            );
-          }),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 5.0,
+                            ),
+                          ]),
+                    ),
+                  );
+                }),
+          ),
+        ),
+        SizedBox(
+          height: 60,
+          child:
+              AdWidget(ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+        ),
+      ],
     );
   }
 }

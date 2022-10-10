@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:quizapp/pages/notification.dart';
 import 'package:quizapp/pages/profile.dart';
 import 'package:quizapp/pages/settings.dart';
 import 'package:quizapp/pages/wallet.dart';
@@ -154,6 +155,11 @@ class _HomeState extends State<Home> {
             ),
             onTap: () {
               debugPrint("Bell Click");
+              AdHelper.showInterstitialAd();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const Notifications()));
             },
           ),
         ),
@@ -587,18 +593,11 @@ class _HomeState extends State<Home> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (Platform.isAndroid && bannerad == '1')
-            SizedBox(
-              height: 60,
-              child: AdWidget(
-                  ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
-            ),
-          if (Platform.isIOS && banneradIos == '1')
-            SizedBox(
-              height: 60,
-              child: AdWidget(
-                  ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
-            ),
+          SizedBox(
+            height: 60,
+            child: AdWidget(
+                ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

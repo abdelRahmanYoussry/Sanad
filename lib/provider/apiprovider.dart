@@ -7,12 +7,14 @@ import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/contestleadermodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/earnmodel.dart';
+import 'package:quizapp/model/earnpointsmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/leaderboardmodel.dart';
 import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/notificationmodel.dart';
 import 'package:quizapp/model/packagesmodel.dart';
 import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
@@ -62,6 +64,8 @@ class ApiProvider extends ChangeNotifier {
   QuestionPraticeModel questionPraticeModel = QuestionPraticeModel();
   PraticeLeaderboardModel praticeLeaderboardModel = PraticeLeaderboardModel();
   PackagesModel packagesModel = PackagesModel();
+  NotificationModel notificationModel = NotificationModel();
+  EarnPointsModel earnPointsModel = EarnPointsModel();
 
   bool loading = false;
   String? email, password, type, deviceToken;
@@ -367,6 +371,38 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     successModel =
         await ApiService().addTransacation(userId, planId, amount, coin);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getNotification(context, userId) async {
+    loading = true;
+    notificationModel = await ApiService().notification(userId);
+    debugPrint("${profileModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getReadNotification(userId, id) async {
+    loading = true;
+    successModel = await ApiService().readNotification(userId, id);
+    debugPrint("${successModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getEarnPointList() async {
+    loading = true;
+    earnPointsModel = await ApiService().earnPointslist();
+    debugPrint("${earnPointsModel.status}");
+    loading = false;
+    notifyListeners();
+  }
+
+  getaddRewardPoints(userId, id, type) async {
+    loading = true;
+    successModel = await ApiService().rewardPoints(userId, id, type);
     debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();

@@ -68,18 +68,36 @@ class AdHelper {
   }
 
   static BannerAd createBannerAd() {
-    BannerAd ad = BannerAd(
-        size: AdSize.banner,
-        adUnitId: bannerAdUnitId,
-        request: const AdRequest(),
-        listener: BannerAdListener(
-            onAdLoaded: (Ad ad) => log('Ad Loaded'),
-            onAdClosed: (Ad ad) => log('Ad Closed'),
-            onAdFailedToLoad: (Ad ad, LoadAdError error) {
-              ad.dispose();
-            },
-            onAdOpened: (Ad ad) => log('Ad Open')));
-    return ad;
+    BannerAd? ad;
+    if (Platform.isAndroid && bannerad == '1') {
+      ad = BannerAd(
+          size: AdSize.banner,
+          adUnitId: bannerAdUnitId,
+          request: const AdRequest(),
+          listener: BannerAdListener(
+              onAdLoaded: (Ad ad) => log('Ad Loaded'),
+              onAdClosed: (Ad ad) => log('Ad Closed'),
+              onAdFailedToLoad: (Ad ad, LoadAdError error) {
+                ad.dispose();
+              },
+              onAdOpened: (Ad ad) => log('Ad Open')));
+      return ad;
+    }
+    if (Platform.isIOS && banneradIos == '1') {
+      ad = BannerAd(
+          size: AdSize.banner,
+          adUnitId: bannerAdUnitId,
+          request: const AdRequest(),
+          listener: BannerAdListener(
+              onAdLoaded: (Ad ad) => log('Ad Loaded'),
+              onAdClosed: (Ad ad) => log('Ad Closed'),
+              onAdFailedToLoad: (Ad ad, LoadAdError error) {
+                ad.dispose();
+              },
+              onAdOpened: (Ad ad) => log('Ad Open')));
+      return ad;
+    }
+    return ad!;
   }
 
   static void createInterstitialAd() {

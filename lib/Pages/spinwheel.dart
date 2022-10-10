@@ -2,7 +2,13 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:provider/provider.dart';
+import 'package:quizapp/model/earnpointsmodel.dart';
+import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
+import 'package:quizapp/utils/sharepref.dart';
+import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/mytext.dart';
 import '../widget/myappbar.dart';
 
@@ -17,11 +23,35 @@ class _SpinWheelState extends State<SpinWheel> {
   final StreamController<int> controller = StreamController<int>();
   var list = [1, 2, 3, 4, 5, 6, 7, 8];
   final _random = new Random();
-  int? index;
+  late int index;
+  String? userId;
+  SharePref sharePref = SharePref();
+  var spinlist = [100, 200, 300, 400, 500, 600, 700, 800];
 
   @override
   void initState() {
+    getLogin();
     super.initState();
+  }
+
+  getLogin() async {
+    userId = await sharePref.read('userId') ?? "";
+    debugPrint('userID===>${userId.toString()}');
+
+    final earnProvider = Provider.of<ApiProvider>(context, listen: false);
+    earnProvider.getEarnPointList();
+
+    AdHelper.createInterstitialAd();
+    AdHelper.createRewardedAd();
+  }
+
+  getRewardPoint() async {
+    final earnProvider = Provider.of<ApiProvider>(context, listen: false);
+    earnProvider.getaddRewardPoints(userId, spinlist[index], "1");
+    if (!earnProvider.loading) {
+      Utility.toastMessage(earnProvider.successModel.message.toString());
+      AdHelper.showRewardedAd();
+    }
   }
 
   @override
@@ -89,14 +119,12 @@ class _SpinWheelState extends State<SpinWheel> {
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: FortuneWheel(
-                        selected: Stream.value(index!),
+                        selected: Stream.value(index),
                         indicators: const <FortuneIndicator>[
                           FortuneIndicator(
-                            alignment: Alignment
-                                .topCenter, // <-- changing the position of the indicator
+                            alignment: Alignment.topCenter,
                             child: TriangleIndicator(
-                              color:
-                                  primary, // <-- changing the color of the indicator
+                              color: primary,
                             ),
                           ),
                         ],
@@ -104,11 +132,9 @@ class _SpinWheelState extends State<SpinWheel> {
                           duration: const Duration(seconds: 1),
                           curve: Curves.decelerate,
                         ),
-                        // onFling: () {
-                        //   controller.add(1);
-                        // },
                         onAnimationEnd: () {
-                          debugPrint("end");
+                          debugPrint("end=====================");
+                          getRewardPoint();
                         },
                         items: const [
                           FortuneItem(
@@ -236,6 +262,20 @@ class _SpinWheelState extends State<SpinWheel> {
               ],
             ),
           )),
+    );
+  }
+
+  FortuneItem wheel() {
+    return FortuneItem(
+      child: Text(
+        '200',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+      style: FortuneItemStyle(
+        color: wheelOne,
+        borderColor: black,
+        borderWidth: 5,
+      ),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/mytext.dart';
 
@@ -130,7 +132,14 @@ class _PraticeStageState extends State<PraticeStage> {
             ),
           ),
         ),
-        Expanded(flex: 1, child: Container()),
+        Expanded(
+          flex: 1,
+          child: SizedBox(
+            height: 60,
+            child: AdWidget(
+                ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+          ),
+        ),
       ],
     );
   }

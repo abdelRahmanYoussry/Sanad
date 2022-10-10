@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:quizapp/provider/apiprovider.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/widget/myappbar.dart';
 import 'package:quizapp/widget/myimage.dart';
@@ -45,8 +47,6 @@ class _PraticeLevelState extends State<PraticeLevel> {
           image: AssetImage("assets/images/login_bg.png"),
           fit: BoxFit.cover,
         ),
-        borderRadius:
-            BorderRadius.vertical(bottom: Radius.elliptical(50.0, 50.0)),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -76,84 +76,98 @@ class _PraticeLevelState extends State<PraticeLevel> {
   }
 
   buildBody() {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-      child: Consumer<ApiProvider>(
-        builder: (context, leveldata, child) {
-          return GridView.builder(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemCount: leveldata.levelPraticeModel.result?.length ?? 0,
-              itemBuilder: (BuildContext ctx, index) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PratiseQuestions(
-                                  catId: widget.catId,
-                                  levelId: leveldata
-                                          .levelPraticeModel.result?[index].id
-                                          .toString() ??
-                                      "",
-                                  levelname: leveldata
-                                      .levelPraticeModel.result?[index].name,
-                                  levelMasterId: widget.masterId,
-                                )));
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      margin: const EdgeInsets.only(
-                          left: 5, right: 5, bottom: 5, top: 5),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyImage(
-                              width: 80,
-                              height: 80,
-                              imagePath: 'assets/images/level_lock.png'),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          MyText(
-                              title: leveldata
-                                      .levelPraticeModel.result?[index].name ??
-                                  "",
-                              size: 16,
-                              fontWeight: FontWeight.w500,
-                              colors: textColor),
-                          MyText(
-                              title:
-                                  'Questions ${leveldata.levelPraticeModel.result?[index].totalQuestion.toString() ?? ""}',
-                              size: 14,
-                              fontWeight: FontWeight.w500,
-                              colors: textColor),
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 1.0,
-                            ),
-                          ]),
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40))),
+            child: Consumer<ApiProvider>(
+              builder: (context, leveldata, child) {
+                return GridView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
                     ),
-                  ),
-                );
-              });
-        },
-      ),
+                    itemCount: leveldata.levelPraticeModel.result?.length ?? 0,
+                    itemBuilder: (BuildContext ctx, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PratiseQuestions(
+                                        catId: widget.catId,
+                                        levelId: leveldata.levelPraticeModel
+                                                .result?[index].id
+                                                .toString() ??
+                                            "",
+                                        levelname: leveldata.levelPraticeModel
+                                            .result?[index].name,
+                                        levelMasterId: widget.masterId,
+                                      )));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            alignment: Alignment.center,
+                            margin: const EdgeInsets.only(
+                                left: 5, right: 5, bottom: 5, top: 5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MyImage(
+                                    width: 80,
+                                    height: 80,
+                                    imagePath: 'assets/images/level_lock.png'),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                MyText(
+                                    title: leveldata.levelPraticeModel
+                                            .result?[index].name ??
+                                        "",
+                                    size: 16,
+                                    fontWeight: FontWeight.w500,
+                                    colors: textColor),
+                                MyText(
+                                    title:
+                                        'Questions ${leveldata.levelPraticeModel.result?[index].totalQuestion.toString() ?? ""}',
+                                    size: 14,
+                                    fontWeight: FontWeight.w500,
+                                    colors: textColor),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 1.0,
+                                  ),
+                                ]),
+                          ),
+                        ),
+                      );
+                    });
+              },
+            ),
+          ),
+        ),
+        Container(
+          color: white,
+          height: 60,
+          child:
+              AdWidget(ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+        ),
+      ],
     );
   }
 }

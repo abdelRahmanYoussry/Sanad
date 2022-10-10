@@ -7,11 +7,13 @@ import 'package:quizapp/model/categorymodel.dart';
 import 'package:quizapp/model/contentmodel.dart';
 import 'package:quizapp/model/contestquestionmodel.dart';
 import 'package:quizapp/model/earnmodel.dart';
+import 'package:quizapp/model/earnpointsmodel.dart';
 import 'package:quizapp/model/generalsettingmodel.dart';
 import 'package:quizapp/model/levelmastermodel.dart';
 import 'package:quizapp/model/levelmodel.dart';
 import 'package:quizapp/model/levelpraticemodel.dart';
 import 'package:quizapp/model/loginmodel.dart';
+import 'package:quizapp/model/notificationmodel.dart';
 import 'package:quizapp/model/packagesmodel.dart';
 import 'package:quizapp/model/praticeleaderboardmodel.dart';
 import 'package:quizapp/model/profilemodel.dart';
@@ -571,6 +573,68 @@ class ApiService {
     debugPrint("${response.data}");
     if (response.statusCode == 200) {
       debugPrint("add_transaction apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
+  Future<NotificationModel> notification(userId) async {
+    NotificationModel notificationModel;
+    String profile = "get_notification";
+    Response response = await dio.post('$baseurl$profile',
+        data: ({
+          'user_id': userId,
+        }));
+    if (response.statusCode == 200) {
+      debugPrint("Notification apiservice:===>${response.data}");
+      notificationModel = NotificationModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return notificationModel;
+  }
+
+  Future<SuccessModel> readNotification(userId, id) async {
+    SuccessModel successModel;
+    String profile = "read_notification";
+    Response response = await dio.post('$baseurl$profile',
+        data: ({
+          'user_id': userId,
+          'notification_id': id,
+        }));
+    if (response.statusCode == 200) {
+      debugPrint("Read Notification apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load data');
+    }
+    return successModel;
+  }
+
+  Future<EarnPointsModel> earnPointslist() async {
+    EarnPointsModel earnPointsModel;
+    String level = "earn_point";
+    Response response = await dio.post('$baseurl$level');
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("earnPointsModel level apiservice:===>${response.data}");
+      earnPointsModel = EarnPointsModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return earnPointsModel;
+  }
+
+  Future<SuccessModel> rewardPoints(userId, id, type) async {
+    SuccessModel successModel;
+    String level = "reward_points";
+    Response response = await dio.post('$baseurl$level',
+        data: ({'user_id': userId, 'reward_points': id, 'type': type}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("successModel level apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');

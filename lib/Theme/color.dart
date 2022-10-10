@@ -23,6 +23,7 @@ const textColor = Color(0xFF000000);
 const textColorGrey = Color(0xFF666666);
 const textColorGree = Color(0xFF3BC54A);
 const labelColor = Color(0xFF8A8989);
+const lightgray = Color(0xFFF4F4F4);
 
 const actionColor = Color(0xFFe54140);
 const buttonColor = Color(0xFFcdacf9);

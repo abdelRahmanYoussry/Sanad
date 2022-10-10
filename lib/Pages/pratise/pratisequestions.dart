@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ import 'package:quizapp/model/questionpraticemodel.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/provider/commanprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 import 'package:quizapp/widget/myimage.dart';
@@ -64,6 +66,9 @@ class _PratiseQuestionsState extends State<PratiseQuestions> {
 
   getUserId() async {
     userId = await sharePref.read('userId') ?? "0";
+
+    AdHelper.createInterstitialAd();
+    AdHelper.createRewardedAd();
   }
 
   playSound(int pos) async {
@@ -1066,13 +1071,10 @@ class _PratiseQuestionsState extends State<PratiseQuestions> {
                 ),
               ),
               SizedBox(
-                height: 80,
-                child: MyImage(
-                  height: 80,
-                  width: 80,
-                  imagePath: "assets/images/ic_close.png",
-                ),
-              )
+                height: 60,
+                child: AdWidget(
+                    ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+              ),
             ],
           ),
         ),

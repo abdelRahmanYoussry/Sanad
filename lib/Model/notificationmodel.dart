@@ -1,12 +1,5 @@
-import 'dart:convert';
-
-RewardModel rewardModelFromJson(String str) =>
-    RewardModel.fromJson(json.decode(str));
-
-String rewardModelToJson(RewardModel data) => json.encode(data.toJson());
-
-class RewardModel {
-  RewardModel({
+class NotificationModel {
+  NotificationModel({
     this.status,
     this.message,
     this.result,
@@ -16,7 +9,8 @@ class RewardModel {
   String? message;
   List<Result>? result;
 
-  factory RewardModel.fromJson(Map<String, dynamic> json) => RewardModel(
+  factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+      NotificationModel(
         status: json["status"],
         message: json["message"],
         result:
@@ -33,39 +27,47 @@ class RewardModel {
 class Result {
   Result({
     this.id,
-    this.userId,
-    this.rewardPoints,
-    this.type,
+    this.appId,
+    this.includedSegments,
+    this.data,
+    this.headings,
+    this.contents,
+    this.bigPicture,
     this.createdAt,
     this.updatedAt,
-    this.typename,
   });
 
   int? id;
-  int? userId;
-  int? rewardPoints;
-  String? type;
+  String? appId;
+  String? includedSegments;
+  String? data;
+  String? headings;
+  String? contents;
+  String? bigPicture;
   String? createdAt;
   String? updatedAt;
-  String? typename;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
-        userId: json["user_id"],
-        rewardPoints: json["reward_points"],
-        type: json["type"],
+        appId: json["app_id"],
+        includedSegments: json["included_segments"],
+        data: json["data"],
+        headings: json["headings"],
+        contents: json["contents"],
+        bigPicture: json["big_picture"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
-        typename: json["type_name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_id": userId,
-        "reward_points": rewardPoints,
-        "type": type,
+        "app_id": appId,
+        "included_segments": includedSegments,
+        "data": data,
+        "headings": headings,
+        "contents": contents,
+        "big_picture": bigPicture,
         "created_at": createdAt,
         "updated_at": updatedAt,
-        "type_name": typename,
       };
 }

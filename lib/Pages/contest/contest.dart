@@ -103,20 +103,11 @@ class _ContestState extends State<Contest> {
                     child: TabBarView(
                   children: [upcoming(), live(), ended()],
                 )),
-                if (Platform.isAndroid && bannerad == '1')
-                  SizedBox(
-                    height: 60,
-                    child: AdWidget(
-                        ad: AdHelper.createBannerAd()..load(),
-                        key: UniqueKey()),
-                  ),
-                if (Platform.isIOS && banneradIos == '1')
-                  SizedBox(
-                    height: 60,
-                    child: AdWidget(
-                        ad: AdHelper.createBannerAd()..load(),
-                        key: UniqueKey()),
-                  ),
+                SizedBox(
+                  height: 60,
+                  child: AdWidget(
+                      ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+                ),
               ],
             ),
           ),

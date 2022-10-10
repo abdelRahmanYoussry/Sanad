@@ -140,9 +140,52 @@ class _SubscriptionState extends State<Subscription> {
   Widget build(BuildContext context) {
     final packageProvider = Provider.of<ApiProvider>(context);
     if (packageProvider.loading) {
-      return const Scaffold(
-          backgroundColor: white,
-          body: Center(child: CircularProgressIndicator(value: 40)));
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: appBgColor,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Stack(children: [
+              Container(
+                height: 260,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/dash_bg.png"),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.vertical(
+                      bottom: Radius.elliptical(50.0, 50.0)),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const MyAppbar(title: "Subscription"),
+                  Center(
+                    child: SizedBox(
+                      height: 180,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Image.asset(
+                          "assets/images/ic_subscription.png",
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(),
+              ],
+            )
+          ],
+        ),
+      );
     } else {
       if (packageProvider.packagesModel.status == 200 &&
           (packageProvider.packagesModel.result?.length ?? 0) > 0) {
@@ -194,9 +237,10 @@ class _SubscriptionState extends State<Subscription> {
                       onTap: () {
                         selectIndex = index;
                         _kProductIds.clear();
+                        log('===> 11${packagelist?[index].productPackage}');
                         _kProductIds
                             .add(packagelist?[index].productPackage ?? "");
-                        log("===> _kProductIds ${_kProductIds.length}");
+                        log("===> ${_kProductIds.length}");
                         purchaseItem();
                         // addPurchase();
                       },
@@ -353,13 +397,10 @@ class _SubscriptionState extends State<Subscription> {
   }
 
   Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    // IMPORTANT!! Always verify a purchase before delivering the product.
-    // For the purpose of an example, we directly return true.
     return Future<bool>.value(true);
   }
 
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
-    // handle invalid purchase here if  _verifyPurchase` failed.
     log("===> invalid Purchase ${purchaseDetails}");
   }
 
