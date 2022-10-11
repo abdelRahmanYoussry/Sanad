@@ -12,6 +12,7 @@ import 'package:quizapp/pages/login/otp.dart';
 import 'package:quizapp/pages/login/signup.dart';
 import 'package:quizapp/provider/apiprovider.dart';
 import 'package:quizapp/theme/color.dart';
+import 'package:quizapp/utils/adhelper.dart';
 import 'package:quizapp/utils/sharepref.dart';
 import 'package:quizapp/utils/utility.dart';
 import '../../Model/SuccessModel.dart';
@@ -36,6 +37,12 @@ class _LoginState extends State<Login> {
   bool _isObscure = true;
   bool isloading = false;
   bool isChecked = true;
+
+  @override
+  void initState() {
+    AdHelper.getAds();
+    super.initState();
+  }
 
   @override
   void dispose() {
