@@ -47,6 +47,7 @@ class _WalletState extends State<Wallet> {
     strWalletVisible =
         await sharePref.read('wallet_withdraw_visibility') ?? "0";
     debugPrint('strEarnpoint===>${strEarnpoint.toString()}');
+    log('====> $strMinimumpoint');
 
     final profiledata = Provider.of<ApiProvider>(context, listen: false);
     profiledata.getProfile(context, userId);

@@ -187,11 +187,13 @@ class _HomeState extends State<Home> {
                 String? username =
                     profiledata.profileModel.result?[0].username.toString() ??
                         "";
-                String? email =
-                    profiledata.profileModel.result?[0].email.toString() ?? "";
+                String? mobile = profiledata
+                        .profileModel.result?[0].mobileNumber
+                        .toString() ??
+                    "";
 
                 return Text(
-                  username.isNotEmpty ? username : email,
+                  username.isNotEmpty ? username : mobile,
                   style: GoogleFonts.poppins(
                       fontSize: 26,
                       fontWeight: FontWeight.w500,

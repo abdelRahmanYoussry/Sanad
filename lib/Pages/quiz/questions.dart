@@ -1105,7 +1105,6 @@ class _QuestionsState extends State<Questions> {
       const CircularProgressIndicator();
     } else {
       if (provider.successModel.status == 200) {
-        AdHelper.showRewardedAd();
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) => LevelResult(
                   levelId: widget.levelId,

@@ -316,6 +316,8 @@ class _OTPState extends State<OTP> {
         await sharePref.save('is_login', "1");
         await sharePref.save(
             "userId", loginprovider.loginModel.result![i].id.toString());
+        await sharePref.save('reference',
+            loginprovider.loginModel.result?[0].referenceCode.toString() ?? "");
         await sharePref.save(
             "fullname", loginprovider.loginModel.result![i].fullname);
         await sharePref.save(
