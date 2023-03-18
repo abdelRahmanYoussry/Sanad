@@ -1,0 +1,3 @@
+ <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3579016098566983~8145095359"/>
