@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quizapp/pages/aboutUs.dart';
-import 'package:quizapp/pages/share.dart';
-import 'package:quizapp/pages/privacyPolicy.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/widget/myText.dart';
-import 'package:quizapp/widget/myappbar.dart';
+import 'package:sanad/pages/aboutUs.dart';
+import 'package:sanad/pages/privacyPolicy.dart';
+import 'package:sanad/pages/share.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/widget/myText.dart';
 
 class Settings extends StatefulWidget {
   const Settings({Key? key}) : super(key: key);

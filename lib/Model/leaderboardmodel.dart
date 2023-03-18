@@ -50,7 +50,7 @@ class Result {
   int? userTotalScore;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
-        rank: json["rank"],
+        rank: int.parse(json["rank"].toString()),
         id: json["id"],
         totalScore: json["total_score"],
         fullname: json["fullname"],

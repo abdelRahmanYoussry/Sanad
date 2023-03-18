@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/mytext.dart';
 
 class PraticeLevelResult extends StatefulWidget {
   final levelId;

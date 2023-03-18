@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/utils/utility.dart';
+import 'package:sanad/utils/utility.dart';
 import '../Model/SuccessModel.dart';
 import '../Theme/config.dart';
 import '../provider/apiprovider.dart';

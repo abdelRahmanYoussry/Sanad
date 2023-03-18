@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/splash.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/provider/commanprovider.dart';
-import 'package:quizapp/utils/constant.dart';
+import 'package:sanad/pages/splash.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/provider/commanprovider.dart';
+import 'package:sanad/utils/constant.dart';
 import 'Theme/theme_model.dart';
 
 bool? isviewed;
@@ -18,12 +18,12 @@ Future<void> main() async {
   MobileAds.instance.initialize();
   if (Platform.isIOS) {
     await Firebase.initializeApp(
-        name: "QuizApp",
+        name: "Sanad",
         options: const FirebaseOptions(
-            apiKey: "AIzaSyCLYCrYHmXv4X2U7IBKGdylYckTWuEoDrc",
-            appId: "1:233870429546:android:90c541dd026112811b6913",
-            messagingSenderId: "233870429546",
-            projectId: "quizapp-cae00"));
+            apiKey: "AIzaSyByTvm1HE3aW-A1Ck7KnI8g4vNeWjpadjA",
+            appId: "1:195912557536:android:d0625dc2aef4ad06590185",
+            messagingSenderId: "195912557536",
+            projectId: "sanad-8c7fb"));
   } else {
     await Firebase.initializeApp();
   }

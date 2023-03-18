@@ -1,32 +1,33 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:quizapp/model/categorymastermodel.dart';
-import 'package:quizapp/model/categorymodel.dart';
-import 'package:quizapp/model/contentmodel.dart';
-import 'package:quizapp/model/contestleadermodel.dart';
-import 'package:quizapp/model/contestquestionmodel.dart';
-import 'package:quizapp/model/earnmodel.dart';
-import 'package:quizapp/model/earnpointsmodel.dart';
-import 'package:quizapp/model/generalsettingmodel.dart';
-import 'package:quizapp/model/leaderboardmodel.dart';
-import 'package:quizapp/model/levelmastermodel.dart';
-import 'package:quizapp/model/levelmodel.dart';
-import 'package:quizapp/model/levelpraticemodel.dart';
-import 'package:quizapp/model/loginmodel.dart';
-import 'package:quizapp/model/notificationmodel.dart';
-import 'package:quizapp/model/packagesmodel.dart';
-import 'package:quizapp/model/praticeleaderboardmodel.dart';
-import 'package:quizapp/model/profilemodel.dart';
-import 'package:quizapp/model/questionmodel.dart';
-import 'package:quizapp/model/questionpraticemodel.dart';
-import 'package:quizapp/model/refertranmodel.dart';
-import 'package:quizapp/model/registrationmodel.dart';
-import 'package:quizapp/model/rewardmodel.dart';
-import 'package:quizapp/model/successmodel.dart';
-import 'package:quizapp/model/todayleaderboardmodel.dart';
-import 'package:quizapp/model/winnermodel.dart';
-import 'package:quizapp/webservice/apiservice.dart';
+import 'package:sanad/model/categorymastermodel.dart';
+import 'package:sanad/model/categorymodel.dart';
+import 'package:sanad/model/coinshistorymodel.dart';
+import 'package:sanad/model/contentmodel.dart';
+import 'package:sanad/model/contestleadermodel.dart';
+import 'package:sanad/model/contestquestionmodel.dart';
+import 'package:sanad/model/earnmodel.dart';
+import 'package:sanad/model/earnpointsmodel.dart';
+import 'package:sanad/model/generalsettingmodel.dart';
+import 'package:sanad/model/leaderboardmodel.dart';
+import 'package:sanad/model/levelmastermodel.dart';
+import 'package:sanad/model/levelmodel.dart';
+import 'package:sanad/model/levelpraticemodel.dart';
+import 'package:sanad/model/loginmodel.dart';
+import 'package:sanad/model/notificationmodel.dart';
+import 'package:sanad/model/packagesmodel.dart';
+import 'package:sanad/model/praticeleaderboardmodel.dart';
+import 'package:sanad/model/profilemodel.dart';
+import 'package:sanad/model/questionmodel.dart';
+import 'package:sanad/model/questionpraticemodel.dart';
+import 'package:sanad/model/refertranmodel.dart';
+import 'package:sanad/model/registrationmodel.dart';
+import 'package:sanad/model/rewardmodel.dart';
+import 'package:sanad/model/successmodel.dart';
+import 'package:sanad/model/todayleaderboardmodel.dart';
+import 'package:sanad/model/winnermodel.dart';
+import 'package:sanad/webservice/apiservice.dart';
 
 class ApiProvider extends ChangeNotifier {
   GeneralSettingModel generalSettingModel = GeneralSettingModel();
@@ -52,6 +53,7 @@ class ApiProvider extends ChangeNotifier {
 
   ReferTranModel referTranModel = ReferTranModel();
   RewardModel rewardModel = RewardModel();
+  CoinsHistoryModel coinsHistoryModel = CoinsHistoryModel();
   EarnModel earnModel = EarnModel();
   SuccessModel successModel = SuccessModel();
   TodayLeaderBoardModel todayLeaderBoardModel = TodayLeaderBoardModel();
@@ -102,12 +104,48 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  registration(context, email, password, firstname, lastname, mobilenumber,
-      refercode, fullname, username) async {
+  registration(
+      {context,
+      email,
+      password,
+      firstname,
+      lastname,
+      mobilenumber,
+      refercode,
+      fullname,
+      username,
+      age,
+      gender,
+      address}
+      //  {required BuildContext context,
+      // required String email, required String password,required String firstName,
+      //  }
+      ) async {
     loading = true;
     debugPrint('====>$mobilenumber');
-    registrationModel = await ApiService().registration(email, password,
-        firstname, lastname, mobilenumber, refercode, fullname, username);
+    registrationModel = await ApiService().registration(
+        age: age,
+        email: email,
+        firstname: firstname,
+        fullname: fullname,
+        gender: gender,
+        lastname: lastname,
+        mobilenumber: mobilenumber,
+        pass: password,
+        refercode: refercode,
+        username: username,
+        address: address
+        // email,
+        // password,
+        // firstname,
+        // lastname,
+        // mobilenumber,
+        // refercode,
+        // fullname,
+        // username,
+        // gender,
+        // age
+        );
     debugPrint("${registrationModel.status}");
     loading = false;
     notifyListeners();
@@ -129,12 +167,52 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getUpdateProfile(
-      userId, fullname, email, contact, address, File image) async {
+  getUpdateProfile({
+    required String userId,
+    required String fullname,
+    required String email,
+    required String contact,
+    required String address,
+    required String gender,
+    required String age,
+    File? image,
+  }) async {
     loading = true;
-    successModel = await ApiService()
-        .updateProfile(userId, fullname, email, contact, address, image);
-    debugPrint("${profileModel.status}");
+    if (image != null) {
+      successModel = await ApiService().updateProfile(
+          email: email,
+          userId: userId,
+          image: image,
+          address: address,
+          contact: contact,
+          age: age,
+          // country: country,
+          gender: gender,
+          fullName: fullname);
+      // debugPrint("${profileModel.status}");
+      loading = false;
+      notifyListeners();
+    } else {
+      successModel = await ApiService().updateProfile(
+          email: email,
+          userId: userId,
+          // image: image,
+          address: address,
+          contact: contact,
+          age: age,
+          // country: country,
+          gender: gender,
+          fullName: fullname);
+      // debugPrint("${profileModel.status}");
+      loading = false;
+      notifyListeners();
+    }
+  }
+
+  getCoinsHistory(context, userId) async {
+    loading = true;
+    coinsHistoryModel = await ApiService().coinshistory(userId);
+    // debugPrint("${coinsHistoryModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -142,7 +220,7 @@ class ApiProvider extends ChangeNotifier {
   getRewardPoints(context, userId) async {
     loading = true;
     rewardModel = await ApiService().rewardpoints(userId);
-    debugPrint("${referTranModel.status}");
+    // debugPrint("${referTranModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -150,7 +228,7 @@ class ApiProvider extends ChangeNotifier {
   getEarnPoints(context, userId) async {
     loading = true;
     earnModel = await ApiService().earnpoints(userId);
-    debugPrint("${earnModel.status}");
+    // debugPrint("${earnModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -158,7 +236,7 @@ class ApiProvider extends ChangeNotifier {
   getReferTransaction(context, userId) async {
     loading = true;
     referTranModel = await ApiService().referTran(userId);
-    debugPrint("${referTranModel.status}");
+    // debugPrint("${referTranModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -239,7 +317,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     contestLeaderModel =
         await ApiService().contestleaderBoard(userId, contestId);
-    debugPrint("${contestLeaderModel.status}");
+    debugPrint("====> ${contestLeaderModel.status}");
     loading = false;
     notifyListeners();
   }

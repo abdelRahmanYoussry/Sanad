@@ -48,6 +48,8 @@ class Result {
     this.isUpdated,
     this.cDate,
     this.createdAt,
+    this.age,
+    this.gender,
     this.updatedAt,
   });
 
@@ -75,6 +77,8 @@ class Result {
   String? cDate;
   String? createdAt;
   String? updatedAt;
+  String? gender;
+  String? age;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
@@ -101,6 +105,8 @@ class Result {
         cDate: json["c_date"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        gender: json["gender"],
+        age: json["age"],
       );
 
   Map<String, dynamic> toJson() => {

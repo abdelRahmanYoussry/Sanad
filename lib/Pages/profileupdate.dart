@@ -1,16 +1,18 @@
 import 'dart:io';
 
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/pages/profile.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
-import 'package:quizapp/widget/myText.dart';
-import 'package:quizapp/widget/myappbar.dart';
-import 'package:quizapp/widget/mynetimage.dart';
+import 'package:sanad/Theme/color.dart';
+import 'package:sanad/pages/profile.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/CustomDropDown.dart';
+import 'package:sanad/widget/myText.dart';
+import 'package:sanad/widget/myappbar.dart';
+import 'package:sanad/widget/mynetimage.dart';
 
 bool topBar = false;
 
@@ -26,9 +28,15 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final SingleValueDropDownController genderController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController countryController =
+      SingleValueDropDownController();
   String? profilePic;
   XFile? _image;
   String? userId;
+  String? userCountry;
   SharePref sharePref = SharePref();
 
   _imgFromCamera() async {
@@ -79,6 +87,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   @override
   initState() {
     getUserId();
+    getUserCountry();
     super.initState();
   }
 
@@ -88,6 +97,11 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
 
     final profiledata = Provider.of<ApiProvider>(context, listen: false);
     profiledata.getProfile(context, userId);
+  }
+
+  getUserCountry() async {
+    userCountry = await sharePref.read('userCountry') ?? '"';
+    debugPrint('userCountry===>${userCountry.toString()}');
   }
 
   @override
@@ -202,15 +216,31 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   buildData() {
     return Consumer<ApiProvider>(
       builder: (context, profiledata, child) {
-        _nameController.text =
-            profiledata.profileModel.result?[0].fullname.toString() ?? "";
-        _emailController.text =
-            profiledata.profileModel.result?[0].email.toString() ?? "";
-        _contactController.text =
-            profiledata.profileModel.result?[0].mobileNumber.toString() ?? "";
-        _addressController.text =
-            profiledata.profileModel.result?[0].biodata.toString() ?? "";
-
+        if (_nameController.text.isEmpty) {
+          _nameController.text =
+              profiledata.profileModel.result?[0].fullname.toString() ?? "";
+          _emailController.text =
+              profiledata.profileModel.result?[0].email.toString() ?? "";
+          _contactController.text =
+              profiledata.profileModel.result?[0].mobileNumber.toString() ?? "";
+          _addressController.text =
+              profiledata.profileModel.result?[0].biodata.toString() ?? "";
+          _ageController.text =
+              profiledata.profileModel.result![0].age.toString() ?? '';
+          _addressController.text = userCountry ?? 'address';
+          genderController.dropDownValue = DropDownValueModel(
+              name: profiledata.profileModel.result![0].gender!, value: 1);
+          countryController.dropDownValue = DropDownValueModel(
+              name: profiledata.profileModel.result![0].address!, value: 0);
+        }
+        List<DropDownValueModel> genderTypeList = [
+          const DropDownValueModel(name: 'Female', value: 0),
+          const DropDownValueModel(name: 'Male', value: 1),
+        ];
+        List<DropDownValueModel> countryTypeList = [
+          const DropDownValueModel(name: 'Egypt', value: 0),
+          const DropDownValueModel(name: 'Malaysia', value: 1),
+        ];
         profilePic =
             profiledata.profileModel.result?[0].profileImg.toString() ?? "";
 
@@ -231,8 +261,48 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                     _emailController),
                 formField("Contact No", "assets/images/ic_profile_contact.png",
                     _contactController),
-                formField("Address", "assets/images/ic_profile_address.png",
-                    _addressController),
+                // formField("Address", "assets/images/ic_profile_address.png",
+                //     _addressController),
+                formField(
+                    'Age', "assets/images/ic_profile_user.png", _ageController),
+                const SizedBox(
+                  height: 20,
+                ),
+                MyCustomDropDown(
+                    dropDownValueList: genderTypeList,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Gender cant be empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      sharePref.save('userGender', value.name);
+                    },
+                    borderSide: BorderSide(color: baseColor, width: 2),
+                    enableDropDown: true,
+                    controller: genderController,
+                    label: const Text('Select Your Gander')),
+                const SizedBox(
+                  height: 20,
+                ),
+                MyCustomDropDown(
+                    dropDownValueList: countryTypeList,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Country cant be empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                    onChanged: (value) {
+                      sharePref.save('userCountry', value.name);
+                    },
+                    borderSide: BorderSide(color: baseColor, width: 2),
+                    enableDropDown: true,
+                    controller: countryController,
+                    label: const Text('Country')),
                 const SizedBox(height: 40),
                 Center(
                   child: TextButton(
@@ -314,24 +384,61 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
       Utility.toastMessage("Please enter your address");
       return;
     }
-    if (_image == null) {
+    if (_ageController.text.isEmpty) {
+      Utility.toastMessage("Please enter your address");
+      return;
+    }
+    if (genderController.dropDownValue!.name.isEmpty) {
+      Utility.toastMessage("Please enter your address");
+      return;
+    }
+    if (_image == null && profilePic == "") {
       Utility.toastMessage("Please select profile picture");
       return;
     }
-
-    var image = File(_image!.path);
-    debugPrint('===>path ${_image!.path}');
-
+    File? image;
+    if (_image != null) {
+      image = File(_image!.path);
+      debugPrint('===>path ${_image!.path}');
+    }
     var update = Provider.of<ApiProvider>(context, listen: false);
-
-    await update.getUpdateProfile(
-        userId,
-        _nameController.text.toString(),
-        _emailController.text.toString(),
-        _contactController.text.toString(),
-        _addressController.text.toString(),
-        image);
-
+    if (image != null) {
+      await update.getUpdateProfile(
+        contact: _contactController.text.toString(),
+        address: _addressController.text,
+        image: image,
+        userId: userId!,
+        email: _emailController.text,
+        gender: genderController.dropDownValue!.name,
+        fullname: _nameController.text,
+        age: _ageController.text,
+        // userId,
+        // _nameController.text.toString(),
+        // _emailController.text.toString(),
+        // _addressController.text.toString(),
+        // image,
+        // _ageController.text,
+        // genderController.dropDownValue!.name
+      );
+    } else {
+      await update.getUpdateProfile(
+        contact: _contactController.text.toString(),
+        address: _addressController.text,
+        // image: image,
+        userId: userId!,
+        email: _emailController.text,
+        gender: genderController.dropDownValue!.name,
+        fullname: _nameController.text,
+        age: _ageController.text,
+        // userId,
+        // _nameController.text.toString(),
+        // _emailController.text.toString(),
+        // _addressController.text.toString(),
+        // image,
+        // _ageController.text,
+        // genderController.dropDownValue!.name
+      );
+    }
     if (!update.loading) {
       if (update.successModel.status == 200) {
         Utility.toastMessage(update.successModel.message.toString());

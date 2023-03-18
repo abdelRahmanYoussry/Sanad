@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/pages/login/login.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/mytext.dart';
+
 import 'profileupdate.dart';
 
 bool topBar = false;
@@ -18,11 +20,17 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String? userId;
+  String? userGender;
+  String? userAge;
+  String? userCountry;
   SharePref sharePref = SharePref();
 
   @override
   initState() {
     getUserId();
+    getUserAge();
+    getUserCountry();
+    getUserGender();
     super.initState();
   }
 
@@ -37,6 +45,39 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  getUserGender() async {
+    userGender = await sharePref.read('userGender') ?? "0";
+    debugPrint('userGender===>${userGender.toString()}');
+
+    // if (userId != "" || userId != "0") {
+    //   final profiledata = Provider.of<ApiProvider>(context, listen: false);
+    //   profiledata.getProfile(context, userId);
+    //   profiledata.getReferTransaction(context, userId);
+    // }
+  }
+
+  getUserAge() async {
+    userAge = await sharePref.read('userAge') ?? "0";
+    debugPrint('userAge===>${userAge.toString()}');
+
+    // if (userId != "" || userId != "0") {
+    //   final profiledata = Provider.of<ApiProvider>(context, listen: false);
+    //   profiledata.getProfile(context, userId);
+    //   profiledata.getReferTransaction(context, userId);
+    // }
+  }
+
+  getUserCountry() async {
+    userCountry = await sharePref.read('userCountry') ?? "0";
+    debugPrint('userCountry===>${userCountry.toString()}');
+
+    // if (userId != "" || userId != "0") {
+    //   final profiledata = Provider.of<ApiProvider>(context, listen: false);
+    //   profiledata.getProfile(context, userId);
+    //   profiledata.getReferTransaction(context, userId);
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return buildProfile();
@@ -45,31 +86,33 @@ class _ProfileState extends State<Profile> {
   buildProfile() {
     return Scaffold(
       backgroundColor: appBgColor,
-      body: Column(
-        children: [
-          Stack(children: [
-            Container(
-              height: 400,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/dash_bg.png"),
-                  fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(children: [
+              Container(
+                height: 400,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/dash_bg.png"),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.vertical(
+                      bottom: Radius.elliptical(50.0, 50.0)),
                 ),
-                borderRadius: BorderRadius.vertical(
-                    bottom: Radius.elliptical(50.0, 50.0)),
               ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                getAppbar(),
-                buildHeader(),
-              ],
-            ),
-          ]),
-          buildData(),
-        ],
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  getAppbar(),
+                  buildHeader(),
+                ],
+              ),
+            ]),
+            buildData(),
+          ],
+        ),
       ),
     );
   }
@@ -79,7 +122,7 @@ class _ProfileState extends State<Profile> {
       title: Text(
         "Profile",
         style: GoogleFonts.poppins(
-            color: white, fontSize: 20, fontWeight: FontWeight.w500),
+            color: black, fontSize: 20, fontWeight: FontWeight.w500),
       ),
       leading: IconButton(
         icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
@@ -132,8 +175,8 @@ class _ProfileState extends State<Profile> {
                             "")
                         : profiledata.profileModel.result?[0].email.toString(),
                 size: 22,
-                fontWeight: FontWeight.w500,
-                colors: Colors.white,
+                fontWeight: FontWeight.bold,
+                colors: Colors.black,
               )),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -150,7 +193,7 @@ class _ProfileState extends State<Profile> {
                   style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white)),
+                      color: Colors.black)),
             ],
           ),
           const SizedBox(height: 20),
@@ -167,12 +210,12 @@ class _ProfileState extends State<Profile> {
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white)),
-                    Text("Quizzes Played",
+                            color: Colors.black)),
+                    Text("Coins",
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white)),
+                            color: Colors.black)),
                   ],
                 ),
                 const Spacer(),
@@ -190,12 +233,12 @@ class _ProfileState extends State<Profile> {
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white)),
-                    Text("Points Earned",
+                            color: Colors.black)),
+                    Text("Points",
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
-                            color: Colors.white)),
+                            color: Colors.black)),
                   ],
                 ),
                 const Spacer(),
@@ -210,97 +253,203 @@ class _ProfileState extends State<Profile> {
   buildData() {
     return Consumer<ApiProvider>(
       builder: (context, profiledata, child) {
-        return Column(
-          children: [
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const CircleAvatar(
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  const CircleAvatar(
+                      minRadius: 25,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: AssetImage("assets/images/ic_mail.png")),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Email",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      MyText(
+                        title: profiledata.profileModel.result?[0].email
+                                .toString() ??
+                            "",
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: black,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  const CircleAvatar(
+                      minRadius: 25,
+                      backgroundColor: Colors.transparent,
+                      backgroundImage:
+                          AssetImage("assets/images/ic_mobile.png")),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Contact No.",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      MyText(
+                        title: profiledata.profileModel.result?[0].mobileNumber
+                                .toString() ??
+                            "",
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: black,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  CircleAvatar(
                     minRadius: 25,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage("assets/images/ic_mail.png")),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Email",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: textColorGrey)),
-                    MyText(
-                      title: profiledata.profileModel.result?[0].email
-                              .toString() ??
-                          "",
-                      size: 16,
-                      fontWeight: FontWeight.w500,
-                      colors: black,
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const CircleAvatar(
+                    backgroundColor: cyan.withOpacity(0.2),
+                    child: Icon(Icons.flag, color: cyan),
+                    // backgroundImage: AssetImage("assets/images/ic_location.png")
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Country",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      MyText(
+                        title:
+                            profiledata.profileModel.result![0].address ?? "",
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: black,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  CircleAvatar(
                     minRadius: 25,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage: AssetImage("assets/images/ic_mobile.png")),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Contact No.",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: textColorGrey)),
-                    MyText(
-                      title: profiledata.profileModel.result?[0].mobileNumber
-                              .toString() ??
-                          "",
-                      size: 16,
-                      fontWeight: FontWeight.w500,
-                      colors: black,
-                    )
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                const SizedBox(width: 20),
-                const CircleAvatar(
+                    backgroundColor: cyan.withOpacity(0.2),
+                    child: Icon(Icons.person, color: cyan),
+                    // backgroundImage: AssetImage("assets/images/ic_location.png")
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Age",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      MyText(
+                        title: profiledata.profileModel.result![0].age ?? "",
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: black,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  CircleAvatar(
                     minRadius: 25,
-                    backgroundColor: Colors.transparent,
-                    backgroundImage:
-                        AssetImage("assets/images/ic_location.png")),
-                const SizedBox(width: 20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Address",
-                        style: GoogleFonts.poppins(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: textColorGrey)),
-                    MyText(
-                      title: (profiledata.profileModel.result?[0].biodata
-                              .toString() ??
-                          ""),
-                      size: 16,
-                      fontWeight: FontWeight.w500,
-                      colors: black,
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ],
+                    backgroundColor: cyan.withOpacity(0.2),
+                    child: userGender == 'Female'
+                        ? Icon(Icons.female, color: cyan)
+                        : Icon(Icons.male, color: cyan),
+                    // backgroundImage: AssetImage("assets/images/ic_location.png")
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Gender",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      MyText(
+                        title: profiledata.profileModel.result![0].gender ?? "",
+                        size: 16,
+                        fontWeight: FontWeight.w500,
+                        colors: black,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+              Row(
+                children: [
+                  const SizedBox(width: 20),
+                  CircleAvatar(
+                    minRadius: 25,
+                    backgroundColor: cyan.withOpacity(0.2),
+                    child: IconButton(
+                        onPressed: () {
+                          sharePref.remove('is_login');
+                          sharePref.remove('userId');
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (context) => Login()),
+                              (route) => false);
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          color: cyan,
+                        )),
+                  ),
+                  const SizedBox(width: 20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Log Out",
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: textColorGrey)),
+                      // MyText(
+                      //   title: (profiledata.profileModel.result?[0].biodata
+                      //           .toString() ??
+                      //       ""),
+                      //   size: 16,
+                      //   fontWeight: FontWeight.w500,
+                      //   colors: black,
+                      // )
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );

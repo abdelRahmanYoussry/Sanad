@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/home.dart';
-import 'package:quizapp/pages/login/login.dart';
-import 'package:quizapp/pages/onboaring.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/myimage.dart';
+import 'package:sanad/pages/home.dart';
+import 'package:sanad/pages/login/login.dart';
+import 'package:sanad/pages/onboaring.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/myimage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
@@ -62,9 +62,10 @@ class SplashState extends State<Splash> {
   idFirstChack() async {
     seen = await sharePref.read('seen') ?? "0";
     String isLogin = await sharePref.read('is_login') ?? "0";
-    debugPrint('===>$seen');
+    debugPrint('seen===>$seen');
     if (seen == "1") {
       if (isLogin == "1") {
+        debugPrint('isLogin home===>$isLogin');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -74,6 +75,7 @@ class SplashState extends State<Splash> {
           ),
         );
       } else {
+        debugPrint('isLogin login===>$isLogin');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

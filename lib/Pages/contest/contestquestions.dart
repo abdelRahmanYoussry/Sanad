@@ -11,17 +11,19 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/model/contestquestionmodel.dart';
-import 'package:quizapp/model/questionjson.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/provider/commanprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
-import 'package:quizapp/widget/myimage.dart';
-import 'package:quizapp/widget/mynetimage.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/model/contestquestionmodel.dart';
+import 'package:sanad/model/questionjson.dart';
+import 'package:sanad/pages/contest/contest.dart';
+import 'package:sanad/pages/quiz/levelresult.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/provider/commanprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/myimage.dart';
+import 'package:sanad/widget/mynetimage.dart';
+import 'package:sanad/widget/mytext.dart';
 
 // Type 1 = 4 option & 2 = true/false
 // question_level_master_id 0=easy - medium etc
@@ -38,7 +40,6 @@ class ContestQuestions extends StatefulWidget {
 }
 
 class _ContestQuestionsState extends State<ContestQuestions> {
-  final CustomTimerController _controller = CustomTimerController();
   SharePref sharePref = SharePref();
   String? userId;
   String? questionJson;
@@ -48,7 +49,6 @@ class _ContestQuestionsState extends State<ContestQuestions> {
   final playerW = AudioPlayer();
 
   double percent = 0.0;
-  Timer? timer;
 
   int answercnt = 1;
   int selectAnswer = -1;
@@ -93,21 +93,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
 
   @override
   void dispose() {
-    // _controller.dispose();
     super.dispose();
-  }
-
-  void counter() {
-    // timer = Timer.periodic(Duration(milliseconds: 1000), (_) {
-    //   setState(() {
-    //     percent += 1;
-    //     if (percent >= 100) {
-    //       timer?.cancel();
-    //       percent = 0;
-    //       print(percent);
-    //     }
-    //   });
-    // });
   }
 
   getAnswer(int qindex, index) {
@@ -217,124 +203,11 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                             MediaQuery.of(context).size.width,
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                0.1,
+                                                0.06,
                                         color: Colors.transparent,
-                                        child: Stack(
-                                          alignment: Alignment.topCenter,
-                                          children: [
-                                            Positioned(
-                                              child: Container(
-                                                height: 70,
-                                                width: 70,
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: primary,
-                                                        width: 4),
-                                                    color: white,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                100))),
-                                                child: CircularPercentIndicator(
-                                                  radius: 30.0,
-                                                  lineWidth: 4.0,
-                                                  animation: false,
-                                                  percent: percent / 100,
-                                                  center: Text(
-                                                    percent.toInt().toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.black),
-                                                  ),
-                                                  backgroundColor: Colors.grey,
-                                                  circularStrokeCap:
-                                                      CircularStrokeCap.round,
-                                                  progressColor:
-                                                      Colors.redAccent,
-                                                ),
-                                              ),
-                                            ),
-                                            // Question Count
-                                            Positioned(
-                                              top: 50,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    left: 30, right: 30),
-                                                child: Consumer<CommanProvider>(
-                                                  builder: (context,
-                                                      commandProvider, child) {
-                                                    return Row(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            MyText(
-                                                                title: commandProvider
-                                                                    .correctanswer
-                                                                    .toString()),
-                                                            LinearPercentIndicator(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  3,
-                                                              animation: false,
-                                                              lineHeight: 3.0,
-                                                              percent:
-                                                                  (commandProvider
-                                                                          .correctPercent /
-                                                                      100),
-                                                              barRadius:
-                                                                  const Radius
-                                                                      .circular(20),
-                                                              progressColor: Colors
-                                                                  .greenAccent,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const Spacer(),
-                                                        Row(
-                                                          children: [
-                                                            LinearPercentIndicator(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  3,
-                                                              animation: false,
-                                                              lineHeight: 3.0,
-                                                              percent:
-                                                                  (commandProvider
-                                                                          .incorrectPercent /
-                                                                      100),
-                                                              barRadius:
-                                                                  const Radius
-                                                                      .circular(20),
-                                                              progressColor:
-                                                                  Colors.red,
-                                                            ),
-                                                            MyText(
-                                                                title: commandProvider
-                                                                    .inCorrectanswer
-                                                                    .toString()),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
                                       ),
                                       MyText(
-                                        title: "Bollywood",
+                                        title: widget.contestName,
                                         fontWeight: FontWeight.w500,
                                         size: 16,
                                         colors: textColorGrey,
@@ -1231,10 +1104,10 @@ class _ContestQuestionsState extends State<ContestQuestions> {
     } else {
       if (provider.successModel.status == 200) {
         Utility.toastMessage(provider.successModel.message.toString());
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //     builder: (BuildContext context) => LevelResult(
-        //           levelId: widget.levelId,
-        //         )));
+        Timer(const Duration(seconds: 3), () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const Contest()));
+        });
       }
     }
   }

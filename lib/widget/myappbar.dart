@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/Theme/color.dart';
+import 'package:sanad/Theme/color.dart';
 
 class MyAppbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/myappbar.dart';
-import 'package:quizapp/widget/myimage.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/myappbar.dart';
+import 'package:sanad/widget/myimage.dart';
+import 'package:sanad/widget/mytext.dart';
 
 import '../../theme/color.dart';
 import 'pratisequestions.dart';

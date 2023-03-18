@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/model/contestleadermodel.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/model/contestleadermodel.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/mytext.dart';
 
 class ContestLeaderBoard extends StatefulWidget {
   int? contestId;
@@ -53,9 +53,6 @@ class _ContestLeaderBoardState extends State<ContestLeaderBoard> {
                 if (leaderdata.loading) {
                   return const CircularProgressIndicator();
                 } else {
-                  if ((leaderdata.contestLeaderModel.result?.length ?? 0) > 0) {
-                    Navigator.of(context).pop();
-                  }
                   return Column(
                     children: [
                       Container(

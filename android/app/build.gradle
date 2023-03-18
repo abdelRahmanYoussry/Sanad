@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    throw new FileNotFoundException ("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -27,7 +27,8 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    //compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 32
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -43,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.divinetechs.quiz"
+        applicationId "com.ubd.sanad"
         minSdkVersion 19
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
@@ -58,6 +59,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    namespace 'com.ubd.sanad'
 }
 
 flutter {
@@ -65,7 +67,7 @@ flutter {
 }
 
 dependencies {
-    implementation 'com.android.billingclient:billing:3.0.2'
+    implementation 'com.android.billingclient:billing:5.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:multidex:1.0.3'
 }

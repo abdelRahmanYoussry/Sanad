@@ -1,32 +1,34 @@
-import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:quizapp/model/categorymastermodel.dart';
-import 'package:quizapp/model/categorymodel.dart';
-import 'package:quizapp/model/contentmodel.dart';
-import 'package:quizapp/model/contestquestionmodel.dart';
-import 'package:quizapp/model/earnmodel.dart';
-import 'package:quizapp/model/earnpointsmodel.dart';
-import 'package:quizapp/model/generalsettingmodel.dart';
-import 'package:quizapp/model/levelmastermodel.dart';
-import 'package:quizapp/model/levelmodel.dart';
-import 'package:quizapp/model/levelpraticemodel.dart';
-import 'package:quizapp/model/loginmodel.dart';
-import 'package:quizapp/model/notificationmodel.dart';
-import 'package:quizapp/model/packagesmodel.dart';
-import 'package:quizapp/model/praticeleaderboardmodel.dart';
-import 'package:quizapp/model/profilemodel.dart';
-import 'package:quizapp/model/questionmodel.dart';
-import 'package:quizapp/model/questionpraticemodel.dart';
-import 'package:quizapp/model/refertranmodel.dart';
-import 'package:quizapp/model/registrationmodel.dart';
-import 'package:quizapp/model/rewardmodel.dart';
-import 'package:quizapp/model/successmodel.dart';
-import 'package:quizapp/model/todayleaderboardmodel.dart';
-import 'package:quizapp/model/winnermodel.dart';
-import 'package:quizapp/utils/constant.dart';
 import 'package:path/path.dart';
+import 'package:sanad/model/categorymastermodel.dart';
+import 'package:sanad/model/categorymodel.dart';
+import 'package:sanad/model/coinshistorymodel.dart';
+import 'package:sanad/model/contentmodel.dart';
+import 'package:sanad/model/contestquestionmodel.dart';
+import 'package:sanad/model/earnmodel.dart';
+import 'package:sanad/model/earnpointsmodel.dart';
+import 'package:sanad/model/generalsettingmodel.dart';
+import 'package:sanad/model/levelmastermodel.dart';
+import 'package:sanad/model/levelmodel.dart';
+import 'package:sanad/model/levelpraticemodel.dart';
+import 'package:sanad/model/loginmodel.dart';
+import 'package:sanad/model/notificationmodel.dart';
+import 'package:sanad/model/packagesmodel.dart';
+import 'package:sanad/model/praticeleaderboardmodel.dart';
+import 'package:sanad/model/profilemodel.dart';
+import 'package:sanad/model/questionmodel.dart';
+import 'package:sanad/model/questionpraticemodel.dart';
+import 'package:sanad/model/refertranmodel.dart';
+import 'package:sanad/model/registrationmodel.dart';
+import 'package:sanad/model/rewardmodel.dart';
+import 'package:sanad/model/successmodel.dart';
+import 'package:sanad/model/todayleaderboardmodel.dart';
+import 'package:sanad/model/winnermodel.dart';
+import 'package:sanad/utils/constant.dart';
+
 import '../model/contestleadermodel.dart';
 import '../model/leaderboardmodel.dart';
 
@@ -106,14 +108,17 @@ class ApiService {
   }
 
   Future<RegistrationModel> registration(
-      String email,
-      String pass,
-      String firstname,
-      String lastname,
-      String mobilenumber,
-      String refercode,
-      String fullname,
-      String username) async {
+      {required String email,
+      required String pass,
+      required String firstname,
+      required String lastname,
+      required String mobilenumber,
+      required String refercode,
+      required String fullname,
+      required String gender,
+      required String age,
+      required String username,
+      required String address}) async {
     RegistrationModel registrationModel;
     String registration = "registration";
     Response response = await dio.post('$baseurl$registration',
@@ -125,7 +130,10 @@ class ApiService {
           'mobile_number': mobilenumber,
           'parent_reference_code': refercode,
           'fullname': fullname,
-          'username': username
+          'username': username,
+          'gender': gender,
+          'age': age,
+          'address': address
         }));
     debugPrint("${response.data}");
     if (response.statusCode == 200) {
@@ -197,19 +205,49 @@ class ApiService {
   }
 
   Future<SuccessModel> updateProfile(
-      userId, fullname, email, contact, address, image) async {
+      {required String userId,
+      required String fullName,
+      required String email,
+      required String contact,
+      required String address,
+      dynamic? image,
+      required String age,
+      // required String country,
+      required String gender}
+// ,
+      // userId, fullname, email, contact, address, image
+      ) async {
     SuccessModel successModel;
     String profile = "update_profile";
-    Response response = await dio.post('$baseurl$profile',
-        data: FormData.fromMap({
-          'user_id': userId,
-          "fullname": fullname,
-          "email": email,
-          "mobile_number": contact,
-          "biodata": address,
-          "profile_img": await MultipartFile.fromFile(image.path,
-              filename: basename(image.path))
-        }));
+    Response? response;
+    if (image != null) {
+      response = await dio.post('$baseurl$profile',
+          data: FormData.fromMap({
+            'user_id': userId,
+            "fullname": fullName,
+            "email": email,
+            "mobile_number": contact,
+            "biodata": address,
+            "profile_img": await MultipartFile.fromFile(image.path,
+                filename: basename(image.path)),
+            'gender': gender,
+            'age': age,
+            // 'address':
+          }));
+    } else {
+      response = await dio.post('$baseurl$profile',
+          data: FormData.fromMap({
+            'user_id': userId,
+            "fullname": fullName,
+            "email": email,
+            "mobile_number": contact,
+            "biodata": address,
+            // "profile_img": await MultipartFile.fromFile(image.path,
+            //     filename: basename(image.path)),
+            'gender': gender,
+            'age': age
+          }));
+    }
     debugPrint("${response.data}");
     if (response.statusCode == 200) {
       debugPrint("Profile apiservice:===>${response.data}");
@@ -248,6 +286,21 @@ class ApiService {
       throw Exception('Failed to load album');
     }
     return earnModel;
+  }
+
+  Future<CoinsHistoryModel> coinshistory(String userId) async {
+    CoinsHistoryModel coinsHistoryModel;
+    String profile = "get_package_transaction";
+    Response response =
+        await dio.post('$baseurl$profile', data: ({'user_id': userId}));
+    debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      debugPrint("Refer apiservice:===>${response.data}");
+      coinsHistoryModel = CoinsHistoryModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return coinsHistoryModel;
   }
 
   Future<RewardModel> rewardpoints(String userId) async {
@@ -300,6 +353,9 @@ class ApiService {
       String userId, int contestId) async {
     ContestLeaderModel contestLeaderModel;
     String contestleaderboard = "getContestLeaderBoard";
+    log('====> api $contestleaderboard');
+    log('====> userId $userId');
+    log('====> contestId $contestId');
     Response response = await dio.post('$baseurl$contestleaderboard',
         data: ({'user_id': userId, 'contest_id': contestId}));
     debugPrint("${response.data}");

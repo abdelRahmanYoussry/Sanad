@@ -1,10 +1,7 @@
 // ignore_for_file: file_names, deprecated_member_use, must_be_immutable
 
 import 'package:dropdown_textfield/dropdown_textfield.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:hassy/core/utils/shared/app/color_manager.dart';
-import 'package:hassy/core/utils/shared/app/values_manager.dart';
 
 class MyCustomDropDown extends StatelessWidget {
   List<DropDownValueModel> dropDownValueList;
@@ -14,6 +11,7 @@ class MyCustomDropDown extends StatelessWidget {
   Function? onChanged;
   Function? onTap;
   bool enableDropDown;
+  BorderSide borderSide;
   SingleValueDropDownController controller;
   AutovalidateMode? isAutoValid = AutovalidateMode.disabled;
 
@@ -23,6 +21,7 @@ class MyCustomDropDown extends StatelessWidget {
     required this.validator,
     required this.enableDropDown,
     required this.controller,
+    required this.borderSide,
     this.onChanged,
     this.onTap,
     this.enableSearch = false,
@@ -39,7 +38,7 @@ class MyCustomDropDown extends StatelessWidget {
       onChanged: (value) {
         onChanged!(value);
       },
-      dropDownItemCount: 5,
+      // dropDownItemCount: 5,
       dropdownRadius: 10,
       controller: controller,
       enableSearch: enableSearch!,
@@ -47,28 +46,20 @@ class MyCustomDropDown extends StatelessWidget {
       listTextStyle: TextStyle(
           color: Theme.of(context).textTheme.bodyText1!.color,
           fontSize: 14,
-          locale: context.locale,
+          // locale: context.locale,
           fontWeight: FontWeight.bold),
-      dropDownIconProperty: IconProperty(
-          color: enableDropDown
-              ? Theme.of(context).textTheme.subtitle1!.color
-              : ColorManager.unSelectedIconButtonColor),
+      dropDownIconProperty: IconProperty(color: Colors.grey),
       validator: validator,
       clearIconProperty:
           IconProperty(color: Theme.of(context).textTheme.subtitle1!.color),
       textFieldDecoration: InputDecoration(
           disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: ColorManager.unSelectedIconButtonColor, width: 1),
-              borderRadius: BorderRadius.circular(AppSize.size10)),
+              borderSide: const BorderSide(color: Colors.grey, width: 1),
+              borderRadius: BorderRadius.circular(10)),
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.bodyText1!.color!,
-                  width: 1),
-              borderRadius: BorderRadius.circular(AppSize.size10)),
+              borderSide: borderSide, borderRadius: BorderRadius.circular(10)),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Theme.of(context).textTheme.bodyText1!.color!, width: 2),
+            borderSide: borderSide,
           ),
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red, width: 2),
@@ -80,17 +71,17 @@ class MyCustomDropDown extends StatelessWidget {
               const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
           // errorText: 'Error',
           label: label,
-          fillColor: Theme.of(context).scaffoldBackgroundColor,
+          fillColor: Colors.transparent,
           filled: true,
           labelStyle: TextStyle(
               fontSize: 18,
-              color: enableDropDown
-                  ? ColorManager.mainPrimaryColor4
-                  : ColorManager.unSelectedIconButtonColor)),
+              color: enableDropDown ? Colors.black : Colors.grey)),
       textStyle: TextStyle(
-          color: Theme.of(context).textTheme.bodyText1!.color,
-          locale: context.locale),
-      dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).textTheme.bodyText1!.color,
+
+        // locale: context.locale
+      ),
+      dropdownColor: Colors.white,
     );
   }
 }

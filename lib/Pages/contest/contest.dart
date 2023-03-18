@@ -1,18 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/contest/contestleaderboard.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
-import 'package:quizapp/widget/MyAppbar.dart';
-import 'package:quizapp/widget/myimage.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/pages/contest/contestleaderboard.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/MyAppbar.dart';
+import 'package:sanad/widget/myimage.dart';
+import 'package:sanad/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'contestquestions.dart';
@@ -55,13 +53,13 @@ class _ContestState extends State<Contest> {
 
   getAppbar() {
     return const MyAppbar(
-      title: "Contest",
+      title: "Challenges",
     );
   }
 
   buildBody() {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         body: Container(
           decoration: const BoxDecoration(
@@ -77,14 +75,15 @@ class _ContestState extends State<Contest> {
                 getAppbar(),
                 const SizedBox(height: 10),
                 Container(
-                  height: 45,
+                  height: 50,
                   decoration: BoxDecoration(
                       color: tabbarunselect,
                       borderRadius: BorderRadius.circular(25.0)),
                   child: TabBar(
+                    indicatorSize: TabBarIndicatorSize.tab,
                     indicator: BoxDecoration(
                         color: white,
-                        borderRadius: BorderRadius.circular(25.0)),
+                        borderRadius: BorderRadius.circular(20.0)),
                     labelColor: appColor,
                     unselectedLabelColor: white,
                     tabs: [
@@ -94,17 +93,20 @@ class _ContestState extends State<Contest> {
                           fontWeight: FontWeight.w500),
                       MyText(
                           title: 'Live', size: 16, fontWeight: FontWeight.w500),
-                      MyText(
-                          title: 'Ended', size: 16, fontWeight: FontWeight.w500)
+                      // MyText(
+                      //     title: 'Ended', size: 16, fontWeight: FontWeight.w500)
                     ],
                   ),
                 ),
                 Expanded(
                     child: TabBarView(
-                  children: [upcoming(), live(), ended()],
+                  children: [
+                    upcoming(), live()
+                    // , ended()
+                  ],
                 )),
                 SizedBox(
-                  height: 60,
+                  height: 50,
                   child: AdWidget(
                       ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
                 ),
@@ -159,7 +161,7 @@ class _ContestState extends State<Contest> {
                   return Container(
                     margin: const EdgeInsets.only(
                         left: 5, top: 10, right: 5, bottom: 5),
-                    height: 210,
+                    height: MediaQuery.of(context).size.height / 4,
                     decoration: const BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -187,48 +189,6 @@ class _ContestState extends State<Contest> {
                               ],
                             ),
                             const Spacer(),
-                            (upcomingdata.upcontentModel.result?[index].isBuy ??
-                                        0) ==
-                                    0
-                                ? TextButton(
-                                    onPressed: () async {
-                                      final joinContest =
-                                          Provider.of<ApiProvider>(context,
-                                              listen: false);
-                                      await joinContest.getjoinContest(
-                                          context,
-                                          upcomingdata.upcontentModel
-                                                  .result?[index].id
-                                                  .toString() ??
-                                              "",
-                                          userId.toString(),
-                                          upcomingdata.upcontentModel
-                                                  .result?[index].price
-                                                  .toString() ??
-                                              "");
-                                      if (!joinContest.loading) {
-                                        Utility.toastMessage(joinContest
-                                            .successModel.message
-                                            .toString());
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        28.0))),
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                appColor)),
-                                    child: MyText(
-                                      title: ' Join Now ',
-                                      size: 16,
-                                      fontWeight: FontWeight.w500,
-                                      colors: white,
-                                    ))
-                                : Container(),
                           ],
                         ),
                         const SizedBox(height: 15),
@@ -282,106 +242,220 @@ class _ContestState extends State<Contest> {
                                 colors: textColorGrey),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        const Divider(height: 0.5, color: textColorGrey),
-                        const SizedBox(height: 10),
+                        const Spacer(),
+                        // const SizedBox(height: 10),
+                        // const Divider(height: 0.5, color: textColorGrey),
                         SizedBox(
+                          width: double.infinity,
                           height: 40,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: MyText(
-                                          title: 'Start :',
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                customShowDialog(
+                                    title: Center(
+                                      child: Text(upcomingdata
+                                          .upcontentModel.result![index].name!),
                                     ),
-                                    Expanded(
-                                      child: MyText(
-                                          title: diff.inDays > 1
-                                              ? Utility().dateConvert(
-                                                  upcomingdata
-                                                          .upcontentModel
-                                                          .result?[index]
-                                                          .startDate ??
-                                                      "",
-                                                  "dd-MMM-yy")
-                                              : diff.inHours.toString() +
-                                                  " h - " +
-                                                  diff.inMinutes.toString() +
-                                                  " m - " +
-                                                  diff.inSeconds.toString() +
-                                                  " m - ",
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
+                                    content: SizedBox(
+                                      height: 60,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: MyText(
+                                                      title: 'Start :',
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Expanded(
+                                                  child: MyText(
+                                                      title: diff.inDays > 1
+                                                          ? Utility().dateConvert(
+                                                              upcomingdata
+                                                                      .upcontentModel
+                                                                      .result?[
+                                                                          index]
+                                                                      .startDate ??
+                                                                  "",
+                                                              "dd-MMM-yy")
+                                                          : diff.inHours
+                                                                  .toString() +
+                                                              " h - " +
+                                                              diff.inMinutes
+                                                                  .toString() +
+                                                              " m - " +
+                                                              diff.inSeconds
+                                                                  .toString() +
+                                                              " m - ",
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const VerticalDivider(
+                                            thickness: 1,
+                                            width: 1,
+                                            color: textColorGrey,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: MyText(
+                                                      title: 'Entry Fee :',
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Expanded(
+                                                  child: MyText(
+                                                      title:
+                                                          "${upcomingdata.upcontentModel.result?[index].price! ?? ""} +' Coins'",
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const VerticalDivider(
+                                            thickness: 1,
+                                            width: 1,
+                                            color: textColorGrey,
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Expanded(
+                                                  child: MyText(
+                                                      title: 'End :',
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Expanded(
+                                                  child: MyText(
+                                                      title: Utility().dateConvert(
+                                                          upcomingdata
+                                                                  .upcontentModel
+                                                                  .result?[
+                                                                      index]
+                                                                  .endDate ??
+                                                              "",
+                                                          "dd-MMM-yy"),
+                                                      size: 12,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ],
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'Ok',
+                                          style: TextStyle(
+                                              color: baseColor, fontSize: 20),
+                                        ),
+                                      ),
+                                      (upcomingdata.upcontentModel
+                                                      .result?[index].isBuy ??
+                                                  0) ==
+                                              0
+                                          ? TextButton(
+                                              onPressed: () async {
+                                                final joinContest =
+                                                    Provider.of<ApiProvider>(
+                                                        context,
+                                                        listen: false);
+                                                await joinContest
+                                                    .getjoinContest(
+                                                        context,
+                                                        upcomingdata
+                                                                .upcontentModel
+                                                                .result?[index]
+                                                                .id
+                                                                .toString() ??
+                                                            "",
+                                                        userId.toString(),
+                                                        upcomingdata
+                                                                .upcontentModel
+                                                                .result?[index]
+                                                                .price
+                                                                .toString() ??
+                                                            "");
+                                                if (!joinContest.loading) {
+                                                  Utility.toastMessage(
+                                                      joinContest
+                                                          .successModel.message
+                                                          .toString());
+                                                }
+                                              },
+                                              style: ButtonStyle(
+                                                  shape: MaterialStateProperty.all<
+                                                          RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      28.0))),
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          appColor)),
+                                              child: MyText(
+                                                title: ' Join Now ',
+                                                size: 16,
+                                                fontWeight: FontWeight.w500,
+                                                colors: white,
+                                              ))
+                                          : Container(),
+                                    ],
+                                    context: context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(cyan),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(28),
+                                  ),
                                 ),
                               ),
-                              const VerticalDivider(
-                                thickness: 1,
-                                width: 1,
-                                color: textColorGrey,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: MyText(
-                                          title: 'Entry Fee :',
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Expanded(
-                                      child: MyText(
-                                          title:
-                                              "${upcomingdata.upcontentModel.result?[index].price ?? ""}",
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
+                              child: const Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.white,
                                 ),
-                              ),
-                              const VerticalDivider(
-                                thickness: 1,
-                                width: 1,
-                                color: textColorGrey,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: MyText(
-                                          title: 'End :',
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    Expanded(
-                                      child: MyText(
-                                          title: Utility().dateConvert(
-                                              upcomingdata.upcontentModel
-                                                      .result?[index].endDate ??
-                                                  "",
-                                              "dd-MMM-yy"),
-                                          size: 12,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
+                              )),
+                        ),
                       ]),
                     ),
                   );
@@ -422,14 +496,14 @@ class _ContestState extends State<Contest> {
                 itemBuilder: (context, index) {
                   return Container(
                     margin: const EdgeInsets.only(
-                        left: 5, top: 10, right: 5, bottom: 5),
-                    height: 150,
+                        left: 5, top: 10, right: 5, bottom: 0),
+                    height: MediaQuery.of(context).size.height / 4,
                     decoration: const BoxDecoration(
                         color: white,
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: Container(
                       padding: const EdgeInsets.only(
-                          left: 10, top: 10, right: 10, bottom: 10),
+                          left: 10, top: 10, right: 10, bottom: 5),
                       child: Column(children: [
                         Row(
                           children: [
@@ -457,21 +531,99 @@ class _ContestState extends State<Contest> {
                                     0
                                 ? TextButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ContestQuestions(
-                                                    contestId: livecontent
-                                                        .livecontentModel
-                                                        .result?[index]
-                                                        .id
-                                                        .toString(),
-                                                    contestName: livecontent
-                                                        .livecontentModel
-                                                        .result?[index]
-                                                        .name,
-                                                  )));
+                                      customShowDialog(
+                                          title: Center(
+                                            child: Text(livecontent
+                                                .livecontentModel
+                                                .result![index]
+                                                .name!),
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  MyText(
+                                                      title: "5h 40m",
+                                                      size: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                  const VerticalDivider(
+                                                    thickness: 2,
+                                                    width: 20,
+                                                    color: textColorGrey,
+                                                  ),
+                                                  MyText(
+                                                      title:
+                                                          "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
+                                                      size: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                'Are you Sure to Join Now?',
+                                                style: TextStyle(
+                                                    color: actionColor),
+                                              ),
+                                            ],
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: baseColor,
+                                                    fontSize: 20),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          cyan),
+                                                  shape: MaterialStateProperty.all(
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      28.0))))),
+                                              onPressed: () {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            ContestQuestions(
+                                                              contestId: livecontent
+                                                                  .livecontentModel
+                                                                  .result?[
+                                                                      index]
+                                                                  .id
+                                                                  .toString(),
+                                                              contestName:
+                                                                  livecontent
+                                                                      .livecontentModel
+                                                                      .result?[
+                                                                          index]
+                                                                      .name,
+                                                            )));
+                                              },
+                                              child: const Text(
+                                                'Confirm',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                          context: context);
                                     },
                                     style: ButtonStyle(
                                         shape: MaterialStateProperty.all<
@@ -484,7 +636,7 @@ class _ContestState extends State<Contest> {
                                             MaterialStateProperty.all(
                                                 appColor)),
                                     child: MyText(
-                                      title: ' Play Now ',
+                                      title: ' Join Now ',
                                       size: 16,
                                       fontWeight: FontWeight.w500,
                                       colors: white,
@@ -550,7 +702,52 @@ class _ContestState extends State<Contest> {
                                   fontWeight: FontWeight.w600),
                             ],
                           ),
-                        )
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 40,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                customShowDialog(
+                                    title: const Center(child: Text('Details')),
+                                    content: Text(livecontent
+                                        .livecontentModel.result![index].name!),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'Ok',
+                                          style: TextStyle(
+                                              color: cyan, fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                    context: context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(cyan),
+                                shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(28),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                'Description',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                       ]),
                     ),
                   );
@@ -680,6 +877,22 @@ class _ContestState extends State<Contest> {
         );
       },
     );
+  }
+
+  customShowDialog(
+      {required Widget title,
+      required Widget content,
+      required List<Widget> actions,
+      required BuildContext context}) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: title,
+            content: content,
+            actions: actions));
   }
 
   void winnerList(var contestId) {

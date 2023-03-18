@@ -1,6 +1,6 @@
 {
-    "name": "quizapp",
-    "short_name": "quizapp",
+    "name": "sanadapp",
+    "short_name": "sanadapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

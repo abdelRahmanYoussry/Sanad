@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/model/earnpointsmodel.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/model/earnpointsmodel.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/mytext.dart';
 import '../widget/myappbar.dart';
 
 class SpinWheel extends StatefulWidget {

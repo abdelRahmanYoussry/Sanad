@@ -1,13 +1,13 @@
-import 'dart:convert';
-
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/home.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
+import 'package:sanad/pages/home.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/CustomDropDown.dart';
 
 import '../../model/successmodel.dart';
 import '../../theme/config.dart';
@@ -22,11 +22,23 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController ageController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController confirmController = TextEditingController();
   TextEditingController phonenumberController = TextEditingController();
   TextEditingController referController = TextEditingController();
-
+  final SingleValueDropDownController genderController =
+      SingleValueDropDownController();
+  final SingleValueDropDownController countryController =
+      SingleValueDropDownController();
+  List<DropDownValueModel> genderTypeList = [
+    const DropDownValueModel(name: 'Female', value: 0),
+    const DropDownValueModel(name: 'Male', value: 1),
+  ];
+  List<DropDownValueModel> countryTypeList = [
+    const DropDownValueModel(name: 'Egypt', value: 0),
+    const DropDownValueModel(name: 'Malaysia', value: 1),
+  ];
   List<SuccessModel>? loginList;
 
   final loginuser = GetStorage();
@@ -51,6 +63,9 @@ class _SignUpState extends State<SignUp> {
     String pass = passController.text.trim();
     String phone = phonenumberController.text.trim();
     String refer = referController.text.trim();
+    String gender = genderController.dropDownValue!.name;
+    String age = ageController.text.trim();
+    String address = countryController.dropDownValue!.name;
 
     if (username.isEmpty) {
       Utility.toastMessage("Please enter username");
@@ -58,8 +73,15 @@ class _SignUpState extends State<SignUp> {
       Utility.toastMessage("Please enter email");
     } else {
       var provider = Provider.of<ApiProvider>(context, listen: false);
-      await provider.registration(context, email, pass, username, username,
-          phone, refer, username, username);
+      await provider.registration(
+        age: age, fullname: username, gender: gender,
+        email: email, username: username, mobilenumber: phone,
+        lastname: username, firstname: username,
+        context: context, password: pass, refercode: refer,
+        address: address,
+        // context, email, pass, username, username,
+        // phone, refer, username, username, age, gender
+      );
       if (!provider.loading) {
         isloading = false;
         setState(() {});
@@ -144,6 +166,7 @@ class _SignUpState extends State<SignUp> {
                             controller: usernameController,
                             decoration: const InputDecoration(
                                 labelText: "User Name",
+                                labelStyle: TextStyle(color: Colors.black),
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,
@@ -154,19 +177,88 @@ class _SignUpState extends State<SignUp> {
                             thickness: 0.5,
                             height: size.height * 0.01,
                           ),
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
+                          // SizedBox(
+                          //   height: size.height * 0.02,
+                          // ),
                           TextField(
                             controller: emailController,
                             decoration: const InputDecoration(
                                 labelText: "Email Address",
+                                labelStyle: TextStyle(color: Colors.black),
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,
                                 hintText: "Email",
                                 hintStyle: TextStyle(color: Colors.grey)),
                           ),
+                          Divider(
+                            thickness: 0.5,
+                            height: size.height * 0.01,
+                          ),
+                          TextField(
+                            controller: ageController,
+                            onChanged: (value) {
+                              sharePref.save('userAge', value);
+                            },
+                            decoration: const InputDecoration(
+                                labelText: "ِAge",
+                                labelStyle: TextStyle(color: Colors.black),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                                hintText: "Age",
+                                hintStyle: TextStyle(color: Colors.grey)),
+                          ),
+                          Divider(
+                            thickness: 0.5,
+                            height: size.height * 0.01,
+                          ),
+                          MyCustomDropDown(
+                              dropDownValueList: genderTypeList,
+                              onChanged: (value) async {
+                                sharePref.save('userGender', value.name);
+                              },
+                              borderSide: BorderSide.none,
+                              onTap: () {},
+                              isAutoValid: AutovalidateMode.disabled,
+                              enableSearch: false,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Gender cant be empty';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              enableDropDown: true,
+                              controller: genderController,
+                              label: const Text('Select Your Gender')),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          Divider(
+                            thickness: 0.5,
+                            height: size.height * 0.01,
+                          ),
+                          MyCustomDropDown(
+                              dropDownValueList: countryTypeList,
+                              onChanged: (value) async {
+                                String country = value.name;
+                                await sharePref.save('userCountry', country);
+                              },
+                              borderSide: BorderSide.none,
+                              onTap: () {},
+                              isAutoValid: AutovalidateMode.disabled,
+                              enableSearch: false,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'County cant be empty';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              enableDropDown: true,
+                              controller: countryController,
+                              label: const Text('Select Your Country')),
                           Divider(
                             thickness: 0.5,
                             height: size.height * 0.01,
@@ -189,6 +281,8 @@ class _SignUpState extends State<SignUp> {
                                       ? Icons.visibility
                                       : Icons.visibility_off),
                                 ),
+                                labelStyle:
+                                    const TextStyle(color: Colors.black),
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,
@@ -214,6 +308,8 @@ class _SignUpState extends State<SignUp> {
                                       ? Icons.visibility
                                       : Icons.visibility_off),
                                 ),
+                                labelStyle:
+                                    const TextStyle(color: Colors.black),
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,
@@ -232,6 +328,7 @@ class _SignUpState extends State<SignUp> {
                             controller: phonenumberController,
                             decoration: const InputDecoration(
                                 labelText: "Phone Number",
+                                labelStyle: TextStyle(color: Colors.black),
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,
@@ -249,6 +346,7 @@ class _SignUpState extends State<SignUp> {
                             controller: referController,
                             decoration: const InputDecoration(
                                 labelText: "Referral Code",
+                                labelStyle: TextStyle(color: Colors.black),
                                 contentPadding:
                                     EdgeInsets.symmetric(horizontal: 10),
                                 border: InputBorder.none,

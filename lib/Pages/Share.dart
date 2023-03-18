@@ -1,9 +1,9 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/widget/MyAppbar.dart';
-import 'package:quizapp/widget/myText.dart';
+import 'package:sanad/Theme/color.dart';
+import 'package:sanad/widget/MyAppbar.dart';
+import 'package:sanad/widget/myText.dart';
 
 bool topBar = false;
 

@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:ffi';
+//import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -10,11 +10,11 @@ import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/model/packagesmodel.dart';
-import 'package:quizapp/pages/wallet.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
+import 'package:sanad/model/packagesmodel.dart';
+import 'package:sanad/pages/wallet.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
 import 'dart:io';
 import '../../theme/color.dart';
 import '../../widget/myappbar.dart';
@@ -309,8 +309,7 @@ class _SubscriptionState extends State<Subscription> {
           ),
         );
       } else {
-        return Utility.toastMessage(
-            packageProvider.packagesModel.message.toString());
+        return Container();
       }
     }
   }

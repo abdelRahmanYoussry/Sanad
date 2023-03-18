@@ -1,27 +1,24 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/notification.dart';
-import 'package:quizapp/pages/profile.dart';
-import 'package:quizapp/pages/settings.dart';
-import 'package:quizapp/pages/wallet.dart';
-import 'package:quizapp/pages/leaderboard.dart';
-import 'package:quizapp/Theme/config.dart';
-import 'package:quizapp/Theme/color.dart';
-import 'package:quizapp/pages/instrucation.dart';
-import 'package:quizapp/pages/login/login.dart';
-import 'package:quizapp/pages/referearn.dart';
-import 'package:quizapp/pages/spinwheel.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
+import 'package:sanad/Theme/color.dart';
+import 'package:sanad/Theme/config.dart';
+import 'package:sanad/pages/instrucation.dart';
+import 'package:sanad/pages/leaderboard.dart';
+import 'package:sanad/pages/login/login.dart';
+import 'package:sanad/pages/notification.dart';
+import 'package:sanad/pages/profile.dart';
+import 'package:sanad/pages/referearn.dart';
+import 'package:sanad/pages/settings.dart';
+import 'package:sanad/pages/spinwheel.dart';
+import 'package:sanad/pages/wallet.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
 
 import 'contest/contest.dart';
-import 'pratise/praticestage.dart';
 import 'quiz/category.dart';
 
 bool topBar = false;
@@ -72,7 +69,7 @@ class _HomeState extends State<Home> {
     String isLogin = await sharePref.read('is_login') ?? "0";
     debugPrint('===>$isLogin');
 
-    if (userId != "" || userId != "0") {
+    if (userId != null || userId != "" || userId != "0") {
       final profiledata = Provider.of<ApiProvider>(context, listen: false);
       profiledata.getProfile(context, userId);
     }
@@ -178,26 +175,25 @@ class _HomeState extends State<Home> {
                 style: GoogleFonts.poppins(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white)),
+                    color: Colors.black)),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(25, 0, 25, 5),
             child: Consumer<ApiProvider>(
               builder: (context, profiledata, child) {
-                String? username =
-                    profiledata.profileModel.result?[0].username.toString() ??
-                        "";
+                String? email =
+                    profiledata.profileModel.result?[0].email.toString() ?? "";
                 String? mobile = profiledata
                         .profileModel.result?[0].mobileNumber
                         .toString() ??
                     "";
 
                 return Text(
-                  username.isNotEmpty ? username : mobile,
+                  email != "" ? email : mobile,
                   style: GoogleFonts.poppins(
-                      fontSize: 26,
+                      fontSize: 24,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: Colors.blue),
                 );
               },
             ),
@@ -219,7 +215,7 @@ class _HomeState extends State<Home> {
     return Container(
       height: 280,
       decoration: BoxDecoration(
-        color: textBoxColor,
+        color: Colors.white,
         borderRadius:
             const BorderRadius.vertical(bottom: Radius.elliptical(30.0, 30.0)),
         boxShadow: [
@@ -408,7 +404,7 @@ class _HomeState extends State<Home> {
                   height: MediaQuery.of(context).size.height * 0.22,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/images/red_bg.png"),
+                        image: AssetImage("assets/images/green2_bg.png"),
                         fit: BoxFit.fill),
                   ),
                   child: Padding(
@@ -420,7 +416,7 @@ class _HomeState extends State<Home> {
                         Text("Join in",
                             style: GoogleFonts.poppins(
                                 color: Colors.white, fontSize: 18)),
-                        Text("Contest",
+                        Text("Challenges",
                             style: GoogleFonts.poppins(
                                 color: Colors.white,
                                 fontSize: 28,
@@ -439,7 +435,9 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Expanded(
+
+            /*
+              Expanded(
               flex: 1,
               child: GestureDetector(
                 onTap: () {
@@ -487,6 +485,8 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
+
+            */
             const SizedBox(
               width: 15,
             ),
@@ -548,7 +548,7 @@ class _HomeState extends State<Home> {
                   height: MediaQuery.of(context).size.height * 0.22,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/images/yellow_bg.png"),
+                        image: AssetImage("assets/images/red2_bg.png"),
                         fit: BoxFit.fill),
                   ),
                   child: Padding(

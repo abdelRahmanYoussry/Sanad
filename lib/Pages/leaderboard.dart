@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/widget/mytext.dart';
 
 class LeaderBoard extends StatefulWidget {
   const LeaderBoard({Key? key}) : super(key: key);
@@ -36,392 +36,381 @@ class _LeaderBoardState extends State<LeaderBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appBgColor,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Consumer<ApiProvider>(
-                builder: (context, leaderdata, child) {
-                  return Column(
-                    children: [
-                      Container(
-                        height: 400,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                          image: AssetImage("assets/images/dash_bg.png"),
-                          fit: BoxFit.cover,
-                        )),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(width: 15),
-                            (leaderdata.leaderBoardModel.result?.length ?? 0) >
-                                    0
-                                ? Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          Text(
-                                            "#2",
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 16),
-                                          ),
-                                          CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(
-                                                leaderdata
-                                                        .leaderBoardModel
-                                                        .result?[1]
-                                                        .profileImg ??
-                                                    ""),
-                                          ),
-                                          Center(
-                                            child: Text(
+      body: Stack(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Consumer<ApiProvider>(
+              builder: (context, leaderdata, child) {
+                return Column(
+                  children: [
+                    Container(
+                      height: 400,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage("assets/images/dash_bg.png"),
+                        fit: BoxFit.cover,
+                      )),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(width: 15),
+                          (leaderdata.leaderBoardModel.result?.length ?? 0) > 0
+                              ? Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 80),
+                                        Text(
+                                          "#2",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(
                                               leaderdata.leaderBoardModel
-                                                      .result?[1].fullname ??
-                                                  "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                leaderdata.leaderBoardModel
-                                                        .result?[1].totalScore
-                                                        .toString() ??
-                                                    "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          Text(
-                                            "#2",
+                                                      .result?[1].profileImg ??
+                                                  ""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            leaderdata.leaderBoardModel
+                                                    .result?[1].fullname ??
+                                                "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
-                                                color: Colors.white,
+                                                color: Colors.black,
                                                 fontSize: 16),
                                           ),
-                                          const CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(""),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
+                                              leaderdata.leaderBoardModel
+                                                      .result?[1].totalScore
+                                                      .toString() ??
+                                                  "",
                                               style: GoogleFonts.poppins(
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                   fontSize: 16),
                                             ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
-                            (leaderdata.leaderBoardModel.result?.length ?? 0) >
-                                    1
-                                ? Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 10),
-                                          Image.asset(
-                                            "assets/images/ic_user_top.png",
-                                            width: 60,
-                                          ),
-                                          CircleAvatar(
-                                            radius: 55,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(
-                                                leaderdata
-                                                        .leaderBoardModel
-                                                        .result?[0]
-                                                        .profileImg ??
-                                                    ""),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              leaderdata.leaderBoardModel
-                                                      .result?[0].fullname ??
-                                                  "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                leaderdata.leaderBoardModel
-                                                        .result?[0].totalScore
-                                                        .toString() ??
-                                                    "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          Text(
-                                            "#3",
+                                )
+                              : Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 80),
+                                        Text(
+                                          "#2",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        const CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
-                                                color: Colors.white,
+                                                color: Colors.black,
                                                 fontSize: 16),
                                           ),
-                                          const CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(""),
-                                          ),
-                                          Center(
-                                            child: Text(
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
                                               "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                   fontSize: 16),
                                             ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
-                            (leaderdata.leaderBoardModel.result?.length ?? 0) >
-                                    2
-                                ? Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          Text(
-                                            "#3",
-                                            style: GoogleFonts.poppins(
-                                                color: Colors.white,
-                                                fontSize: 16),
-                                          ),
-                                          CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(
-                                                leaderdata
-                                                        .leaderBoardModel
-                                                        .result?[2]
-                                                        .profileImg ??
-                                                    ""),
-                                          ),
-                                          Center(
-                                            child: Text(
+                                ),
+                          (leaderdata.leaderBoardModel.result?.length ?? 0) > 1
+                              ? Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 10),
+                                        Image.asset(
+                                          "assets/images/ic_user_top.png",
+                                          width: 60,
+                                        ),
+                                        CircleAvatar(
+                                          radius: 55,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(
                                               leaderdata.leaderBoardModel
-                                                      .result?[2].fullname ??
-                                                  "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: GoogleFonts.poppins(
-                                                  color: Colors.white,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                leaderdata.leaderBoardModel
-                                                        .result?[2].totalScore
-                                                        .toString() ??
-                                                    "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                : Expanded(
-                                    child: SizedBox(
-                                      height: 400,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(height: 80),
-                                          Text(
-                                            "#3",
+                                                      .result?[0].profileImg ??
+                                                  ""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            leaderdata.leaderBoardModel
+                                                    .result?[0].fullname ??
+                                                "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
                                             style: GoogleFonts.poppins(
-                                                color: Colors.white,
+                                                color: Colors.black,
                                                 fontSize: 16),
                                           ),
-                                          const CircleAvatar(
-                                            radius: 40,
-                                            backgroundColor: primary,
-                                            backgroundImage: NetworkImage(""),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              "",
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
+                                              leaderdata.leaderBoardModel
+                                                      .result?[0].totalScore
+                                                      .toString() ??
+                                                  "",
                                               style: GoogleFonts.poppins(
-                                                  color: Colors.white,
+                                                  color: Colors.black,
                                                   fontSize: 16),
                                             ),
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SizedBox(
-                                                child: Image.asset(
-                                                    "assets/images/ic_icons.png"),
-                                                height: 30,
-                                                width: 30,
-                                              ),
-                                              Text(
-                                                "",
-                                                style: GoogleFonts.poppins(
-                                                    color: Colors.white,
-                                                    fontSize: 16),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                          ],
+                                        )
+                                      ],
                                     ),
                                   ),
-                            const SizedBox(width: 15),
-                          ],
-                        ),
+                                )
+                              : Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 80),
+                                        Text(
+                                          "#3",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        const CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
+                                              "",
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                          (leaderdata.leaderBoardModel.result?.length ?? 0) > 2
+                              ? Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 80),
+                                        Text(
+                                          "#3",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(
+                                              leaderdata.leaderBoardModel
+                                                      .result?[2].profileImg ??
+                                                  ""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            leaderdata.leaderBoardModel
+                                                    .result?[2].fullname ??
+                                                "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
+                                              leaderdata.leaderBoardModel
+                                                      .result?[2].totalScore
+                                                      .toString() ??
+                                                  "",
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: SizedBox(
+                                    height: 400,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(height: 80),
+                                        Text(
+                                          "#3",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        const CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: primary,
+                                          backgroundImage: NetworkImage(""),
+                                        ),
+                                        Center(
+                                          child: Text(
+                                            "",
+                                            textAlign: TextAlign.center,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontSize: 16),
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              child: Image.asset(
+                                                  "assets/images/ic_icons.png"),
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            Text(
+                                              "",
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontSize: 16),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(width: 15),
+                        ],
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
-            getAppbar(),
-            buildBody(),
-            getBottom()
-          ],
-        ),
+          ),
+          getAppbar(),
+          buildBody(),
+          getBottom()
+        ],
       ),
     );
   }
@@ -430,10 +419,10 @@ class _LeaderBoardState extends State<LeaderBoard> {
     return AppBar(
       title: const Text(
         "Leaderboard",
-        style: TextStyle(color: Colors.white, fontSize: 20),
+        style: TextStyle(color: Colors.black, fontSize: 20),
       ),
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+        icon: const Icon(Icons.arrow_back, color: Colors.black, size: 30),
         onPressed: () => Navigator.of(context).pop(),
       ),
       backgroundColor: Colors.transparent,
@@ -540,7 +529,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                           userdata.leaderBoardModel.user?[0].profileImg ?? "")),
                   const SizedBox(width: 10),
                   MyText(
-                      title: userdata.leaderBoardModel.user?[0].fullname ?? ""),
+                      title: userdata.leaderBoardModel.user?[0].fullname ?? "", colors: black),
                   const Spacer(),
                   SizedBox(
                     child: Image.asset("assets/images/ic_icons.png"),

@@ -41,7 +41,7 @@ class Result {
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],
-        levelOrder: json["level_order"],
+        levelOrder: int.parse(json["level_order"].toString()),
         levelName: json["level_name"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],

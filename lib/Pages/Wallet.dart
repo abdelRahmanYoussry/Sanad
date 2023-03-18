@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/subscription/subscription.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
-import 'package:quizapp/widget/myappbar.dart';
-import 'package:quizapp/widget/mytext.dart';
+import 'package:sanad/pages/subscription/subscription.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/theme/color.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+import 'package:sanad/widget/myappbar.dart';
+import 'package:sanad/widget/mytext.dart';
 
 bool topBar = false;
 
@@ -51,6 +51,7 @@ class _WalletState extends State<Wallet> {
 
     final profiledata = Provider.of<ApiProvider>(context, listen: false);
     profiledata.getProfile(context, userId);
+    profiledata.getCoinsHistory(context, userId);
     profiledata.getRewardPoints(context, userId);
     profiledata.getEarnPoints(context, userId);
     profiledata.getReferTransaction(context, userId);
@@ -91,7 +92,7 @@ class _WalletState extends State<Wallet> {
                 ]),
               ],
             ),
-            DefaultTabController(length: 3, child: buildPager())
+            DefaultTabController(length: 4, child: buildPager())
           ],
         ),
       ),
@@ -204,6 +205,7 @@ class _WalletState extends State<Wallet> {
             labelColor: appColor,
             unselectedLabelColor: appaccentColor,
             tabs: [
+              MyText(title: 'Coins', size: 16, fontWeight: FontWeight.w500),
               MyText(title: 'Reward', size: 16, fontWeight: FontWeight.w500),
               MyText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
               MyText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
@@ -213,294 +215,357 @@ class _WalletState extends State<Wallet> {
         SizedBox(
           height: MediaQuery.of(context).size.height - 300,
           child: TabBarView(
-            children: <Widget>[rewardHistory(), earnpoint(), referHistory()],
+            children: <Widget>[
+              coinsHistory(),
+              rewardHistory(),
+              earnpoint(),
+              referHistory()
+            ],
           ),
         )
       ],
     );
   }
 
-  rewardHistory() {
-    return Positioned.fill(
-      top: 350,
-      bottom: 80,
-      left: 0,
-      right: 0,
-      child: Stack(children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Consumer<ApiProvider>(
-            builder: (context, rewardpoint, child) {
-              if (rewardpoint.loading) {
-                return const CircularProgressIndicator();
-              } else {
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: rewardpoint.rewardModel.result?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+  coinsHistory() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Consumer<ApiProvider>(
+        builder: (context, coinsdata, child) {
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: coinsdata.coinsHistoryModel.result?.length ?? 0,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: const EdgeInsets.only(
+                    left: 15, top: 5, right: 15, bottom: 5),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                          minRadius: 30,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              AssetImage("assets/images/ic_reward_coins.png")),
+                      Column(
+                        children: [
+                          Text(
+                            coinsdata.coinsHistoryModel.result?[index].coin
+                                    .toString() ??
+                                "",
+                            style: GoogleFonts.poppins(
+                                color: appColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            "Points",
+                            style: GoogleFonts.poppins(
+                                color: Colors.black, fontSize: 14),
+                          ),
+                        ],
                       ),
-                      margin: const EdgeInsets.only(
-                          left: 15, top: 5, right: 15, bottom: 5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
+                      const Spacer(),
+                      Column(
+                        children: [
+                          Text(
+                            coinsdata.coinsHistoryModel.result?[index]
+                                    .packageName
+                                    .toString() ??
+                                "",
+                            style: const TextStyle(
+                                color: black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            coinsdata.coinsHistoryModel.result?[index]
+                                    .transactionDate
+                                    .toString() ??
+                                "",
+                            style: const TextStyle(
+                                color: textColorGrey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Success",
+                        style: TextStyle(
+                            color: appgreen,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  rewardHistory() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Consumer<ApiProvider>(
+        builder: (context, rewardpoint, child) {
+          if (rewardpoint.loading) {
+            return const CircularProgressIndicator();
+          } else {
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 10),
+              itemCount: rewardpoint.rewardModel.result?.length ?? 0,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  margin: const EdgeInsets.only(
+                      left: 15, top: 5, right: 15, bottom: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                            minRadius: 30,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: AssetImage(
+                                "assets/images/ic_reward_coins.png")),
+                        Column(
                           children: [
-                            const CircleAvatar(
-                                minRadius: 30,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: AssetImage(
-                                    "assets/images/ic_reward_coins.png")),
-                            Column(
-                              children: [
-                                MyText(
-                                    title: rewardpoint.rewardModel
-                                            .result?[index].rewardPoints
-                                            .toString() ??
-                                        "",
-                                    size: 16,
-                                    fontWeight: FontWeight.w500,
-                                    colors: appColor),
-                                MyText(
-                                    title: "Points",
-                                    size: 14,
-                                    fontWeight: FontWeight.w500,
-                                    colors: black),
-                              ],
-                            ),
-                            const Spacer(),
-                            Column(
-                              children: [
-                                MyText(
-                                    title: rewardpoint.rewardModel
-                                            .result?[index].typename ??
-                                        "",
-                                    size: 18,
-                                    fontWeight: FontWeight.w500,
-                                    colors: black),
-                                const SizedBox(height: 5),
-                                MyText(
-                                    title: Utility().dateConvert(
-                                        rewardpoint.rewardModel.result?[index]
-                                                .createdAt ??
-                                            "",
-                                        "MMM dd yyyy"),
-                                    size: 14,
-                                    fontWeight: FontWeight.w500,
-                                    colors: textColorGrey),
-                              ],
-                            ),
-                            const Spacer(),
                             MyText(
-                                title: "Success",
-                                size: 18,
+                                title: rewardpoint
+                                        .rewardModel.result?[index].rewardPoints
+                                        .toString() ??
+                                    "",
+                                size: 16,
                                 fontWeight: FontWeight.w500,
-                                colors: appgreen),
+                                colors: appColor),
+                            MyText(
+                                title: "Points",
+                                size: 14,
+                                fontWeight: FontWeight.w500,
+                                colors: black),
                           ],
                         ),
-                      ),
-                    );
-                  },
+                        const Spacer(),
+                        Column(
+                          children: [
+                            MyText(
+                                title: rewardpoint
+                                        .rewardModel.result?[index].typename ??
+                                    "",
+                                size: 18,
+                                fontWeight: FontWeight.w500,
+                                colors: black),
+                            const SizedBox(height: 5),
+                            MyText(
+                                title: Utility().dateConvert(
+                                    rewardpoint.rewardModel.result?[index]
+                                            .createdAt ??
+                                        "",
+                                    "MMM dd yyyy"),
+                                size: 14,
+                                fontWeight: FontWeight.w500,
+                                colors: textColorGrey),
+                          ],
+                        ),
+                        const Spacer(),
+                        MyText(
+                            title: "Success",
+                            size: 18,
+                            fontWeight: FontWeight.w500,
+                            colors: appgreen),
+                      ],
+                    ),
+                  ),
                 );
-              }
-            },
-          ),
-        ),
-      ]),
+              },
+            );
+          }
+        },
+      ),
     );
   }
 
   earnpoint() {
-    return Positioned.fill(
-      top: 350,
-      bottom: 80,
-      left: 0,
-      right: 0,
-      child: Stack(children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Consumer<ApiProvider>(
-            builder: (context, earnpoint, child) {
-              if (earnpoint.loading) {
-                return const CircularProgressIndicator();
-              } else {
-                return ListView.builder(
-                  padding: const EdgeInsets.only(top: 10),
-                  itemCount: earnpoint.earnModel.result?.length ?? 0,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      margin: const EdgeInsets.only(
-                          left: 15, top: 5, right: 15, bottom: 5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Consumer<ApiProvider>(
+        builder: (context, earnpoint, child) {
+          if (earnpoint.loading) {
+            return const CircularProgressIndicator();
+          } else {
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 10),
+              itemCount: earnpoint.earnModel.result?.length ?? 0,
+              itemBuilder: (context, index) {
+                return Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  margin: const EdgeInsets.only(
+                      left: 15, top: 5, right: 15, bottom: 5),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      children: [
+                        const CircleAvatar(
+                            minRadius: 30,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage: AssetImage(
+                                "assets/images/ic_reward_coins.png")),
+                        Column(
                           children: [
-                            const CircleAvatar(
-                                minRadius: 30,
-                                backgroundColor: Colors.transparent,
-                                backgroundImage: AssetImage(
-                                    "assets/images/ic_reward_coins.png")),
-                            Column(
-                              children: [
-                                Text(
-                                  earnpoint.earnModel.result?[index].point ??
-                                      "",
-                                  style: GoogleFonts.poppins(
-                                      color: appColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  "Points",
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            Column(
-                              children: [
-                                Text(
-                                  earnpoint.earnModel.result?[index]
-                                          .contestName ??
-                                      "",
-                                  style: const TextStyle(
-                                      color: black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  Utility().dateConvert(
-                                      earnpoint.earnModel.result?[index]
-                                              .createdAt ??
-                                          "",
-                                      "MMM dd yyyy"),
-                                  style: const TextStyle(
-                                      color: textColorGrey, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                            const Spacer(),
-                            const Text(
-                              "Success",
-                              style: TextStyle(
-                                  color: appgreen,
-                                  fontSize: 18,
+                            Text(
+                              earnpoint.earnModel.result?[index].point ?? "",
+                              style: GoogleFonts.poppins(
+                                  color: appColor,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              "Points",
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black, fontSize: 14),
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  },
+                        const Spacer(),
+                        Column(
+                          children: [
+                            Text(
+                              earnpoint.earnModel.result?[index].contestName ??
+                                  "",
+                              style: const TextStyle(
+                                  color: black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              Utility().dateConvert(
+                                  earnpoint
+                                          .earnModel.result?[index].createdAt ??
+                                      "",
+                                  "MMM dd yyyy"),
+                              style: const TextStyle(
+                                  color: textColorGrey, fontSize: 14),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        const Text(
+                          "Success",
+                          style: TextStyle(
+                              color: appgreen,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
                 );
-              }
-            },
-          ),
-        ),
-      ]),
+              },
+            );
+          }
+        },
+      ),
     );
   }
 
   referHistory() {
-    return Positioned.fill(
-      top: 350,
-      bottom: 80,
-      left: 0,
-      right: 0,
-      child: Stack(children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Consumer<ApiProvider>(
-            builder: (context, referdata, child) {
-              return ListView.builder(
-                padding: const EdgeInsets.only(top: 10),
-                itemCount: referdata.referTranModel.result?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 4,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    margin: const EdgeInsets.only(
-                        left: 15, top: 5, right: 15, bottom: 5),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Row(
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: Consumer<ApiProvider>(
+        builder: (context, referdata, child) {
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 10),
+            itemCount: referdata.referTranModel.result?.length ?? 0,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                margin: const EdgeInsets.only(
+                    left: 15, top: 5, right: 15, bottom: 5),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      const CircleAvatar(
+                          minRadius: 30,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              AssetImage("assets/images/ic_reward_coins.png")),
+                      Column(
                         children: [
-                          const CircleAvatar(
-                              minRadius: 30,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage(
-                                  "assets/images/ic_reward_coins.png")),
-                          Column(
-                            children: [
-                              Text(
-                                referdata.referTranModel.result?[index]
-                                        .referedPoint
-                                        .toString() ??
-                                    "",
-                                style: GoogleFonts.poppins(
-                                    color: appColor,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Text(
-                                "Points",
-                                style: GoogleFonts.poppins(
-                                    color: Colors.black, fontSize: 14),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          Column(
-                            children: [
-                              Text(
-                                referdata.referTranModel.result?[index].userName
-                                        .toString() ??
-                                    "",
-                                style: const TextStyle(
-                                    color: black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                referdata.referTranModel.result?[index]
-                                        .referedDate
-                                        .toString() ??
-                                    "",
-                                style: const TextStyle(
-                                    color: textColorGrey, fontSize: 14),
-                              ),
-                            ],
-                          ),
-                          const Spacer(),
-                          const Text(
-                            "Success",
-                            style: TextStyle(
-                                color: appgreen,
-                                fontSize: 18,
+                          Text(
+                            referdata.referTranModel.result?[index].referedPoint
+                                    .toString() ??
+                                "",
+                            style: GoogleFonts.poppins(
+                                color: appColor,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500),
+                          ),
+                          Text(
+                            "Points",
+                            style: GoogleFonts.poppins(
+                                color: Colors.black, fontSize: 14),
                           ),
                         ],
                       ),
-                    ),
-                  );
-                },
+                      const Spacer(),
+                      Column(
+                        children: [
+                          Text(
+                            referdata.referTranModel.result?[index].userName
+                                    .toString() ??
+                                "",
+                            style: const TextStyle(
+                                color: black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            referdata.referTranModel.result?[index].referedDate
+                                    .toString() ??
+                                "",
+                            style: const TextStyle(
+                                color: textColorGrey, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      const Text(
+                        "Success",
+                        style: TextStyle(
+                            color: appgreen,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
               );
             },
-          ),
-        ),
-      ]),
+          );
+        },
+      ),
     );
   }
 }

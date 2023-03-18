@@ -6,18 +6,27 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:quizapp/pages/home.dart';
-import 'package:quizapp/pages/forgotpass.dart';
-import 'package:quizapp/pages/login/otp.dart';
-import 'package:quizapp/pages/login/signup.dart';
-import 'package:quizapp/provider/apiprovider.dart';
-import 'package:quizapp/theme/color.dart';
-import 'package:quizapp/utils/adhelper.dart';
-import 'package:quizapp/utils/sharepref.dart';
-import 'package:quizapp/utils/utility.dart';
+import 'package:sanad/pages/forgotpass.dart';
+import 'package:sanad/pages/home.dart';
+import 'package:sanad/pages/login/otp.dart';
+import 'package:sanad/pages/login/signup.dart';
+import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/sharepref.dart';
+import 'package:sanad/utils/utility.dart';
+
 import '../../Model/SuccessModel.dart';
 import '../../Theme/config.dart';
 
+/*
+//to preview device
+void main() => runApp(
+  DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => Login(), // Wrap your app
+  ),
+);
+*/
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -28,6 +37,8 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passController = TextEditingController();
+  FocusNode myFocusNode = new FocusNode();
+
   List<SuccessModel>? loginList;
 
   SharePref sharePref = SharePref();
@@ -128,11 +139,12 @@ class _LoginState extends State<Login> {
                                 controller: emailController,
                                 decoration: const InputDecoration(
                                     labelText: "Email Address",
+                                    labelStyle: TextStyle(color: Colors.black),
                                     contentPadding:
                                         EdgeInsets.symmetric(horizontal: 10),
                                     border: InputBorder.none,
                                     hintText: "Email",
-                                    hintStyle: TextStyle(color: Colors.grey)),
+                                    hintStyle: TextStyle(color: Colors.black)),
                               ),
                               Divider(
                                 thickness: 0.5,
@@ -156,12 +168,14 @@ class _LoginState extends State<Login> {
                                           ? Icons.visibility
                                           : Icons.visibility_off),
                                     ),
+                                    labelStyle:
+                                        const TextStyle(color: Colors.black),
                                     contentPadding: const EdgeInsets.symmetric(
                                         horizontal: 10),
                                     border: InputBorder.none,
                                     hintText: "Password",
                                     hintStyle:
-                                        const TextStyle(color: Colors.grey)),
+                                        const TextStyle(color: Colors.black)),
                               ),
                               Divider(
                                 thickness: 0.5,
