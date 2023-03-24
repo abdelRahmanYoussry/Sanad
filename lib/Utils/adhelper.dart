@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sanad/utils/sharepref.dart';
 
@@ -58,10 +59,9 @@ class AdHelper {
     interstialad = await sharePref.read("interstital_ad") ?? "";
     interstialadIos = await sharePref.read("ios_interstital_ad") ?? "";
 
-    maxInterstitialAdclick =
-       int.parse(await sharePref.read("interstital_adclick").toString() ?? "0");
-    maxRewardAdclick =
-        int.parse(await sharePref.read("reward_adclick") ?? "0");
+    // maxInterstitialAdclick =
+    //     int.parse(sharePref.read("interstital_adclick").toString() ?? "0");
+    maxRewardAdclick = int.parse(await sharePref.read("reward_adclick") ?? "0");
 
     log("maxInterstitialAdclick $maxInterstitialAdclick");
 
@@ -71,11 +71,9 @@ class AdHelper {
   static BannerAd createBannerAd() {
     BannerAd? ad;
 
-    if(ad == null){
-
-    }
+    if (ad == null) {}
     if (Platform.isAndroid && bannerad == '1') {
-      print('.................................. android ......');
+      // print('.................................. android ......');
       ad = BannerAd(
           size: AdSize.banner,
           adUnitId: bannerAdUnitId,

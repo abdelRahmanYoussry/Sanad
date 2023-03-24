@@ -40,15 +40,15 @@ class Result {
 
   int? id;
   String? name;
-  int? price;
+  String? price;
   String? image;
   String? currencyType;
   String? coin;
   String? productPackage;
-  int? status;
+  String? status;
   String? createdAt;
   String? updatedAt;
-  int? isDelete;
+  String? isDelete;
 
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         id: json["id"],

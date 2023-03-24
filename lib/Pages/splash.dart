@@ -7,7 +7,6 @@ import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/utils/adhelper.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/widget/myimage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -33,8 +32,8 @@ class SplashState extends State<Splash> {
     await bannerdata.getGeneralsetting(context);
     if (!bannerdata.loading) {
       for (var i = 0; i < bannerdata.generalSettingModel.result!.length; i++) {
-        debugPrint(
-            '===>${bannerdata.generalSettingModel.result?[i].key} ===> ${bannerdata.generalSettingModel.result?[i].value}');
+        // debugPrint(
+        //     '===>${bannerdata.generalSettingModel.result?[i].key} ===> ${bannerdata.generalSettingModel.result?[i].value}');
         await sharePref.save(
             bannerdata.generalSettingModel.result?[i].key ?? "",
             bannerdata.generalSettingModel.result?[i].value ?? "");
@@ -62,10 +61,10 @@ class SplashState extends State<Splash> {
   idFirstChack() async {
     seen = await sharePref.read('seen') ?? "0";
     String isLogin = await sharePref.read('is_login') ?? "0";
-    debugPrint('seen===>$seen');
+    // debugPrint('seen===>$seen');
     if (seen == "1") {
       if (isLogin == "1") {
-        debugPrint('isLogin home===>$isLogin');
+        // debugPrint('isLogin home===>$isLogin');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -75,7 +74,7 @@ class SplashState extends State<Splash> {
           ),
         );
       } else {
-        debugPrint('isLogin login===>$isLogin');
+        // debugPrint('isLogin login===>$isLogin');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

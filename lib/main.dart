@@ -3,18 +3,26 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/Cubit/BlocObserver.dart';
+import 'package:sanad/Cubit/app_cubit.dart';
 import 'package:sanad/pages/splash.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/provider/commanprovider.dart';
 import 'package:sanad/utils/constant.dart';
+
+import 'Network/dio_helper.dart';
 import 'Theme/theme_model.dart';
 
 bool? isviewed;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
+  FinalDioHelper.init();
+
   MobileAds.instance.initialize();
   if (Platform.isIOS) {
     await Firebase.initializeApp(
@@ -56,12 +64,15 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.transparent),
     );
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'home',
-      home: const Splash(),
-      theme: ThemeModel().lightMode, // Provide light theme.
-      darkTheme: ThemeModel().darkMode,
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (context) => AppCubit())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'home',
+        home: const Splash(),
+        theme: ThemeModel().lightMode, // Provide light theme.
+        darkTheme: ThemeModel().darkMode,
+      ),
     );
   }
 }

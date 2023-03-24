@@ -1,27 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:custom_timer/custom_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:sanad/model/contestquestionmodel.dart';
 import 'package:sanad/model/questionjson.dart';
 import 'package:sanad/pages/contest/contest.dart';
-import 'package:sanad/pages/quiz/levelresult.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/provider/commanprovider.dart';
 import 'package:sanad/theme/color.dart';
 import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/constant.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
-import 'package:sanad/widget/myimage.dart';
 import 'package:sanad/widget/mynetimage.dart';
 import 'package:sanad/widget/mytext.dart';
 
@@ -31,6 +27,7 @@ import 'package:sanad/widget/mytext.dart';
 //
 class ContestQuestions extends StatefulWidget {
   String? contestId, contestName;
+
   ContestQuestions(
       {Key? key, required this.contestId, required this.contestName})
       : super(key: key);
@@ -47,6 +44,8 @@ class _ContestQuestionsState extends State<ContestQuestions> {
 
   final playerC = AudioPlayer();
   final playerW = AudioPlayer();
+  int? totalPoints;
+  int? totalCoins;
 
   double percent = 0.0;
 
@@ -65,6 +64,11 @@ class _ContestQuestionsState extends State<ContestQuestions> {
     final contestquestiondata =
         Provider.of<ApiProvider>(context, listen: false);
     contestquestiondata.getQuestionByContest(context, widget.contestId);
+    // if (widget.contestId != widget.contestId) {
+    //   var questiondata = Provider.of<ApiProvider>(context, listen: false);
+    //   questiondata.selectQuestion = 0;
+    // }
+    getTotalPoints();
     // counter();
   }
 
@@ -89,6 +93,16 @@ class _ContestQuestionsState extends State<ContestQuestions> {
     } else {
       await playerW.play();
     }
+  }
+
+  getTotalCoins() async {
+    totalCoins = await sharePref.read('totalCoins');
+    debugPrint('totalCoins===>${totalCoins.toString()}');
+  }
+
+  getTotalPoints() async {
+    totalPoints = await sharePref.read('totalPoints');
+    debugPrint('totalPoints===>${totalPoints.toString()}');
   }
 
   @override
@@ -134,9 +148,23 @@ class _ContestQuestionsState extends State<ContestQuestions> {
               ),
             ),
             leading: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
+                icon:
+                    const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                onPressed: () async {
+                  await getTotalCoins();
+                  await getTotalPoints();
+                  // var questiondata =
+                  //     Provider.of<ApiProvider>(context, listen: false);
+                  // questiondata.selectQuestion = 0;
+                  // if (widget.contestId != widget.contestId) {
+                  //   var questiondata =
+                  //       Provider.of<ApiProvider>(context, listen: false);
+                  //   questiondata.contestQuestionModel.result!.clear();
+                  //   questiondata.selectQuestion = 0;
+                  // }
+                  Navigator.of(context).pop();
+                  // Contest();
+                }),
             backgroundColor: Colors.transparent,
             actions: <Widget>[
               Padding(
@@ -675,6 +703,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                                                   0]
                                                               .answer) {
                                                         print('Correct');
+                                                        ////////////////////////////////////////
                                                         Provider.of<CommanProvider>(
                                                                 context,
                                                                 listen: false)
@@ -847,6 +876,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                               ),
                                             ),
                                             const SizedBox(width: 10),
+                                            //Next
                                             Expanded(
                                               flex: 1,
                                               child: SizedBox(
@@ -946,8 +976,53 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                                                                 0]
                                                                         .answer ??
                                                                     ""));
+                                                        totalPoints =
+                                                            totalPoints! + 10;
+                                                        Constant.totalPoints(
+                                                            points:
+                                                                totalPoints!);
+                                                        Utility
+                                                            .customShowDialog(
+                                                                title: const Text(
+                                                                    'Congratulation'),
+                                                                content: Text(
+                                                                    'Correct Answer You Have Won 10 points'
+                                                                            '\n'
+                                                                            '\n' +
+                                                                        (totalPoints!)
+                                                                            .toString() +
+                                                                        ' Total Points'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child:
+                                                                        const Text(
+                                                                      'Ok',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              cyan,
+                                                                          fontSize:
+                                                                              20),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                                context:
+                                                                    context);
+                                                        // Utility.toastMessage(
+                                                        //     'Correct Answer You Have Won 10 points'
+                                                        //             '\n' +
+                                                        //         (totalPoints!)
+                                                        //             .toString() +
+                                                        //         ' Total Points');
                                                       } else {
                                                         print('InCorrect');
+                                                        Utility.toastMessage(
+                                                            ('Wrong Correct \n Try another Answer')
+                                                                .toString());
                                                         Provider.of<CommanProvider>(
                                                                 context,
                                                                 listen: false)
@@ -1105,8 +1180,11 @@ class _ContestQuestionsState extends State<ContestQuestions> {
       if (provider.successModel.status == 200) {
         Utility.toastMessage(provider.successModel.message.toString());
         Timer(const Duration(seconds: 3), () {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const Contest()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Contest()));
+          var questiondata = Provider.of<ApiProvider>(context, listen: false);
+          questiondata.contestQuestionModel.result!.clear();
+          questiondata.selectQuestion = 0;
         });
       }
     }

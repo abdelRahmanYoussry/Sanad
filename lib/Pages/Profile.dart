@@ -23,6 +23,8 @@ class _ProfileState extends State<Profile> {
   String? userGender;
   String? userAge;
   String? userCountry;
+  int? totalCoins;
+  int? totalPoints;
   SharePref sharePref = SharePref();
 
   @override
@@ -31,6 +33,8 @@ class _ProfileState extends State<Profile> {
     getUserAge();
     getUserCountry();
     getUserGender();
+    getTotalCoins();
+    getTotalPoints();
     super.initState();
   }
 
@@ -48,23 +52,11 @@ class _ProfileState extends State<Profile> {
   getUserGender() async {
     userGender = await sharePref.read('userGender') ?? "0";
     debugPrint('userGender===>${userGender.toString()}');
-
-    // if (userId != "" || userId != "0") {
-    //   final profiledata = Provider.of<ApiProvider>(context, listen: false);
-    //   profiledata.getProfile(context, userId);
-    //   profiledata.getReferTransaction(context, userId);
-    // }
   }
 
   getUserAge() async {
     userAge = await sharePref.read('userAge') ?? "0";
     debugPrint('userAge===>${userAge.toString()}');
-
-    // if (userId != "" || userId != "0") {
-    //   final profiledata = Provider.of<ApiProvider>(context, listen: false);
-    //   profiledata.getProfile(context, userId);
-    //   profiledata.getReferTransaction(context, userId);
-    // }
   }
 
   getUserCountry() async {
@@ -76,6 +68,16 @@ class _ProfileState extends State<Profile> {
     //   profiledata.getProfile(context, userId);
     //   profiledata.getReferTransaction(context, userId);
     // }
+  }
+
+  getTotalCoins() async {
+    totalCoins = await sharePref.read('totalCoins');
+    debugPrint('totalCoins===>${totalCoins.toString()}');
+  }
+
+  getTotalPoints() async {
+    totalPoints = await sharePref.read('totalPoints');
+    debugPrint('totalPoints===>${totalPoints.toString()}');
   }
 
   @override
@@ -201,12 +203,28 @@ class _ProfileState extends State<Profile> {
             child: Row(
               children: [
                 const Spacer(),
+                //realCoins
+                // Column(
+                //   children: [
+                //     Text(
+                //         profiledata.profileModel.result?[0].totalScore
+                //                 .toString() ??
+                //             "",
+                //         style: GoogleFonts.poppins(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.black)),
+                //     Text("Coins",
+                //         style: GoogleFonts.poppins(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.black)),
+                //   ],
+                // ),
+                //fakeCoins
                 Column(
                   children: [
-                    Text(
-                        profiledata.profileModel.result?[0].totalScore
-                                .toString() ??
-                            "",
+                    Text(totalCoins.toString(),
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -226,10 +244,17 @@ class _ProfileState extends State<Profile> {
                 const Spacer(),
                 Column(
                   children: [
-                    Text(
-                        profiledata.profileModel.result?[0].totalPoints
-                                .toString() ??
-                            "",
+                    //real points
+                    // Text(
+                    //     profiledata.profileModel.result?[0].totalPoints
+                    //             .toString() ??
+                    //         "",
+                    //     style: GoogleFonts.poppins(
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.w500,
+                    //         color: Colors.black)),
+                    //fake Points
+                    Text(totalPoints.toString(),
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,

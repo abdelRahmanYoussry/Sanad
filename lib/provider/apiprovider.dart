@@ -81,7 +81,7 @@ class ApiProvider extends ChangeNotifier {
   getGeneralsetting(context) async {
     loading = true;
     generalSettingModel = await ApiService().genaralSetting();
-    debugPrint("${generalSettingModel.status}");
+    // // debugPrint("${generalSettingModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -91,7 +91,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     loginModel = await ApiService()
         .login(email, username, profileImg, password, type, deviceToken);
-    debugPrint("${loginModel.status}");
+    // // debugPrint("${loginModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -99,7 +99,7 @@ class ApiProvider extends ChangeNotifier {
   loginwithotp(mobile) async {
     loading = false;
     loginModel = await ApiService().loginwithotp(mobile);
-    debugPrint("login status :== ${loginModel.status}");
+    // // debugPrint("login status :== ${loginModel.status}");
     loading = true;
     notifyListeners();
   }
@@ -122,7 +122,7 @@ class ApiProvider extends ChangeNotifier {
       //  }
       ) async {
     loading = true;
-    debugPrint('====>$mobilenumber');
+    // // debugPrint('====>$mobilenumber');
     registrationModel = await ApiService().registration(
         age: age,
         email: email,
@@ -146,7 +146,7 @@ class ApiProvider extends ChangeNotifier {
         // gender,
         // age
         );
-    debugPrint("${registrationModel.status}");
+    // // debugPrint("${registrationModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -154,7 +154,7 @@ class ApiProvider extends ChangeNotifier {
   forgotPassword(email) async {
     loading = true;
     successModel = await ApiService().forgotpassword(email);
-    debugPrint("${successModel.status}");
+    // // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -162,7 +162,7 @@ class ApiProvider extends ChangeNotifier {
   getProfile(context, userId) async {
     loading = true;
     profileModel = await ApiService().profile(userId);
-    debugPrint("${profileModel.status}");
+    // // debugPrint("${profileModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -189,7 +189,7 @@ class ApiProvider extends ChangeNotifier {
           // country: country,
           gender: gender,
           fullName: fullname);
-      // debugPrint("${profileModel.status}");
+      // // debugPrint("${profileModel.status}");
       loading = false;
       notifyListeners();
     } else {
@@ -203,7 +203,7 @@ class ApiProvider extends ChangeNotifier {
           // country: country,
           gender: gender,
           fullName: fullname);
-      // debugPrint("${profileModel.status}");
+      // // debugPrint("${profileModel.status}");
       loading = false;
       notifyListeners();
     }
@@ -212,7 +212,7 @@ class ApiProvider extends ChangeNotifier {
   getCoinsHistory(context, userId) async {
     loading = true;
     coinsHistoryModel = await ApiService().coinshistory(userId);
-    // debugPrint("${coinsHistoryModel.status}");
+    // // debugPrint("${coinsHistoryModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -220,7 +220,7 @@ class ApiProvider extends ChangeNotifier {
   getRewardPoints(context, userId) async {
     loading = true;
     rewardModel = await ApiService().rewardpoints(userId);
-    // debugPrint("${referTranModel.status}");
+    // // debugPrint("${referTranModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -228,7 +228,7 @@ class ApiProvider extends ChangeNotifier {
   getEarnPoints(context, userId) async {
     loading = true;
     earnModel = await ApiService().earnpoints(userId);
-    // debugPrint("${earnModel.status}");
+    // // debugPrint("${earnModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -236,7 +236,7 @@ class ApiProvider extends ChangeNotifier {
   getReferTransaction(context, userId) async {
     loading = true;
     referTranModel = await ApiService().referTran(userId);
-    // debugPrint("${referTranModel.status}");
+    // // debugPrint("${referTranModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -244,7 +244,7 @@ class ApiProvider extends ChangeNotifier {
   getCategory(context) async {
     loading = true;
     categoryModel = await ApiService().category();
-    debugPrint("${categoryModel.status}");
+    // // debugPrint("${categoryModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -252,7 +252,7 @@ class ApiProvider extends ChangeNotifier {
   getCategoryByLevelMaster(context, masterId) async {
     loading = true;
     categoryMasterModel = await ApiService().categoryByLevelMaster(masterId);
-    debugPrint("${categoryMasterModel.status}");
+    // // debugPrint("${categoryMasterModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -260,7 +260,7 @@ class ApiProvider extends ChangeNotifier {
   getLevel(context, catId, String userID) async {
     loading = true;
     levelModel = await ApiService().level(catId, userID);
-    debugPrint("${levelModel.status}");
+    // // debugPrint("${levelModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -268,7 +268,7 @@ class ApiProvider extends ChangeNotifier {
   getQuestionByLevel(context, catId, String levelId) async {
     loading = true;
     questionModel = await ApiService().questionByLevel(catId, levelId);
-    debugPrint("${questionModel.status}");
+    // // debugPrint("${questionModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -276,7 +276,7 @@ class ApiProvider extends ChangeNotifier {
   getUpContent(context, String listType, String userID) async {
     loading = true;
     upcontentModel = await ApiService().getContest(listType, userID);
-    debugPrint("${upcontentModel.status}");
+    // // debugPrint("${upcontentModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -284,7 +284,7 @@ class ApiProvider extends ChangeNotifier {
   getLiveContent(context, String listType, String userID) async {
     loading = true;
     livecontentModel = await ApiService().getContest(listType, userID);
-    debugPrint("${livecontentModel.status}");
+    // debugPrint("${livecontentModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -292,7 +292,7 @@ class ApiProvider extends ChangeNotifier {
   getEndContent(context, String listType, String userID) async {
     loading = true;
     endcontentModel = await ApiService().getContest(listType, userID);
-    debugPrint("${endcontentModel.status}");
+    // debugPrint("${endcontentModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -300,7 +300,7 @@ class ApiProvider extends ChangeNotifier {
   getjoinContest(context, String contestId, String userID, String coin) async {
     loading = true;
     successModel = await ApiService().joinContest(contestId, userID, coin);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -308,7 +308,7 @@ class ApiProvider extends ChangeNotifier {
   getContestWinnerList(String contestId) async {
     loading = true;
     winnerModel = await ApiService().winnerbycontest(contestId);
-    debugPrint("${winnerModel.status}");
+    // debugPrint("${winnerModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -317,7 +317,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     contestLeaderModel =
         await ApiService().contestleaderBoard(userId, contestId);
-    debugPrint("====> ${contestLeaderModel.status}");
+    // debugPrint("====> ${contestLeaderModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -325,7 +325,7 @@ class ApiProvider extends ChangeNotifier {
   getQuestionByContest(context, catId) async {
     loading = true;
     contestQuestionModel = await ApiService().questionByContest(catId);
-    debugPrint("${contestQuestionModel.status}");
+    // debugPrint("${contestQuestionModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -346,7 +346,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     successModel = await ApiService().saveQuestionReport(levelId,
         questionsAttended, totalQuestion, correctAnswers, userId, categoryId);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -362,7 +362,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     successModel = await ApiService().saveContestQuestionReport(contestId,
         questionsAttended, totalQuestion, correctAnswers, userId, questionJson);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -371,7 +371,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     todayLeaderBoardModel =
         await ApiService().todayLeaderBoard(userId, levelId);
-    debugPrint("${todayLeaderBoardModel.status}");
+    // debugPrint("${todayLeaderBoardModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -379,7 +379,7 @@ class ApiProvider extends ChangeNotifier {
   getLeaderBoard(context, userId, String type) async {
     loading = true;
     leaderBoardModel = await ApiService().leaderBoard(userId, type);
-    debugPrint("${leaderBoardModel.status}");
+    // debugPrint("${leaderBoardModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -387,7 +387,7 @@ class ApiProvider extends ChangeNotifier {
   getLevelMaster() async {
     loading = true;
     levelMasterModel = await ApiService().questionLevelMaster();
-    debugPrint("${levelMasterModel.status}");
+    // debugPrint("${levelMasterModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -396,7 +396,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     levelPraticeModel =
         await ApiService().practiceLavelByCategoryId(catId, userID);
-    debugPrint("${levelPraticeModel.status}");
+    // debugPrint("${levelPraticeModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -406,7 +406,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     questionPraticeModel = await ApiService()
         .practiceQuestionByLavel(catId, levelId, levelMasterId);
-    debugPrint("${questionModel.status}");
+    // debugPrint("${questionModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -423,7 +423,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     successModel = await ApiService().saveQuestionReport(levelId,
         questionsAttended, totalQuestion, correctAnswers, userId, categoryId);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -431,7 +431,7 @@ class ApiProvider extends ChangeNotifier {
   getPraticeLeaderBoard(userId) async {
     loading = true;
     praticeLeaderboardModel = await ApiService().practiseLeaderBoard(userId);
-    debugPrint("${praticeLeaderboardModel.status}");
+    // debugPrint("${praticeLeaderboardModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -439,7 +439,7 @@ class ApiProvider extends ChangeNotifier {
   getPackage(context, userId) async {
     loading = true;
     packagesModel = await ApiService().packages();
-    debugPrint("${profileModel.status}");
+    // debugPrint("${profileModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -449,7 +449,7 @@ class ApiProvider extends ChangeNotifier {
     loading = true;
     successModel =
         await ApiService().addTransacation(userId, planId, amount, coin);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -457,7 +457,7 @@ class ApiProvider extends ChangeNotifier {
   getNotification(context, userId) async {
     loading = true;
     notificationModel = await ApiService().notification(userId);
-    debugPrint("${profileModel.status}");
+    // debugPrint("${profileModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -465,7 +465,7 @@ class ApiProvider extends ChangeNotifier {
   getReadNotification(userId, id) async {
     loading = true;
     successModel = await ApiService().readNotification(userId, id);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -473,7 +473,7 @@ class ApiProvider extends ChangeNotifier {
   getEarnPointList() async {
     loading = true;
     earnPointsModel = await ApiService().earnPointslist();
-    debugPrint("${earnPointsModel.status}");
+    // debugPrint("${earnPointsModel.status}");
     loading = false;
     notifyListeners();
   }
@@ -481,7 +481,7 @@ class ApiProvider extends ChangeNotifier {
   getaddRewardPoints(userId, id, type) async {
     loading = true;
     successModel = await ApiService().rewardPoints(userId, id, type);
-    debugPrint("${successModel.status}");
+    // debugPrint("${successModel.status}");
     loading = false;
     notifyListeners();
   }

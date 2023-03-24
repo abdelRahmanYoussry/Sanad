@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:sanad/pages/home.dart';
 import 'package:sanad/provider/apiprovider.dart';
+import 'package:sanad/utils/constant.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 import 'package:sanad/widget/CustomDropDown.dart';
@@ -82,6 +83,9 @@ class _SignUpState extends State<SignUp> {
         // context, email, pass, username, username,
         // phone, refer, username, username, age, gender
       );
+      await Constant.totalCoins(coins: 1000);
+      await Constant.totalPoints(points: 100);
+
       if (!provider.loading) {
         isloading = false;
         setState(() {});
@@ -213,6 +217,10 @@ class _SignUpState extends State<SignUp> {
                             thickness: 0.5,
                             height: size.height * 0.01,
                           ),
+                          // Divider(
+                          //   thickness: 0.5,
+                          //   height: size.height * 0.01,
+                          // ),
                           MyCustomDropDown(
                               dropDownValueList: genderTypeList,
                               onChanged: (value) async {
@@ -232,9 +240,9 @@ class _SignUpState extends State<SignUp> {
                               enableDropDown: true,
                               controller: genderController,
                               label: const Text('Select Your Gender')),
-                          SizedBox(
-                            height: size.height * 0.01,
-                          ),
+                          // SizedBox(
+                          //   height: size.height * 0.01,
+                          // ),
                           Divider(
                             thickness: 0.5,
                             height: size.height * 0.01,

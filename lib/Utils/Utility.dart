@@ -96,4 +96,27 @@ class Utility {
         textColor: Colors.white,
         fontSize: 16.0);
   }
+
+  static customShowDialog(
+      {required Widget title,
+      required Widget content,
+      required List<Widget> actions,
+      required BuildContext context}) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            title: title,
+            content: content,
+            actions: actions));
+  }
+
+  static void navigateTo(context, {required widget}) =>
+      Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+
+  static void navigateAndFinish(context, Widget) =>
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => Widget), (route) => false);
 }

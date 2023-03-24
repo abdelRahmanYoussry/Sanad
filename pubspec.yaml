@@ -63,8 +63,10 @@ dependencies:
   google_mobile_ads: 2.3.0
   change_app_package_name: ^1.1.0
   device_preview: ^1.1.0
+  #AbdelRhamn
   dropdown_textfield: ^1.0.7
-
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
 
 
 dev_dependencies:

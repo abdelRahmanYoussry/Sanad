@@ -6,6 +6,7 @@ import 'package:sanad/pages/contest/contestleaderboard.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/theme/color.dart';
 import 'package:sanad/utils/adhelper.dart';
+import 'package:sanad/utils/constant.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 import 'package:sanad/widget/MyAppbar.dart';
@@ -16,7 +17,9 @@ import 'package:shimmer/shimmer.dart';
 import 'contestquestions.dart';
 
 class Contest extends StatefulWidget {
-  const Contest({Key? key}) : super(key: key);
+  Contest({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _ContestState createState() => _ContestState();
@@ -27,10 +30,12 @@ class _ContestState extends State<Contest> {
   String? userId;
   var bannerad = "";
   var banneradIos = "";
+  int? totalCoins;
 
   @override
   initState() {
     getUserId();
+    getTotalCoins();
     super.initState();
   }
 
@@ -250,7 +255,7 @@ class _ContestState extends State<Contest> {
                           height: 40,
                           child: ElevatedButton(
                               onPressed: () {
-                                customShowDialog(
+                                Utility.customShowDialog(
                                     title: Center(
                                       child: Text(upcomingdata
                                           .upcontentModel.result![index].name!),
@@ -465,6 +470,11 @@ class _ContestState extends State<Contest> {
     );
   }
 
+  getTotalCoins() async {
+    totalCoins = await sharePref.read('totalCoins');
+    debugPrint('totalCoins===>${totalCoins.toString()}');
+  }
+
   live() {
     return Consumer<ApiProvider>(
       builder: (context, livecontent, child) {
@@ -531,7 +541,7 @@ class _ContestState extends State<Contest> {
                                     0
                                 ? TextButton(
                                     onPressed: () {
-                                      customShowDialog(
+                                      Utility.customShowDialog(
                                           title: Center(
                                             child: Text(livecontent
                                                 .livecontentModel
@@ -557,7 +567,7 @@ class _ContestState extends State<Contest> {
                                                   ),
                                                   MyText(
                                                       title:
-                                                          "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
+                                                          "Entry Fee: ${livecontent.livecontentModel.result?[index].price} Coin",
                                                       size: 16,
                                                       fontWeight:
                                                           FontWeight.w600),
@@ -596,25 +606,52 @@ class _ContestState extends State<Contest> {
                                                               BorderRadius.all(
                                                                   Radius.circular(
                                                                       28.0))))),
-                                              onPressed: () {
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ContestQuestions(
-                                                              contestId: livecontent
-                                                                  .livecontentModel
-                                                                  .result?[
-                                                                      index]
-                                                                  .id
-                                                                  .toString(),
-                                                              contestName:
-                                                                  livecontent
-                                                                      .livecontentModel
-                                                                      .result?[
-                                                                          index]
-                                                                      .name,
-                                                            )));
+                                              onPressed: () async {
+                                                // int remainingCoins =
+                                                //     totalCoins! -
+                                                //         int.parse((livecontent
+                                                //             .livecontentModel
+                                                //             .result?[index]
+                                                //             .price)!);
+                                                if (totalCoins! >=
+                                                    int.parse(livecontent
+                                                        .livecontentModel
+                                                        .result![index]
+                                                        .price!)) {
+                                                  await Constant.totalCoins(
+                                                      coins: totalCoins! -
+                                                          int.parse((livecontent
+                                                              .livecontentModel
+                                                              .result?[index]
+                                                              .price)!));
+
+                                                  Utility.toastMessage(
+                                                      'You Have Joined Successful '
+                                                      '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[index].price)!)} Coin ');
+
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ContestQuestions(
+                                                                contestId: livecontent
+                                                                    .livecontentModel
+                                                                    .result?[
+                                                                        index]
+                                                                    .id
+                                                                    .toString(),
+                                                                contestName:
+                                                                    livecontent
+                                                                        .livecontentModel
+                                                                        .result?[
+                                                                            index]
+                                                                        .name,
+                                                              )));
+                                                } else {
+                                                  Utility.toastMessage(
+                                                      ' You have $totalCoins coin \n '
+                                                      'Please recharge your wallet');
+                                                }
                                               },
                                               child: const Text(
                                                 'Confirm',
@@ -709,7 +746,7 @@ class _ContestState extends State<Contest> {
                           height: 40,
                           child: ElevatedButton(
                               onPressed: () {
-                                customShowDialog(
+                                Utility.customShowDialog(
                                     title: const Center(child: Text('Details')),
                                     content: Text(livecontent
                                         .livecontentModel.result![index].name!),
@@ -877,22 +914,6 @@ class _ContestState extends State<Contest> {
         );
       },
     );
-  }
-
-  customShowDialog(
-      {required Widget title,
-      required Widget content,
-      required List<Widget> actions,
-      required BuildContext context}) {
-    showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-            actionsAlignment: MainAxisAlignment.spaceBetween,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
-            title: title,
-            content: content,
-            actions: actions));
   }
 
   void winnerList(var contestId) {

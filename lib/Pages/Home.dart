@@ -45,12 +45,18 @@ class _HomeState extends State<Home> {
   var iosBannerAdsId = "";
   var bannerad = "";
   var banneradIos = "";
-
+  int? totalCoins;
   @override
   initState() {
     getLogin();
     getId();
+    getTotalCoins();
     super.initState();
+  }
+
+  getTotalCoins() async {
+    totalCoins = await sharePref.read('totalCoins');
+    debugPrint('totalCoins===>${totalCoins.toString()}');
   }
 
   getId() async {
@@ -398,7 +404,7 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   AdHelper.showInterstitialAd();
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Contest()));
+                      MaterialPageRoute(builder: (context) => Contest()));
                 },
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.22,

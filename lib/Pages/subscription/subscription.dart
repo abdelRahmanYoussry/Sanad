@@ -1,21 +1,22 @@
+import 'dart:async';
 import 'dart:developer';
-//import 'dart:ffi';
+import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:in_app_purchase_android/billing_client_wrappers.dart';
 import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
-import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/Cubit/app_cubit.dart';
 import 'package:sanad/model/packagesmodel.dart';
+import 'package:sanad/pages/paypalPage/paypalScreen.dart';
 import 'package:sanad/pages/wallet.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
-import 'dart:io';
+
 import '../../theme/color.dart';
 import '../../widget/myappbar.dart';
 import '../../widget/mytext.dart';
@@ -191,122 +192,150 @@ class _SubscriptionState extends State<Subscription> {
           (packageProvider.packagesModel.result?.length ?? 0) > 0) {
         packagelist = packageProvider.packagesModel.result;
         log("===>package ${packagelist?.length}");
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: appBgColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Stack(children: [
-                Container(
-                  height: 260,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage("assets/images/dash_bg.png"),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.vertical(
-                        bottom: Radius.elliptical(50.0, 50.0)),
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const MyAppbar(title: "Subscription"),
-                    Center(
-                      child: SizedBox(
-                        height: 180,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Image.asset(
-                            "assets/images/ic_subscription.png",
-                          ),
+        return BlocConsumer<AppCubit, AppState>(
+          listener: (context, state) {
+            if (state is PayPalSuccessState) {
+              Utility.navigateTo(context,
+                  widget: PaypalScreen(
+                      paypalLink: AppCubit.get(context).paymentLink!));
+            }
+          },
+          builder: (context, state) {
+            var cubit = AppCubit.get(context);
+            return Scaffold(
+              resizeToAvoidBottomInset: false,
+              backgroundColor: appBgColor,
+              body: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Stack(children: [
+                    Container(
+                      height: 260,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("assets/images/dash_bg.png"),
+                          fit: BoxFit.cover,
                         ),
+                        borderRadius: BorderRadius.vertical(
+                            bottom: Radius.elliptical(50.0, 50.0)),
                       ),
                     ),
-                  ],
-                ),
-              ]),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: packagelist?.length ?? 0,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        selectIndex = index;
-                        _kProductIds.clear();
-                        log('===> 11${packagelist?[index].productPackage}');
-                        _kProductIds
-                            .add(packagelist?[index].productPackage ?? "");
-                        log("===> ${_kProductIds.length}");
-                        purchaseItem();
-                        // addPurchase();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, top: 8, right: 20, bottom: 8),
-                        child: Container(
-                          height: 130,
-                          padding: const EdgeInsets.only(left: 15, right: 15),
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/ic_packagebg.png'),
-                              fit: BoxFit.fill,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const MyAppbar(title: "Subscription"),
+                        Center(
+                          child: SizedBox(
+                            height: 180,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Image.asset(
+                                "assets/images/ic_subscription.png",
+                              ),
                             ),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 5),
-                              MyText(
-                                title: (packageProvider.packagesModel
-                                            .result?[index].coin ??
-                                        "") +
-                                    " Coins",
-                                size: 20,
-                                fontWeight: FontWeight.w500,
-                                colors: white,
-                              ),
-                              const SizedBox(height: 5),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width - 100,
-                                child: MyText(
-                                  title: (packageProvider
-                                          .packagesModel.result?[index].name ??
-                                      ""),
-                                  size: 24,
-                                  fontWeight: FontWeight.w500,
-                                  colors: white,
-                                  maxline: 2,
+                        ),
+                      ],
+                    ),
+                  ]),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: packagelist?.length ?? 0,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () async {
+                            await cubit.getPayPalLink(
+                                userId: int.parse(userId!),
+                                planSubscriptionId: packagelist![index].id!,
+                                transactionAmount:
+                                    int.parse(packagelist![index].price!),
+                                coin: int.parse(packagelist![index].coin!));
+                            selectIndex = index;
+                            _kProductIds.clear();
+                            log('===> ${packagelist?[index].productPackage}');
+                            _kProductIds
+                                .add(packagelist?[index].productPackage ?? "");
+                            log("===> ${_kProductIds.length}");
+                            // purchaseItem();
+                            // if (state is PayPalSuccessState) {
+                            //   Future.delayed(const Duration(seconds: 2), () {
+                            //     Utility.navigateTo(context,
+                            //         widget: PaypalScreen(
+                            //             paypalLink: cubit.paymentLink!));
+                            //   });
+                            // }
+
+                            // addPurchase();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, top: 8, right: 20, bottom: 8),
+                            child: Container(
+                              height: 130,
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/ic_packagebg.png'),
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-                              const SizedBox(height: 10),
-                              Row(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Spacer(),
+                                  const SizedBox(height: 5),
                                   MyText(
-                                    title: "Select Plan ->",
-                                    size: 18,
-                                    fontWeight: FontWeight.w600,
-                                    colors: sharebg,
+                                    title: (packageProvider.packagesModel
+                                                .result?[index].coin ??
+                                            "") +
+                                        " Coins",
+                                    size: 20,
+                                    fontWeight: FontWeight.w500,
+                                    colors: white,
+                                  ),
+                                  const SizedBox(height: 5),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 100,
+                                    child: MyText(
+                                      title: (packageProvider.packagesModel
+                                              .result?[index].name ??
+                                          ""),
+                                      size: 24,
+                                      fontWeight: FontWeight.w500,
+                                      colors: white,
+                                      maxline: 2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Spacer(),
+                                      MyText(
+                                        title: "Select Plan ->",
+                                        size: 18,
+                                        fontWeight: FontWeight.w600,
+                                        colors: sharebg,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+                        );
+                      },
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
         );
       } else {
         return Container();
@@ -317,10 +346,10 @@ class _SubscriptionState extends State<Subscription> {
   purchaseItem() async {
     final ProductDetailsResponse response =
         await InAppPurchase.instance.queryProductDetails(_kProductIds.toSet());
-    if (response.notFoundIDs.isNotEmpty) {
-      Utility.toastMessage("Please check SKU");
-      return;
-    }
+    // if (response.notFoundIDs.isNotEmpty) {
+    //   Utility.toastMessage("Please check SKU");
+    //   return;
+    // }
     final PurchaseParam purchaseParam =
         PurchaseParam(productDetails: response.productDetails[0]);
     InAppPurchase.instance.buyConsumable(purchaseParam: purchaseParam);
