@@ -4,6 +4,9 @@ import 'package:sanad/Network/dio_helper.dart';
 import 'package:sanad/Network/endpoints.dart';
 import 'package:sanad/model/paypalmodel.dart';
 
+import '../model/contentmodel.dart';
+import '../webservice/apiservice.dart';
+
 part 'app_state.dart';
 
 class AppCubit extends Cubit<AppState> {
@@ -11,6 +14,8 @@ class AppCubit extends Cubit<AppState> {
   static AppCubit get(context) => BlocProvider.of(context);
   PayPalModel? payPalModel;
   String? paymentLink;
+  ContentModel livecontentModel = ContentModel();
+
 //?user_id=1&plan_subscription_id=1&transaction_amount=10&coin=100
   Future<void> getPayPalLink({
     required int userId,
@@ -34,5 +39,12 @@ class AppCubit extends Cubit<AppState> {
       debugPrint(error.toString());
       emit(PayPalErrorState());
     });
+  }
+
+  getLiveContent(
+      {context, required String listType, required String userID}) async {
+    livecontentModel = await ApiService().getContest(listType, userID);
+    emit(GetLiveContentSuccessState());
+    // debugPrint("${livecontentModel.status}");
   }
 }

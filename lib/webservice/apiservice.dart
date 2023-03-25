@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sanad/model/categorymastermodel.dart';
 import 'package:sanad/model/categorymodel.dart';
@@ -44,9 +43,9 @@ class ApiService {
     GeneralSettingModel generalSettingModel;
     String generalsetting = "general_setting";
     Response response = await dio.post('$baseurl$generalsetting');
-    debugPrint("${response.data}");
+    // // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("generalsetting apiservice:===>${response.data}");
+      // debugPrint("generalsetting apiservice:===>${response.data}");
       generalSettingModel = GeneralSettingModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -67,9 +66,9 @@ class ApiService {
           'type': type,
           'device_token': devicetoken
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Login apiservice:===>${response.data}");
+      // debugPrint("Login apiservice:===>${response.data}");
       loginmodel = LoginModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -97,9 +96,9 @@ class ApiService {
     String login = "forgot_password";
     Response response =
         await dio.post('$baseurl$login', data: ({'email': email}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("ForgotPassword apiservice:===>${response.data}");
+      // debugPrint("ForgotPassword apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -118,7 +117,7 @@ class ApiService {
       required String gender,
       required String age,
       required String username,
-      required String address}) async {
+      required String country}) async {
     RegistrationModel registrationModel;
     String registration = "registration";
     Response response = await dio.post('$baseurl$registration',
@@ -133,11 +132,11 @@ class ApiService {
           'username': username,
           'gender': gender,
           'age': age,
-          'address': address
+          'country': country
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("generalsetting apiservice:===>${response.data}");
+      // debugPrint("generalsetting apiservice:===>${response.data}");
       registrationModel = RegistrationModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -149,9 +148,9 @@ class ApiService {
     CategoryModel categoryModel;
     String category = "get_category";
     Response response = await dio.post('$baseurl$category');
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Category apiservice:===>${response.data}");
+      // debugPrint("Category apiservice:===>${response.data}");
       categoryModel = CategoryModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -164,9 +163,9 @@ class ApiService {
     String level = "get_level";
     Response response = await dio.post('$baseurl$level',
         data: ({'category_id': catId, 'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("level apiservice:===>${response.data}");
+      // debugPrint("level apiservice:===>${response.data}");
       levelModel = LevelModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -179,9 +178,9 @@ class ApiService {
     String level = "question_by_level";
     Response response = await dio.post('$baseurl$level',
         data: ({'category_id': catId, 'level_id': levelId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Question apiservice:===>${response.data}");
+      // debugPrint("Question apiservice:===>${response.data}");
       questionModel = QuestionModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -194,9 +193,9 @@ class ApiService {
     String profile = "profile";
     Response response =
         await dio.post('$baseurl$profile', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Profile apiservice:===>${response.data}");
+      // debugPrint("Profile apiservice:===>${response.data}");
       profileModel = ProfileModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -248,9 +247,9 @@ class ApiService {
             'age': age
           }));
     }
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Profile apiservice:===>${response.data}");
+      // debugPrint("Profile apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -263,9 +262,9 @@ class ApiService {
     String profile = "refer_transaction";
     Response response =
         await dio.post('$baseurl$profile', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Refer apiservice:===>${response.data}");
+      // debugPrint("Refer apiservice:===>${response.data}");
       referTranModel = ReferTranModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -278,9 +277,9 @@ class ApiService {
     String profile = "get_earn_transaction";
     Response response =
         await dio.post('$baseurl$profile', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Earn apiservice:===>${response.data}");
+      // debugPrint("Earn apiservice:===>${response.data}");
       earnModel = EarnModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -293,9 +292,9 @@ class ApiService {
     String profile = "get_package_transaction";
     Response response =
         await dio.post('$baseurl$profile', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Refer apiservice:===>${response.data}");
+      // debugPrint("Refer apiservice:===>${response.data}");
       coinsHistoryModel = CoinsHistoryModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -308,9 +307,9 @@ class ApiService {
     String profile = "get_reward_points";
     Response response =
         await dio.post('$baseurl$profile', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Refer apiservice:===>${response.data}");
+      // debugPrint("Refer apiservice:===>${response.data}");
       rewardModel = RewardModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -323,9 +322,9 @@ class ApiService {
     String content = "getContest";
     Response response = await dio.post('$baseurl$content',
         data: ({'list_type': listType, 'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("getContest apiservice:===>${response.data}");
+      // debugPrint("getContest apiservice:===>${response.data}");
       contentModel = ContentModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -339,9 +338,9 @@ class ApiService {
     String content = "joinContest";
     Response response = await dio.post('$baseurl$content',
         data: ({'contest_id': contestId, 'user_id': userId, 'coin': coin}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("joinContest apiservice:===>${response.data}");
+      // debugPrint("joinContest apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -358,9 +357,9 @@ class ApiService {
     log('====> contestId $contestId');
     Response response = await dio.post('$baseurl$contestleaderboard',
         data: ({'user_id': userId, 'contest_id': contestId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Contest leaderBoard apiservice:===>${response.data}");
+      // debugPrint("Contest leaderBoard apiservice:===>${response.data}");
       contestLeaderModel = ContestLeaderModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -375,9 +374,9 @@ class ApiService {
         data: ({
           'contest_id': contestId,
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("winnerModel apiservice:===>${response.data}");
+      // debugPrint("winnerModel apiservice:===>${response.data}");
       winnerModel = WinnerModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -390,9 +389,9 @@ class ApiService {
     String level = "question_by_contest";
     Response response =
         await dio.post('$baseurl$level', data: ({'contest_id': contestId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Question apiservice:===>${response.data}");
+      // debugPrint("Question apiservice:===>${response.data}");
       contestQuestionModel = ContestQuestionModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -419,9 +418,9 @@ class ApiService {
           'user_id': userId,
           'category_id': categoryId
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Save Question apiservice:===>${response.data}");
+      // debugPrint("Save Question apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -447,9 +446,9 @@ class ApiService {
           'correct_answers': correctAnswers,
           'question_json': questionJson
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Save Contest Question apiservice:===>${response.data}");
+      // debugPrint("Save Contest Question apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -463,9 +462,9 @@ class ApiService {
     String leaderboard = "getTodayLeaderBoard";
     Response response = await dio.post('$baseurl$leaderboard',
         data: ({'user_id': userId, 'level_id': levelId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("TodayLeaderBoard apiservice:===>${response.data}");
+      // debugPrint("TodayLeaderBoard apiservice:===>${response.data}");
       todayLeaderBoardModel = TodayLeaderBoardModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -478,9 +477,9 @@ class ApiService {
     String leaderboard = "getLeaderBoard";
     Response response = await dio.post('$baseurl$leaderboard',
         data: ({'user_id': userId, 'type': type}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("leaderBoard apiservice:===>${response.data}");
+      // debugPrint("leaderBoard apiservice:===>${response.data}");
       leaderBoardModel = LeaderBoardModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -492,9 +491,9 @@ class ApiService {
     LevelMasterModel levelMasterModel;
     String level = "getQuestionLevelMaster";
     Response response = await dio.post('$baseurl$level');
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Question level apiservice:===>${response.data}");
+      // debugPrint("Question level apiservice:===>${response.data}");
       levelMasterModel = LevelMasterModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -509,9 +508,9 @@ class ApiService {
         data: ({
           'question_level_master_id': masterId,
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("categoryMasterModel apiservice:===>${response.data}");
+      // debugPrint("categoryMasterModel apiservice:===>${response.data}");
       categoryMasterModel = CategoryMasterModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -525,9 +524,9 @@ class ApiService {
     String level = "getPracticeLavelByCategoryId";
     Response response = await dio.post('$baseurl$level',
         data: ({'category_id': catId, 'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("levelpratice apiservice:===>${response.data}");
+      // debugPrint("levelpratice apiservice:===>${response.data}");
       levelPraticeModel = LevelPraticeModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -545,9 +544,9 @@ class ApiService {
           'level_id': levelId,
           'question_level_master_id': levelMasterId
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Question apiservice:===>${response.data}");
+      // debugPrint("Question apiservice:===>${response.data}");
       questionPraticeModel = QuestionPraticeModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -576,9 +575,9 @@ class ApiService {
           'questions_attended': questionsAttended,
           'correct_answers': correctAnswers,
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("Save Question apiservice:===>${response.data}");
+      // debugPrint("Save Question apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -591,9 +590,9 @@ class ApiService {
     String leaderboard = "getPractiseLeaderBoard";
     Response response =
         await dio.post('$baseurl$leaderboard', data: ({'user_id': userId}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("PraticeLeaderBoard apiservice:===>${response.data}");
+      // debugPrint("PraticeLeaderBoard apiservice:===>${response.data}");
       praticeLeaderboardModel =
           PraticeLeaderboardModel.fromJson((response.data));
     } else {
@@ -607,7 +606,7 @@ class ApiService {
     String profile = "get_packages";
     Response response = await dio.get('$baseurl$profile');
     if (response.statusCode == 200) {
-      debugPrint("Package apiservice:===>${response.data}");
+      // debugPrint("Package apiservice:===>${response.data}");
       packagesModel = PackagesModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -626,9 +625,9 @@ class ApiService {
           'transaction_amount': amount,
           'coin': coin
         }));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("add_transaction apiservice:===>${response.data}");
+      // debugPrint("add_transaction apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -644,7 +643,7 @@ class ApiService {
           'user_id': userId,
         }));
     if (response.statusCode == 200) {
-      debugPrint("Notification apiservice:===>${response.data}");
+      // debugPrint("Notification apiservice:===>${response.data}");
       notificationModel = NotificationModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -661,7 +660,7 @@ class ApiService {
           'notification_id': id,
         }));
     if (response.statusCode == 200) {
-      debugPrint("Read Notification apiservice:===>${response.data}");
+      // debugPrint("Read Notification apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load data');
@@ -673,9 +672,9 @@ class ApiService {
     EarnPointsModel earnPointsModel;
     String level = "earn_point";
     Response response = await dio.post('$baseurl$level');
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("earnPointsModel level apiservice:===>${response.data}");
+      // debugPrint("earnPointsModel level apiservice:===>${response.data}");
       earnPointsModel = EarnPointsModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');
@@ -688,9 +687,9 @@ class ApiService {
     String level = "reward_points";
     Response response = await dio.post('$baseurl$level',
         data: ({'user_id': userId, 'reward_points': id, 'type': type}));
-    debugPrint("${response.data}");
+    // debugPrint("${response.data}");
     if (response.statusCode == 200) {
-      debugPrint("successModel level apiservice:===>${response.data}");
+      // debugPrint("successModel level apiservice:===>${response.data}");
       successModel = SuccessModel.fromJson((response.data));
     } else {
       throw Exception('Failed to load album');

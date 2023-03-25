@@ -10,3 +10,5 @@ class PayPalSuccessState extends AppState {}
 class PayPalLoadingState extends AppState {}
 
 class PayPalErrorState extends AppState {}
+
+class GetLiveContentSuccessState extends AppState {}

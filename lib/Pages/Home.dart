@@ -45,19 +45,20 @@ class _HomeState extends State<Home> {
   var iosBannerAdsId = "";
   var bannerad = "";
   var banneradIos = "";
-  int? totalCoins;
+  double? totalCoins;
   @override
   initState() {
     getLogin();
     getId();
-    getTotalCoins();
+    // getTotalCoins();
+
     super.initState();
   }
 
-  getTotalCoins() async {
-    totalCoins = await sharePref.read('totalCoins');
-    debugPrint('totalCoins===>${totalCoins.toString()}');
-  }
+  // getTotalCoins() async {
+  //   totalCoins = await sharePref.read('totalCoins');
+  //   debugPrint('totalCoins===>${totalCoins.toString()}');
+  // }
 
   getId() async {
     androidBannerAdsId = await sharePref.read("banner_adid") ?? "";
@@ -67,6 +68,9 @@ class _HomeState extends State<Home> {
 
     debugPrint("Android id:====$bannerad");
     debugPrint("ios id:====$banneradIos");
+    final profiledata = Provider.of<ApiProvider>(context, listen: false);
+    profiledata.getProfile(context, userId);
+    totalCoins = double.parse(profiledata.profileModel.result![0].totalCoins!);
   }
 
   getLogin() async {
@@ -79,10 +83,15 @@ class _HomeState extends State<Home> {
       final profiledata = Provider.of<ApiProvider>(context, listen: false);
       profiledata.getProfile(context, userId);
     }
+
     _googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) {});
     _googleSignIn.signInSilently();
 
+    // await Constant.totalCoins(
+    //     coins: int.parse(profiledata.profileModel.result![0].totalCoins!));
+    // await Constant.totalPoints(
+    //     points: profiledata.profileModel.result![0].totalScore!);
     AdHelper.createInterstitialAd();
     AdHelper.createRewardedAd();
   }

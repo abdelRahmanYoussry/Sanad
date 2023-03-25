@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/Cubit/app_cubit.dart' as appcubit;
 import 'package:sanad/pages/contest/contestleaderboard.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/theme/color.dart';
@@ -13,7 +15,9 @@ import 'package:sanad/widget/MyAppbar.dart';
 import 'package:sanad/widget/myimage.dart';
 import 'package:sanad/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:table_calendar/table_calendar.dart';
 
+import '../../Cubit/app_cubit.dart';
 import 'contestquestions.dart';
 
 class Contest extends StatefulWidget {
@@ -30,18 +34,18 @@ class _ContestState extends State<Contest> {
   String? userId;
   var bannerad = "";
   var banneradIos = "";
-  int? totalCoins;
+  double? totalCoins;
 
   @override
   initState() {
     getUserId();
-    getTotalCoins();
+    // getTotalCoins();
     super.initState();
   }
 
   getUserId() async {
     userId = await sharePref.read('userId') ?? "0";
-    debugPrint('userID===>${userId.toString()}');
+    debugPrint('userID _Contest ===>${userId.toString()}');
     bannerad = await sharePref.read("banner_ad") ?? "";
     banneradIos = await sharePref.read("ios_banner_ad") ?? "";
 
@@ -49,11 +53,21 @@ class _ContestState extends State<Contest> {
     upcomingdata.getUpContent(context, 'upcoming', userId.toString());
     upcomingdata.getLiveContent(context, 'live', userId.toString());
     upcomingdata.getEndContent(context, 'ended', userId.toString());
+    upcomingdata.getQuestionByContest(context, 14.toString());
+
+    upcomingdata.getProfile(context, userId);
+    totalCoins = double.parse(upcomingdata.profileModel.result![0].totalCoins!);
+    debugPrint('TotalCoins==========> $totalCoins');
   }
 
   @override
   Widget build(BuildContext context) {
-    return buildBody();
+    return BlocConsumer<AppCubit, appcubit.AppState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return buildBody();
+      },
+    );
   }
 
   getAppbar() {
@@ -78,7 +92,7 @@ class _ContestState extends State<Contest> {
             child: Column(
               children: [
                 getAppbar(),
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
                 Container(
                   height: 50,
                   decoration: BoxDecoration(
@@ -470,10 +484,10 @@ class _ContestState extends State<Contest> {
     );
   }
 
-  getTotalCoins() async {
-    totalCoins = await sharePref.read('totalCoins');
-    debugPrint('totalCoins===>${totalCoins.toString()}');
-  }
+  // getTotalCoins() async {
+  //   totalCoins = await sharePref.read('totalCoins');
+  //   debugPrint('totalCoins===>${totalCoins.toString()}');
+  // }
 
   live() {
     return Consumer<ApiProvider>(
@@ -500,16 +514,312 @@ class _ContestState extends State<Contest> {
                   );
                 },
               )
-            : ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: livecontent.livecontentModel.result?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return Container(
+            : Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount:
+                          livecontent.livecontentModel.result?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(
+                              left: 5, top: 10, right: 5, bottom: 0),
+                          height: MediaQuery.of(context).size.height / 4,
+                          decoration: const BoxDecoration(
+                              color: white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 10, top: 10, right: 10, bottom: 5),
+                            child: Column(children: [
+                              Row(
+                                children: [
+                                  Column(
+                                    children: [
+                                      MyText(
+                                          title: "Prize Pool",
+                                          size: 16,
+                                          fontWeight: FontWeight.w400,
+                                          colors: textColorGrey),
+                                      MyText(
+                                          title: livecontent.livecontentModel
+                                                  .result?[index].totalPrize
+                                                  .toString() ??
+                                              "",
+                                          size: 24,
+                                          fontWeight: FontWeight.w600,
+                                          colors: black)
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  (livecontent.livecontentModel.result?[index]
+                                                  .isPlayed ??
+                                              0) ==
+                                          0
+                                      ? TextButton(
+                                          onPressed: () {
+                                            Utility.customShowDialog(
+                                                title: Center(
+                                                  child: Text(livecontent
+                                                      .livecontentModel
+                                                      .result![index]
+                                                      .name!),
+                                                ),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        MyText(
+                                                            title: "5h 40m",
+                                                            size: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                        const VerticalDivider(
+                                                          thickness: 2,
+                                                          width: 20,
+                                                          color: textColorGrey,
+                                                        ),
+                                                        MyText(
+                                                            title:
+                                                                "Entry Fee: ${livecontent.livecontentModel.result?[index].price} Coin",
+                                                            size: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ],
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    const Text(
+                                                      'Are you Sure to Join Now?',
+                                                      style: TextStyle(
+                                                          color: actionColor),
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                          color: baseColor,
+                                                          fontSize: 20),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(cyan),
+                                                        shape: MaterialStateProperty.all(
+                                                            const RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            28.0))))),
+                                                    onPressed: () async {
+                                                      // int remainingCoins =
+                                                      //     totalCoins! -
+                                                      //         int.parse((livecontent
+                                                      //             .livecontentModel
+                                                      //             .result?[index]
+                                                      //             .price)!);
+                                                      if (totalCoins! >=
+                                                          int.parse(livecontent
+                                                              .livecontentModel
+                                                              .result![index]
+                                                              .price!)) {
+                                                        await Constant.totalCoins(
+                                                            coins: int.parse(livecontent
+                                                                    .profileModel
+                                                                    .result![0]
+                                                                    .totalCoins!) -
+                                                                int.parse((livecontent
+                                                                    .livecontentModel
+                                                                    .result?[
+                                                                        index]
+                                                                    .price)!));
+
+                                                        Utility.toastMessage(
+                                                            'You Have Joined Successful '
+                                                            '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[index].price)!)} Coin ');
+
+                                                        Navigator
+                                                            .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ContestQuestions(
+                                                                              contestId: livecontent.livecontentModel.result?[index].id.toString(),
+                                                                              contestName: livecontent.livecontentModel.result?[index].name,
+                                                                            )));
+                                                      } else {
+                                                        Utility.toastMessage(
+                                                            ' You have $totalCoins coin \n '
+                                                            'Please recharge your wallet');
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      'Confirm',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                                context: context);
+                                          },
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              28.0))),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      appColor)),
+                                          child: MyText(
+                                            title: ' Join Now ',
+                                            size: 16,
+                                            fontWeight: FontWeight.w500,
+                                            colors: white,
+                                          ))
+                                      : MyText(
+                                          title: 'Already Played',
+                                          fontWeight: FontWeight.w500,
+                                          colors: red,
+                                          size: 14,
+                                          maxline: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                ],
+                              ),
+                              const SizedBox(height: 15),
+                              Row(
+                                children: [
+                                  Image.asset(
+                                    "assets/images/ic_trophy.png",
+                                    height: 15,
+                                    width: 15,
+                                  ),
+                                  const SizedBox(width: 5),
+                                  MyText(
+                                      title:
+                                          "WINNERS: ${livecontent.livecontentModel.result?[index].noOfUserPrize}",
+                                      size: 16,
+                                      fontWeight: FontWeight.w400,
+                                      colors: textColorGree),
+                                  const Spacer(),
+                                  MyText(
+                                      title: livecontent.livecontentModel
+                                              .result?[index].name ??
+                                          "",
+                                      size: 16,
+                                      fontWeight: FontWeight.w600,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxline: 1,
+                                      colors: black)
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              const Divider(height: 1, color: textColorGrey),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 25,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    MyText(
+                                        title: "5h 40m",
+                                        size: 16,
+                                        fontWeight: FontWeight.w600),
+                                    const VerticalDivider(
+                                      thickness: 2,
+                                      width: 20,
+                                      color: textColorGrey,
+                                    ),
+                                    MyText(
+                                        title:
+                                            "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
+                                        size: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              SizedBox(
+                                width: double.infinity,
+                                height: 40,
+                                child: ElevatedButton(
+                                    onPressed: () {
+                                      Utility.customShowDialog(
+                                          title: const Center(
+                                              child: Text('Details')),
+                                          content: Text(livecontent
+                                              .livecontentModel
+                                              .result![index]
+                                              .name!),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text(
+                                                'Ok',
+                                                style: TextStyle(
+                                                    color: cyan, fontSize: 20),
+                                              ),
+                                            )
+                                          ],
+                                          context: context);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(cyan),
+                                      shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(28),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Description',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ]),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Container(
                     margin: const EdgeInsets.only(
                         left: 5, top: 10, right: 5, bottom: 0),
                     height: MediaQuery.of(context).size.height / 4,
-                    decoration: const BoxDecoration(
-                        color: white,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     child: Container(
                       padding: const EdgeInsets.only(
@@ -523,66 +833,145 @@ class _ContestState extends State<Contest> {
                                     title: "Prize Pool",
                                     size: 16,
                                     fontWeight: FontWeight.w400,
-                                    colors: textColorGrey),
+                                    colors: Colors.white),
                                 MyText(
                                     title: livecontent.livecontentModel
-                                            .result?[index].totalPrize
+                                            .result?[3].totalPrize
                                             .toString() ??
                                         "",
                                     size: 24,
                                     fontWeight: FontWeight.w600,
-                                    colors: black)
+                                    colors: Colors.white)
                               ],
                             ),
                             const Spacer(),
-                            (livecontent.livecontentModel.result?[index]
-                                            .isPlayed ??
+                            (livecontent.livecontentModel.result?[3].isPlayed ??
                                         0) ==
                                     0
                                 ? TextButton(
                                     onPressed: () {
+                                      // Utility.customShowDialog(
+                                      //     title: Center(
+                                      //       child: Text(livecontent
+                                      //           .livecontentModel
+                                      //           .result![3]
+                                      //           .name!),
+                                      //     ),
+                                      //     content: Column(
+                                      //       mainAxisSize: MainAxisSize.min,
+                                      //       children: [
+                                      //         Row(
+                                      //           mainAxisAlignment:
+                                      //               MainAxisAlignment.center,
+                                      //           children: [
+                                      //             MyText(
+                                      //                 title: "5h 40m",
+                                      //                 size: 16,
+                                      //                 fontWeight:
+                                      //                     FontWeight.w600),
+                                      //             const VerticalDivider(
+                                      //               thickness: 2,
+                                      //               width: 20,
+                                      //               color: textColorGrey,
+                                      //             ),
+                                      //             MyText(
+                                      //                 title:
+                                      //                     "Entry Fee: ${livecontent.livecontentModel.result?[3].price} Coin",
+                                      //                 size: 16,
+                                      //                 fontWeight:
+                                      //                     FontWeight.w600),
+                                      //           ],
+                                      //         ),
+                                      //         const SizedBox(
+                                      //           height: 10,
+                                      //         ),
+                                      //         const Text(
+                                      //           'Are you Sure to Join Now?',
+                                      //           style: TextStyle(
+                                      //               color: actionColor),
+                                      //         ),
+                                      //       ],
+                                      //     ),
+                                      //     actions: [
+                                      //       TextButton(
+                                      //         onPressed: () {
+                                      //           Navigator.pop(context);
+                                      //         },
+                                      //         child: const Text(
+                                      //           'Cancel',
+                                      //           style: TextStyle(
+                                      //               color: baseColor,
+                                      //               fontSize: 20),
+                                      //         ),
+                                      //       ),
+                                      //       TextButton(
+                                      //         style: ButtonStyle(
+                                      //             backgroundColor:
+                                      //                 MaterialStateProperty.all(
+                                      //                     cyan),
+                                      //             shape: MaterialStateProperty.all(
+                                      //                 const RoundedRectangleBorder(
+                                      //                     borderRadius:
+                                      //                         BorderRadius.all(
+                                      //                             Radius.circular(
+                                      //                                 28.0))))),
+                                      //         onPressed: () async {
+                                      //           // int remainingCoins =
+                                      //           //     totalCoins! -
+                                      //           //         int.parse((livecontent
+                                      //           //             .livecontentModel
+                                      //           //             .result?[3]
+                                      //           //             .price)!);
+                                      //           if (totalCoins! >=
+                                      //               int.parse(livecontent
+                                      //                   .livecontentModel
+                                      //                   .result![3]
+                                      //                   .price!)) {
+                                      //             await Constant.totalCoins(
+                                      //                 coins: totalCoins! -
+                                      //                     int.parse((livecontent
+                                      //                         .livecontentModel
+                                      //                         .result?[3]
+                                      //                         .price)!));
+                                      //
+                                      //             Utility.toastMessage(
+                                      //                 'You Have Joined Successful '
+                                      //                 '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[3].price)!)} Coin ');
+                                      //
+                                      //             Navigator.pushReplacement(
+                                      //                 context,
+                                      //                 MaterialPageRoute(
+                                      //                     builder: (context) =>
+                                      //                         ContestQuestions(
+                                      //                           contestId: livecontent
+                                      //                               .livecontentModel
+                                      //                               .result?[3]
+                                      //                               .id
+                                      //                               .toString(),
+                                      //                           contestName:
+                                      //                               livecontent
+                                      //                                   .livecontentModel
+                                      //                                   .result?[
+                                      //                                       3]
+                                      //                                   .name,
+                                      //                         )));
+                                      //           } else {
+                                      //             Utility.toastMessage(
+                                      //                 ' You have $totalCoins coin \n '
+                                      //                 'Please recharge your wallet');
+                                      //           }
+                                      //         },
+                                      //         child: const Text(
+                                      //           'Confirm',
+                                      //           style: TextStyle(
+                                      //               color: Colors.white),
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //     context: context);
+
                                       Utility.customShowDialog(
-                                          title: Center(
-                                            child: Text(livecontent
-                                                .livecontentModel
-                                                .result![index]
-                                                .name!),
-                                          ),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  MyText(
-                                                      title: "5h 40m",
-                                                      size: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                  const VerticalDivider(
-                                                    thickness: 2,
-                                                    width: 20,
-                                                    color: textColorGrey,
-                                                  ),
-                                                  MyText(
-                                                      title:
-                                                          "Entry Fee: ${livecontent.livecontentModel.result?[index].price} Coin",
-                                                      size: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              const Text(
-                                                'Are you Sure to Join Now?',
-                                                style: TextStyle(
-                                                    color: actionColor),
-                                              ),
-                                            ],
-                                          ),
+                                          context: context,
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -594,73 +983,35 @@ class _ContestState extends State<Contest> {
                                                     color: baseColor,
                                                     fontSize: 20),
                                               ),
-                                            ),
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          cyan),
-                                                  shape: MaterialStateProperty.all(
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      28.0))))),
-                                              onPressed: () async {
-                                                // int remainingCoins =
-                                                //     totalCoins! -
-                                                //         int.parse((livecontent
-                                                //             .livecontentModel
-                                                //             .result?[index]
-                                                //             .price)!);
-                                                if (totalCoins! >=
-                                                    int.parse(livecontent
-                                                        .livecontentModel
-                                                        .result![index]
-                                                        .price!)) {
-                                                  await Constant.totalCoins(
-                                                      coins: totalCoins! -
-                                                          int.parse((livecontent
-                                                              .livecontentModel
-                                                              .result?[index]
-                                                              .price)!));
-
-                                                  Utility.toastMessage(
-                                                      'You Have Joined Successful '
-                                                      '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[index].price)!)} Coin ');
-
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              ContestQuestions(
-                                                                contestId: livecontent
-                                                                    .livecontentModel
-                                                                    .result?[
-                                                                        index]
-                                                                    .id
-                                                                    .toString(),
-                                                                contestName:
-                                                                    livecontent
-                                                                        .livecontentModel
-                                                                        .result?[
-                                                                            index]
-                                                                        .name,
-                                                              )));
-                                                } else {
-                                                  Utility.toastMessage(
-                                                      ' You have $totalCoins coin \n '
-                                                      'Please recharge your wallet');
-                                                }
-                                              },
-                                              child: const Text(
-                                                'Confirm',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
+                                            )
                                           ],
-                                          context: context);
+                                          content: SizedBox(
+                                            height: 400,
+                                            width: 400,
+                                            child: TableCalendar(
+                                              calendarFormat:
+                                                  CalendarFormat.month,
+                                              rowHeight: 40,
+                                              firstDay: DateTime.now(),
+                                              lastDay: DateTime.now().add(
+                                                  Duration(
+                                                      days: livecontent
+                                                          .contestQuestionModel
+                                                          .result!
+                                                          .length)),
+                                              focusedDay: DateTime.now(),
+                                              rangeSelectionMode:
+                                                  RangeSelectionMode.enforced,
+                                              rangeStartDay: DateTime.now(),
+                                              rangeEndDay: DateTime.now().add(
+                                                  Duration(
+                                                      days: livecontent
+                                                          .contestQuestionModel
+                                                          .result!
+                                                          .length)),
+                                            ),
+                                          ),
+                                          title: Text('data'));
                                     },
                                     style: ButtonStyle(
                                         shape: MaterialStateProperty.all<
@@ -695,28 +1046,29 @@ class _ContestState extends State<Contest> {
                               "assets/images/ic_trophy.png",
                               height: 15,
                               width: 15,
+                              color: Colors.white,
                             ),
                             const SizedBox(width: 5),
                             MyText(
                                 title:
-                                    "WINNERS: ${livecontent.livecontentModel.result?[index].noOfUserPrize}",
+                                    "WINNERS: ${livecontent.livecontentModel.result?[3].noOfUserPrize}",
                                 size: 16,
                                 fontWeight: FontWeight.w400,
-                                colors: textColorGree),
+                                colors: Colors.white),
                             const Spacer(),
                             MyText(
                                 title: livecontent
-                                        .livecontentModel.result?[index].name ??
+                                        .livecontentModel.result?[3].name ??
                                     "",
                                 size: 16,
                                 fontWeight: FontWeight.w600,
                                 overflow: TextOverflow.ellipsis,
                                 maxline: 1,
-                                colors: black)
+                                colors: Colors.white)
                           ],
                         ),
                         const SizedBox(height: 10),
-                        const Divider(height: 1, color: textColorGrey),
+                        const Divider(height: 1, color: Colors.white),
                         const SizedBox(height: 10),
                         SizedBox(
                           height: 25,
@@ -726,16 +1078,18 @@ class _ContestState extends State<Contest> {
                               MyText(
                                   title: "5h 40m",
                                   size: 16,
+                                  colors: Colors.white,
                                   fontWeight: FontWeight.w600),
                               const VerticalDivider(
                                 thickness: 2,
                                 width: 20,
-                                color: textColorGrey,
+                                color: Colors.white,
                               ),
                               MyText(
                                   title:
-                                      "Entry Fee: ${livecontent.livecontentModel.result?[index].price}",
+                                      "Entry Fee: ${livecontent.livecontentModel.result?[3].price}",
                                   size: 16,
+                                  colors: Colors.white,
                                   fontWeight: FontWeight.w600),
                             ],
                           ),
@@ -749,7 +1103,7 @@ class _ContestState extends State<Contest> {
                                 Utility.customShowDialog(
                                     title: const Center(child: Text('Details')),
                                     content: Text(livecontent
-                                        .livecontentModel.result![index].name!),
+                                        .livecontentModel.result![3].name!),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -787,8 +1141,8 @@ class _ContestState extends State<Contest> {
                         ),
                       ]),
                     ),
-                  );
-                },
+                  )
+                ],
               );
       },
     );

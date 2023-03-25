@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:sanad/pages/home.dart';
 import 'package:sanad/provider/apiprovider.dart';
-import 'package:sanad/utils/constant.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 import 'package:sanad/widget/CustomDropDown.dart';
@@ -66,7 +65,7 @@ class _SignUpState extends State<SignUp> {
     String refer = referController.text.trim();
     String gender = genderController.dropDownValue!.name;
     String age = ageController.text.trim();
-    String address = countryController.dropDownValue!.name;
+    String country = countryController.dropDownValue!.name;
 
     if (username.isEmpty) {
       Utility.toastMessage("Please enter username");
@@ -79,12 +78,10 @@ class _SignUpState extends State<SignUp> {
         email: email, username: username, mobilenumber: phone,
         lastname: username, firstname: username,
         context: context, password: pass, refercode: refer,
-        address: address,
+        country: country,
         // context, email, pass, username, username,
         // phone, refer, username, username, age, gender
       );
-      await Constant.totalCoins(coins: 1000);
-      await Constant.totalPoints(points: 100);
 
       if (!provider.loading) {
         isloading = false;

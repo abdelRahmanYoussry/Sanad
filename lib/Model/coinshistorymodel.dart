@@ -39,8 +39,8 @@ class Result {
   });
 
   int? id;
-  int? userId;
-  int? planSubscriptionId;
+  String? userId;
+  String? planSubscriptionId;
   String? transactionId;
   String? transactionAmount;
   String? coin;

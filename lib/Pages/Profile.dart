@@ -30,9 +30,9 @@ class _ProfileState extends State<Profile> {
   @override
   initState() {
     getUserId();
-    getUserAge();
+    // getUserAge();
     getUserCountry();
-    getUserGender();
+    // getUserGender();
     getTotalCoins();
     getTotalPoints();
     super.initState();
@@ -49,15 +49,15 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  getUserGender() async {
-    userGender = await sharePref.read('userGender') ?? "0";
-    debugPrint('userGender===>${userGender.toString()}');
-  }
-
-  getUserAge() async {
-    userAge = await sharePref.read('userAge') ?? "0";
-    debugPrint('userAge===>${userAge.toString()}');
-  }
+  // getUserGender() async {
+  //   userGender = await sharePref.read('userGender') ?? "0";
+  //   debugPrint('userGender===>${userGender.toString()}');
+  // }
+  //
+  // getUserAge() async {
+  //   userAge = await sharePref.read('userAge') ?? "0";
+  //   debugPrint('userAge===>${userAge.toString()}');
+  // }
 
   getUserCountry() async {
     userCountry = await sharePref.read('userCountry') ?? "0";
@@ -203,28 +203,13 @@ class _ProfileState extends State<Profile> {
             child: Row(
               children: [
                 const Spacer(),
-                //realCoins
-                // Column(
-                //   children: [
-                //     Text(
-                //         profiledata.profileModel.result?[0].totalScore
-                //                 .toString() ??
-                //             "",
-                //         style: GoogleFonts.poppins(
-                //             fontSize: 18,
-                //             fontWeight: FontWeight.w500,
-                //             color: Colors.black)),
-                //     Text("Coins",
-                //         style: GoogleFonts.poppins(
-                //             fontSize: 18,
-                //             fontWeight: FontWeight.w500,
-                //             color: Colors.black)),
-                //   ],
-                // ),
-                //fakeCoins
+                // realCoins
                 Column(
                   children: [
-                    Text(totalCoins.toString(),
+                    Text(
+                        profiledata.profileModel.result?[0].totalCoins
+                                .toString() ??
+                            "",
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
@@ -236,6 +221,21 @@ class _ProfileState extends State<Profile> {
                             color: Colors.black)),
                   ],
                 ),
+                // fakeCoins
+                // Column(
+                //   children: [
+                //     Text(totalCoins.toString(),
+                //         style: GoogleFonts.poppins(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.black)),
+                //     Text("Coins",
+                //         style: GoogleFonts.poppins(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.w500,
+                //             color: Colors.black)),
+                //   ],
+                // ),
                 const Spacer(),
                 const VerticalDivider(
                   color: white,
@@ -244,21 +244,21 @@ class _ProfileState extends State<Profile> {
                 const Spacer(),
                 Column(
                   children: [
-                    //real points
-                    // Text(
-                    //     profiledata.profileModel.result?[0].totalPoints
-                    //             .toString() ??
-                    //         "",
-                    //     style: GoogleFonts.poppins(
-                    //         fontSize: 18,
-                    //         fontWeight: FontWeight.w500,
-                    //         color: Colors.black)),
-                    //fake Points
-                    Text(totalPoints.toString(),
+                    // real points
+                    Text(
+                        profiledata.profileModel.result?[0].totalScore
+                                .toString() ??
+                            "",
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
                             color: Colors.black)),
+                    // fake Points
+                    // Text(totalPoints.toString(),
+                    //     style: GoogleFonts.poppins(
+                    //         fontSize: 18,
+                    //         fontWeight: FontWeight.w500,
+                    //         color: Colors.black)),
                     Text("Points",
                         style: GoogleFonts.poppins(
                             fontSize: 18,

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/pages/RedeemPage/RedeemScreen.dart';
 import 'package:sanad/pages/subscription/subscription.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/theme/color.dart';
@@ -27,15 +28,21 @@ class _WalletState extends State<Wallet> {
       strMinimumpoint,
       strCurrency,
       strWalletVisible;
+  // int? totalPoints;
 
   SharePref sharePref = SharePref();
 
   @override
   initState() {
     getUserId();
-
+    // getTotalPoints();
     super.initState();
   }
+
+  // getTotalPoints() async {
+  //   totalPoints = await sharePref.read('totalPoints');
+  //   debugPrint('totalPoints===>${totalPoints.toString()}');
+  // }
 
   getUserId() async {
     userId = await sharePref.read('userId') ?? "0";
@@ -92,7 +99,7 @@ class _WalletState extends State<Wallet> {
                 ]),
               ],
             ),
-            DefaultTabController(length: 4, child: buildPager())
+            DefaultTabController(length: 1, child: buildPager())
           ],
         ),
       ),
@@ -116,10 +123,16 @@ class _WalletState extends State<Wallet> {
               const SizedBox(height: 10),
               Row(
                 children: [
+                  // Text(
+                  //     profiledata.profileModel.result?[0].totalPoints
+                  //             .toString() ??
+                  //         "00",
+                  //     style: GoogleFonts.poppins(
+                  //         fontSize: 28,
+                  //         fontWeight: FontWeight.w500,
+                  //         color: Colors.white)),
                   Text(
-                      profiledata.profileModel.result?[0].totalPoints
-                              .toString() ??
-                          "00",
+                      profiledata.profileModel.result![0].totalScore.toString(),
                       style: GoogleFonts.poppins(
                           fontSize: 28,
                           fontWeight: FontWeight.w500,
@@ -129,7 +142,9 @@ class _WalletState extends State<Wallet> {
                       ? TextButton.icon(
                           icon: const Icon(Icons.currency_exchange),
                           onPressed: () {
-                            Utility.toastMessage("Coming soon next version");
+                            // Utility.toastMessage("Coming soon next version");
+                            Utility.navigateTo(context,
+                                widget: const RedeemScreen());
                           },
                           label: MyText(title: "Redeem"),
                           // child: MyText(title: "Add Coins"),
@@ -201,14 +216,14 @@ class _WalletState extends State<Wallet> {
         SizedBox(
           height: 50,
           child: TabBar(
-            indicatorColor: appColor,
+            indicatorColor: Colors.transparent,
             labelColor: appColor,
             unselectedLabelColor: appaccentColor,
             tabs: [
               MyText(title: 'Coins', size: 16, fontWeight: FontWeight.w500),
-              MyText(title: 'Reward', size: 16, fontWeight: FontWeight.w500),
-              MyText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
-              MyText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
+              // MyText(title: 'Reward', size: 16, fontWeight: FontWeight.w500),
+              // MyText(title: 'Earn', size: 16, fontWeight: FontWeight.w500),
+              // MyText(title: 'Refer', size: 16, fontWeight: FontWeight.w500)
             ],
           ),
         ),
@@ -217,9 +232,9 @@ class _WalletState extends State<Wallet> {
           child: TabBarView(
             children: <Widget>[
               coinsHistory(),
-              rewardHistory(),
-              earnpoint(),
-              referHistory()
+              // rewardHistory(),
+              // earnpoint(),
+              // referHistory()
             ],
           ),
         )

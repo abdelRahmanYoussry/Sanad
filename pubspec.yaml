@@ -67,6 +67,7 @@ dependencies:
   dropdown_textfield: ^1.0.7
   flutter_bloc: ^8.1.1
   bloc: ^8.1.0
+  table_calendar: ^3.0.7
 
 
 dev_dependencies:

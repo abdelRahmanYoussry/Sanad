@@ -38,7 +38,7 @@ class Result {
     this.facebookUrl,
     this.twitterUrl,
     this.biodata,
-    this.address,
+    this.country,
     this.referenceCode,
     this.parentReferenceCode,
     this.praticeQuizScore,
@@ -64,7 +64,7 @@ class Result {
   String? facebookUrl;
   String? twitterUrl;
   String? biodata;
-  String? address;
+  String? country;
   String? referenceCode;
   String? parentReferenceCode;
   int? praticeQuizScore;
@@ -90,7 +90,7 @@ class Result {
         facebookUrl: json["facebook_url"],
         twitterUrl: json["twitter_url"],
         biodata: json["biodata"],
-        address: json["address"],
+        country: json["country"],
         referenceCode: json["reference_code"],
         parentReferenceCode: json["parent_reference_code"],
         praticeQuizScore: json["pratice_quiz_score"],
@@ -117,7 +117,7 @@ class Result {
         "facebook_url": facebookUrl,
         "twitter_url": twitterUrl,
         "biodata": biodata,
-        "address": address,
+        "address": country,
         "reference_code": referenceCode,
         "parent_reference_code": parentReferenceCode,
         "pratice_quiz_score": praticeQuizScore,

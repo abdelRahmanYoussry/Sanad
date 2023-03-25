@@ -24,34 +24,34 @@ class ProfileModel {
 }
 
 class Result {
-  Result({
-    this.id,
-    this.fullname,
-    this.username,
-    this.email,
-    this.password,
-    this.mobileNumber,
-    this.profileImg,
-    this.type,
-    this.instagramUrl,
-    this.facebookUrl,
-    this.twitterUrl,
-    this.biodata,
-    this.address,
-    this.referenceCode,
-    this.parentReferenceCode,
-    this.praticeQuizScore,
-    this.totalScore,
-    this.totalPoints,
-    this.deviceToken,
-    this.status,
-    this.isUpdated,
-    this.cDate,
-    this.createdAt,
-    this.age,
-    this.gender,
-    this.updatedAt,
-  });
+  Result(
+      {this.id,
+      this.fullname,
+      this.username,
+      this.email,
+      this.password,
+      this.mobileNumber,
+      this.profileImg,
+      this.type,
+      this.instagramUrl,
+      this.facebookUrl,
+      this.twitterUrl,
+      this.biodata,
+      this.address,
+      this.referenceCode,
+      this.parentReferenceCode,
+      this.praticeQuizScore,
+      this.totalScore,
+      this.totalPoints,
+      this.deviceToken,
+      this.status,
+      this.isUpdated,
+      this.cDate,
+      this.createdAt,
+      this.age,
+      this.gender,
+      this.updatedAt,
+      this.totalCoins});
 
   int? id;
   String? fullname;
@@ -71,6 +71,7 @@ class Result {
   int? praticeQuizScore;
   int? totalScore;
   int? totalPoints;
+  String? totalCoins;
   String? deviceToken;
   String? status;
   int? isUpdated;
@@ -106,6 +107,7 @@ class Result {
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
         gender: json["gender"],
+        totalCoins: json['total_coins'],
         age: json["age"],
       );
 
@@ -134,5 +136,6 @@ class Result {
         "c_date": cDate,
         "created_at": createdAt,
         "updated_at": updatedAt,
+        'total_coins': totalCoins,
       };
 }

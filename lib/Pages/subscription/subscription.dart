@@ -9,7 +9,6 @@ import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:provider/provider.dart';
-import 'package:sanad/Cubit/app_cubit.dart';
 import 'package:sanad/model/packagesmodel.dart';
 import 'package:sanad/pages/paypalPage/paypalScreen.dart';
 import 'package:sanad/pages/wallet.dart';
@@ -17,6 +16,7 @@ import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 
+import '../../Cubit/app_cubit.dart';
 import '../../theme/color.dart';
 import '../../widget/myappbar.dart';
 import '../../widget/mytext.dart';

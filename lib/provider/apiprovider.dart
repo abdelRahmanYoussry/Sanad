@@ -116,7 +116,7 @@ class ApiProvider extends ChangeNotifier {
       username,
       age,
       gender,
-      address}
+      country}
       //  {required BuildContext context,
       // required String email, required String password,required String firstName,
       //  }
@@ -134,7 +134,7 @@ class ApiProvider extends ChangeNotifier {
         pass: password,
         refercode: refercode,
         username: username,
-        address: address
+        country: country
         // email,
         // password,
         // firstname,
@@ -327,6 +327,7 @@ class ApiProvider extends ChangeNotifier {
     contestQuestionModel = await ApiService().questionByContest(catId);
     // debugPrint("${contestQuestionModel.status}");
     loading = false;
+    print('getQuestionByContest');
     notifyListeners();
   }
 
