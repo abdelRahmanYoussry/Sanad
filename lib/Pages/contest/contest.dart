@@ -8,7 +8,6 @@ import 'package:sanad/pages/contest/contestleaderboard.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/theme/color.dart';
 import 'package:sanad/utils/adhelper.dart';
-import 'package:sanad/utils/constant.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 import 'package:sanad/widget/MyAppbar.dart';
@@ -636,21 +635,29 @@ class _ContestState extends State<Contest> {
                                                       //             .livecontentModel
                                                       //             .result?[index]
                                                       //             .price)!);
+                                                      /////////////////////////////////
                                                       if (totalCoins! >=
                                                           int.parse(livecontent
                                                               .livecontentModel
                                                               .result![index]
                                                               .price!)) {
-                                                        await Constant.totalCoins(
-                                                            coins: int.parse(livecontent
-                                                                    .profileModel
-                                                                    .result![0]
-                                                                    .totalCoins!) -
-                                                                int.parse((livecontent
-                                                                    .livecontentModel
-                                                                    .result?[
-                                                                        index]
-                                                                    .price)!));
+                                                        totalCoins = totalCoins! -
+                                                            int.parse((livecontent
+                                                                .livecontentModel
+                                                                .result?[index]
+                                                                .price)!);
+
+                                                        // await Constant.totalCoins(
+                                                        //     coins: int.parse(livecontent
+                                                        //             .profileModel
+                                                        //             .result![0]
+                                                        //             .totalCoins!) -
+                                                        //         int.parse((livecontent
+                                                        //             .livecontentModel
+                                                        //             .result?[
+                                                        //                 index]
+                                                        //             .price)!)
+                                                        // );
 
                                                         Utility.toastMessage(
                                                             'You Have Joined Successful '
