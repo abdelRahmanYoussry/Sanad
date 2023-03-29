@@ -73,8 +73,6 @@ class _LoginState extends State<Login> {
       isloading = true;
       setState(() {});
 
-      log("===>reference ${provider.loginModel.result?[0].referenceCode.toString()}");
-
       if (provider.loginModel.status == 200) {
         await sharePref.save('is_login', "1");
         await sharePref.save(

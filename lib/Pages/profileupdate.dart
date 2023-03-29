@@ -412,31 +412,16 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
         gender: genderController.dropDownValue!.name,
         fullname: _nameController.text,
         age: _ageController.text,
-        // userId,
-        // _nameController.text.toString(),
-        // _emailController.text.toString(),
-        // _addressController.text.toString(),
-        // image,
-        // _ageController.text,
-        // genderController.dropDownValue!.name
       );
     } else {
       await update.getUpdateProfile(
         contact: _contactController.text.toString(),
         address: _addressController.text,
-        // image: image,
         userId: userId!,
         email: _emailController.text,
         gender: genderController.dropDownValue!.name,
         fullname: _nameController.text,
         age: _ageController.text,
-        // userId,
-        // _nameController.text.toString(),
-        // _emailController.text.toString(),
-        // _addressController.text.toString(),
-        // image,
-        // _ageController.text,
-        // genderController.dropDownValue!.name
       );
     }
     if (!update.loading) {

@@ -577,7 +577,7 @@ class _HomeState extends State<Home> {
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                         const Text(
-                          "Quiz",
+                          "History",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 28,
@@ -587,7 +587,7 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(top: 15),
                           child: Image.asset(
                             'assets/images/right_arrow.png',
-                            height: 35.0,
+                            height: 40.0,
                             width: 50.0,
                           ),
                         ),

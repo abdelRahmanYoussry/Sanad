@@ -42,6 +42,7 @@ class ApiProvider extends ChangeNotifier {
 
   QuestionModel questionModel = QuestionModel();
   ContestQuestionModel contestQuestionModel = ContestQuestionModel();
+  ContestQuestionModel contestQuestionModelNew = ContestQuestionModel();
 
   ContentModel upcontentModel = ContentModel();
   ContentModel livecontentModel = ContentModel();
@@ -159,7 +160,7 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getProfile(context, userId) async {
+  Future<void> getProfile(context, userId) async {
     loading = true;
     profileModel = await ApiService().profile(userId);
     // // debugPrint("${profileModel.status}");
@@ -204,6 +205,24 @@ class ApiProvider extends ChangeNotifier {
           gender: gender,
           fullName: fullname);
       // // debugPrint("${profileModel.status}");
+      loading = false;
+      notifyListeners();
+    }
+  }
+
+  updateCoinsAndPoints(
+      {required String userId,
+      int? points,
+      int? coins,
+      required context}) async {
+    loading = true;
+    {
+      successModel = await ApiService().updateCoinsAndPoints(
+        userId: userId,
+        coins: coins,
+        points: points,
+      );
+      await getProfile(context, userId);
       loading = false;
       notifyListeners();
     }
@@ -322,12 +341,21 @@ class ApiProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getQuestionByContest(context, catId) async {
+  Future<void> getQuestionByContest(context, catId) async {
     loading = true;
     contestQuestionModel = await ApiService().questionByContest(catId);
     // debugPrint("${contestQuestionModel.status}");
     loading = false;
     print('getQuestionByContest');
+    notifyListeners();
+  }
+
+  getQuestionByContestTest(context, catId) async {
+    loading = true;
+    contestQuestionModelNew = await ApiService().questionByContest(catId);
+    // debugPrint("${contestQuestionModel.status}");
+    loading = false;
+    print('getQuestionByContestTest');
     notifyListeners();
   }
 

@@ -257,6 +257,32 @@ class ApiService {
     return successModel;
   }
 
+  Future<SuccessModel> updateCoinsAndPoints({
+    required String userId,
+    int? coins,
+    int? points,
+  }) async {
+    SuccessModel successModel;
+    String profile = "update_profile";
+    Response? response;
+    {
+      response = await dio.post('$baseurl$profile',
+          data: FormData.fromMap({
+            'user_id': userId,
+            "total_score": points,
+            "total_coins": coins,
+          }));
+    }
+    // debugPrint("${response.data}");
+    if (response.statusCode == 200) {
+      // debugPrint("Profile apiservice:===>${response.data}");
+      successModel = SuccessModel.fromJson((response.data));
+    } else {
+      throw Exception('Failed to load album');
+    }
+    return successModel;
+  }
+
   Future<ReferTranModel> referTran(String userId) async {
     ReferTranModel referTranModel;
     String profile = "refer_transaction";

@@ -45,7 +45,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
   final playerC = AudioPlayer();
   final playerW = AudioPlayer();
   int? totalPoints;
-  int? totalCoins;
+  double? totalCoins;
 
   double percent = 0.0;
 
@@ -77,6 +77,11 @@ class _ContestQuestionsState extends State<ContestQuestions> {
     bannerad = await sharePref.read("banner_ad") ?? "";
     banneradIos = await sharePref.read("ios_banner_ad") ?? "";
     log("===>bannerad $bannerad");
+    final getPoints = Provider.of<ApiProvider>(context, listen: false);
+    totalCoins = double.parse(getPoints.profileModel.result![0].totalCoins!);
+    totalPoints = getPoints.profileModel.result![0].totalScore!;
+    debugPrint('totalCoins===>${totalCoins.toString()}');
+    debugPrint('totalPoints===>${totalPoints.toString()}');
   }
 
   playSound(int pos) async {
@@ -96,13 +101,14 @@ class _ContestQuestionsState extends State<ContestQuestions> {
   }
 
   getTotalCoins() async {
-    totalCoins = await sharePref.read('totalCoins');
+    // totalCoins = await sharePref.read('totalCoins');
+
     debugPrint('totalCoins===>${totalCoins.toString()}');
   }
 
   getTotalPoints() async {
-    totalPoints = await sharePref.read('totalPoints');
-    debugPrint('totalPoints===>${totalPoints.toString()}');
+    // totalPoints = await sharePref.read('totalPoints');
+    // debugPrint('totalPoints===>${totalPoints.toString()}');
   }
 
   @override
@@ -151,19 +157,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                 icon:
                     const Icon(Icons.arrow_back, color: Colors.white, size: 30),
                 onPressed: () async {
-                  await getTotalCoins();
-                  await getTotalPoints();
-                  // var questiondata =
-                  //     Provider.of<ApiProvider>(context, listen: false);
-                  // questiondata.selectQuestion = 0;
-                  // if (widget.contestId != widget.contestId) {
-                  //   var questiondata =
-                  //       Provider.of<ApiProvider>(context, listen: false);
-                  //   questiondata.contestQuestionModel.result!.clear();
-                  //   questiondata.selectQuestion = 0;
-                  // }
                   Navigator.of(context).pop();
-                  // Contest();
                 }),
             backgroundColor: Colors.transparent,
             actions: <Widget>[
@@ -267,7 +261,7 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                                                   .size
                                                                   .height *
                                                               0.25,
-                                                      fit: BoxFit.fill,
+                                                      fit: BoxFit.cover,
                                                       imagePath: questionList?[
                                                                   questiondata
                                                                           .selectQuestion ??
@@ -978,9 +972,16 @@ class _ContestQuestionsState extends State<ContestQuestions> {
                                                                     ""));
                                                         totalPoints =
                                                             totalPoints! + 10;
+                                                        questiondata
+                                                            .updateCoinsAndPoints(
+                                                                userId: userId!,
+                                                                context:
+                                                                    context,
+                                                                points:
+                                                                    totalPoints);
                                                         Constant.totalPoints(
-                                                            points:
-                                                                totalPoints!);
+                                                            points: totalPoints!
+                                                                .toInt());
                                                         Utility
                                                             .customShowDialog(
                                                                 title: const Text(

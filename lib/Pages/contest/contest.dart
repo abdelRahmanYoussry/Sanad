@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:sanad/Cubit/app_cubit.dart' as appcubit;
+import 'package:sanad/pages/calenderPage/calenderScreen.dart';
 import 'package:sanad/pages/contest/contestleaderboard.dart';
 import 'package:sanad/provider/apiprovider.dart';
 import 'package:sanad/theme/color.dart';
-import 'package:sanad/utils/adhelper.dart';
 import 'package:sanad/utils/sharepref.dart';
 import 'package:sanad/utils/utility.dart';
 import 'package:sanad/widget/MyAppbar.dart';
@@ -16,11 +13,8 @@ import 'package:sanad/widget/mytext.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../Cubit/app_cubit.dart';
-import 'contestquestions.dart';
-
 class Contest extends StatefulWidget {
-  Contest({
+  const Contest({
     Key? key,
   }) : super(key: key);
 
@@ -34,7 +28,13 @@ class _ContestState extends State<Contest> {
   var bannerad = "";
   var banneradIos = "";
   double? totalCoins;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  Duration _differenceDay = const Duration(days: 0);
+  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.toggledOn;
 
+  // int index = 0;
+  // ContestQuestionModel example=ContestQuestionModel();
   @override
   initState() {
     getUserId();
@@ -57,13 +57,15 @@ class _ContestState extends State<Contest> {
     upcomingdata.getProfile(context, userId);
     totalCoins = double.parse(upcomingdata.profileModel.result![0].totalCoins!);
     debugPrint('TotalCoins==========> $totalCoins');
+
+    // upcomingdata.getQuestionByContestTest(context, 14.toString());
+    // final example = upcomingdata.contestQuestionModelNew;
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, appcubit.AppState>(
-      listener: (context, state) {},
-      builder: (context, state) {
+    return Consumer<ApiProvider>(
+      builder: (context, child, live) {
         return buildBody();
       },
     );
@@ -123,11 +125,11 @@ class _ContestState extends State<Contest> {
                     // , ended()
                   ],
                 )),
-                SizedBox(
-                  height: 50,
-                  child: AdWidget(
-                      ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
-                ),
+                // SizedBox(
+                //   height: 50,
+                //   child: AdWidget(
+                //       ad: AdHelper.createBannerAd()..load(), key: UniqueKey()),
+                // ),
               ],
             ),
           ),
@@ -240,7 +242,7 @@ class _ContestState extends State<Contest> {
                           lineHeight: 5,
                           animationDuration: 2500,
                           percent: 0.8,
-                          linearStrokeCap: LinearStrokeCap.roundAll,
+                          // linearStrokeCap: LinearStrokeCap.roundAll,
                           progressColor: appColor,
                         ),
                         const SizedBox(height: 10),
@@ -558,7 +560,29 @@ class _ContestState extends State<Contest> {
                                               0) ==
                                           0
                                       ? TextButton(
-                                          onPressed: () {
+                                          style: ButtonStyle(
+                                              shape: MaterialStateProperty.all<
+                                                      RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              28.0))),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      appColor)),
+                                          child: MyText(
+                                            title: ' Join Now ',
+                                            size: 16,
+                                            fontWeight: FontWeight.w500,
+                                            colors: white,
+                                          ),
+                                          onPressed: () async {
+                                            await livecontent
+                                                .getQuestionByContest(
+                                                    context,
+                                                    livecontent.livecontentModel
+                                                        .result![index].id
+                                                        .toString());
                                             Utility.customShowDialog(
                                                 title: Center(
                                                   child: Text(livecontent
@@ -629,13 +653,6 @@ class _ContestState extends State<Contest> {
                                                                         .circular(
                                                                             28.0))))),
                                                     onPressed: () async {
-                                                      // int remainingCoins =
-                                                      //     totalCoins! -
-                                                      //         int.parse((livecontent
-                                                      //             .livecontentModel
-                                                      //             .result?[index]
-                                                      //             .price)!);
-                                                      /////////////////////////////////
                                                       if (totalCoins! >=
                                                           int.parse(livecontent
                                                               .livecontentModel
@@ -646,22 +663,15 @@ class _ContestState extends State<Contest> {
                                                                 .livecontentModel
                                                                 .result?[index]
                                                                 .price)!);
-
-                                                        // await Constant.totalCoins(
-                                                        //     coins: int.parse(livecontent
-                                                        //             .profileModel
-                                                        //             .result![0]
-                                                        //             .totalCoins!) -
-                                                        //         int.parse((livecontent
-                                                        //             .livecontentModel
-                                                        //             .result?[
-                                                        //                 index]
-                                                        //             .price)!)
-                                                        // );
-
-                                                        Utility.toastMessage(
-                                                            'You Have Joined Successful '
-                                                            '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[index].price)!)} Coin ');
+                                                        livecontent
+                                                            .updateCoinsAndPoints(
+                                                                userId: userId!
+                                                                    .toString(),
+                                                                coins:
+                                                                    totalCoins!
+                                                                        .toInt(),
+                                                                context:
+                                                                    context);
 
                                                         Navigator
                                                             .pushReplacement(
@@ -669,9 +679,9 @@ class _ContestState extends State<Contest> {
                                                                 MaterialPageRoute(
                                                                     builder:
                                                                         (context) =>
-                                                                            ContestQuestions(
-                                                                              contestId: livecontent.livecontentModel.result?[index].id.toString(),
-                                                                              contestName: livecontent.livecontentModel.result?[index].name,
+                                                                            CalenderScreen(
+                                                                              questionId: (livecontent.livecontentModel.result?[index].id.toString())!,
+                                                                              contestName: (livecontent.livecontentModel.result?[index].name)!,
                                                                             )));
                                                       } else {
                                                         Utility.toastMessage(
@@ -688,22 +698,7 @@ class _ContestState extends State<Contest> {
                                                 ],
                                                 context: context);
                                           },
-                                          style: ButtonStyle(
-                                              shape: MaterialStateProperty.all<
-                                                      RoundedRectangleBorder>(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              28.0))),
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      appColor)),
-                                          child: MyText(
-                                            title: ' Join Now ',
-                                            size: 16,
-                                            fontWeight: FontWeight.w500,
-                                            colors: white,
-                                          ))
+                                        )
                                       : MyText(
                                           title: 'Already Played',
                                           fontWeight: FontWeight.w500,
@@ -803,7 +798,7 @@ class _ContestState extends State<Contest> {
                                         ),
                                       ),
                                     ),
-                                    child: Text(
+                                    child: const Text(
                                       'Description',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -827,7 +822,8 @@ class _ContestState extends State<Contest> {
                     height: MediaQuery.of(context).size.height / 4,
                     decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20))),
                     child: Container(
                       padding: const EdgeInsets.only(
                           left: 10, top: 10, right: 10, bottom: 5),
@@ -857,128 +853,48 @@ class _ContestState extends State<Contest> {
                                     0
                                 ? TextButton(
                                     onPressed: () {
-                                      // Utility.customShowDialog(
-                                      //     title: Center(
-                                      //       child: Text(livecontent
-                                      //           .livecontentModel
-                                      //           .result![3]
-                                      //           .name!),
-                                      //     ),
-                                      //     content: Column(
-                                      //       mainAxisSize: MainAxisSize.min,
-                                      //       children: [
-                                      //         Row(
-                                      //           mainAxisAlignment:
-                                      //               MainAxisAlignment.center,
-                                      //           children: [
-                                      //             MyText(
-                                      //                 title: "5h 40m",
-                                      //                 size: 16,
-                                      //                 fontWeight:
-                                      //                     FontWeight.w600),
-                                      //             const VerticalDivider(
-                                      //               thickness: 2,
-                                      //               width: 20,
-                                      //               color: textColorGrey,
-                                      //             ),
-                                      //             MyText(
-                                      //                 title:
-                                      //                     "Entry Fee: ${livecontent.livecontentModel.result?[3].price} Coin",
-                                      //                 size: 16,
-                                      //                 fontWeight:
-                                      //                     FontWeight.w600),
-                                      //           ],
-                                      //         ),
-                                      //         const SizedBox(
-                                      //           height: 10,
-                                      //         ),
-                                      //         const Text(
-                                      //           'Are you Sure to Join Now?',
-                                      //           style: TextStyle(
-                                      //               color: actionColor),
-                                      //         ),
-                                      //       ],
-                                      //     ),
-                                      //     actions: [
-                                      //       TextButton(
-                                      //         onPressed: () {
-                                      //           Navigator.pop(context);
-                                      //         },
-                                      //         child: const Text(
-                                      //           'Cancel',
-                                      //           style: TextStyle(
-                                      //               color: baseColor,
-                                      //               fontSize: 20),
-                                      //         ),
-                                      //       ),
-                                      //       TextButton(
-                                      //         style: ButtonStyle(
-                                      //             backgroundColor:
-                                      //                 MaterialStateProperty.all(
-                                      //                     cyan),
-                                      //             shape: MaterialStateProperty.all(
-                                      //                 const RoundedRectangleBorder(
-                                      //                     borderRadius:
-                                      //                         BorderRadius.all(
-                                      //                             Radius.circular(
-                                      //                                 28.0))))),
-                                      //         onPressed: () async {
-                                      //           // int remainingCoins =
-                                      //           //     totalCoins! -
-                                      //           //         int.parse((livecontent
-                                      //           //             .livecontentModel
-                                      //           //             .result?[3]
-                                      //           //             .price)!);
-                                      //           if (totalCoins! >=
-                                      //               int.parse(livecontent
-                                      //                   .livecontentModel
-                                      //                   .result![3]
-                                      //                   .price!)) {
-                                      //             await Constant.totalCoins(
-                                      //                 coins: totalCoins! -
-                                      //                     int.parse((livecontent
-                                      //                         .livecontentModel
-                                      //                         .result?[3]
-                                      //                         .price)!));
-                                      //
-                                      //             Utility.toastMessage(
-                                      //                 'You Have Joined Successful '
-                                      //                 '\n Remaining Coins: ${totalCoins! - int.parse((livecontent.livecontentModel.result?[3].price)!)} Coin ');
-                                      //
-                                      //             Navigator.pushReplacement(
-                                      //                 context,
-                                      //                 MaterialPageRoute(
-                                      //                     builder: (context) =>
-                                      //                         ContestQuestions(
-                                      //                           contestId: livecontent
-                                      //                               .livecontentModel
-                                      //                               .result?[3]
-                                      //                               .id
-                                      //                               .toString(),
-                                      //                           contestName:
-                                      //                               livecontent
-                                      //                                   .livecontentModel
-                                      //                                   .result?[
-                                      //                                       3]
-                                      //                                   .name,
-                                      //                         )));
-                                      //           } else {
-                                      //             Utility.toastMessage(
-                                      //                 ' You have $totalCoins coin \n '
-                                      //                 'Please recharge your wallet');
-                                      //           }
-                                      //         },
-                                      //         child: const Text(
-                                      //           'Confirm',
-                                      //           style: TextStyle(
-                                      //               color: Colors.white),
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //     context: context);
-
                                       Utility.customShowDialog(
-                                          context: context,
+                                          title: Center(
+                                            child: Text(livecontent
+                                                .livecontentModel
+                                                .result![3]
+                                                .name!),
+                                          ),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  MyText(
+                                                      title: "5h 40m",
+                                                      size: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                  const VerticalDivider(
+                                                    thickness: 2,
+                                                    width: 20,
+                                                    color: textColorGrey,
+                                                  ),
+                                                  MyText(
+                                                      title:
+                                                          "Entry Fee: ${livecontent.livecontentModel.result?[3].price} Coin",
+                                                      size: 16,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              const Text(
+                                                'Are you Sure to Join Now?',
+                                                style: TextStyle(
+                                                    color: actionColor),
+                                              ),
+                                            ],
+                                          ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -990,35 +906,300 @@ class _ContestState extends State<Contest> {
                                                     color: baseColor,
                                                     fontSize: 20),
                                               ),
-                                            )
-                                          ],
-                                          content: SizedBox(
-                                            height: 400,
-                                            width: 400,
-                                            child: TableCalendar(
-                                              calendarFormat:
-                                                  CalendarFormat.month,
-                                              rowHeight: 40,
-                                              firstDay: DateTime.now(),
-                                              lastDay: DateTime.now().add(
-                                                  Duration(
-                                                      days: livecontent
-                                                          .contestQuestionModel
-                                                          .result!
-                                                          .length)),
-                                              focusedDay: DateTime.now(),
-                                              rangeSelectionMode:
-                                                  RangeSelectionMode.enforced,
-                                              rangeStartDay: DateTime.now(),
-                                              rangeEndDay: DateTime.now().add(
-                                                  Duration(
-                                                      days: livecontent
-                                                          .contestQuestionModel
-                                                          .result!
-                                                          .length)),
                                             ),
-                                          ),
-                                          title: Text('data'));
+                                            TextButton(
+                                              style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          cyan),
+                                                  shape: MaterialStateProperty.all(
+                                                      const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      28.0))))),
+                                              onPressed: () async {
+                                                if (totalCoins! >=
+                                                    int.parse(livecontent
+                                                        .livecontentModel
+                                                        .result![3]
+                                                        .price!)) {
+                                                  totalCoins = totalCoins! -
+                                                      int.parse((livecontent
+                                                          .livecontentModel
+                                                          .result?[3]
+                                                          .price)!);
+                                                  livecontent
+                                                      .updateCoinsAndPoints(
+                                                          userId: userId!
+                                                              .toString(),
+                                                          coins: totalCoins!
+                                                              .toInt(),
+                                                          context: context);
+
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              CalenderScreen(
+                                                                questionId:
+                                                                    '14',
+                                                                contestName:
+                                                                    (livecontent
+                                                                        .livecontentModel
+                                                                        .result?[
+                                                                            3]
+                                                                        .name)!,
+                                                              )
+                                                          // ContestQuestions(
+                                                          //   contestId: livecontent.livecontentModel.result?[index].id.toString(),
+                                                          //   contestName: livecontent.livecontentModel.result?[index].name,
+                                                          // )
+                                                          ));
+                                                } else {
+                                                  Utility.toastMessage(
+                                                      ' You have $totalCoins coin \n '
+                                                      'Please recharge your wallet');
+                                                }
+                                              },
+                                              child: const Text(
+                                                'Confirm',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ],
+                                          context: context);
+
+                                      // if (totalCoins! >=
+                                      //     int.parse(livecontent.livecontentModel
+                                      //         .result![3].price!)) {
+                                      //   totalCoins = totalCoins! -
+                                      //       int.parse((livecontent
+                                      //           .livecontentModel
+                                      //           .result?[3]
+                                      //           .price)!);
+                                      //   livecontent.updateCoinsAndPoints(
+                                      //       userId: userId!.toString(),
+                                      //       coins: totalCoins!.toInt(),
+                                      //       context: context);
+                                      //
+                                      //   Navigator.pushReplacement(
+                                      //       context,
+                                      //       MaterialPageRoute(
+                                      //           builder: (context) =>
+                                      //               CalenderScreen(
+                                      //                 questionId: '14',
+                                      //               )));
+                                      // } else {
+                                      //   Utility.toastMessage(
+                                      //       ' You have $totalCoins coin \n '
+                                      //       'Please recharge your wallet');
+                                      // }
+
+                                      // showDialog(
+                                      //     context: context,
+                                      //     builder: (context) {
+                                      //       return StatefulBuilder(
+                                      //           builder: (context, setState2) {
+                                      //         return AlertDialog(
+                                      //           actionsAlignment:
+                                      //               MainAxisAlignment.start,
+                                      //           content: Column(
+                                      //             mainAxisSize:
+                                      //                 MainAxisSize.min,
+                                      //             children: [
+                                      //               SizedBox(
+                                      //                 height: 300,
+                                      //                 width: 400,
+                                      //                 // color:
+                                      //                 //     cyan.withOpacity(0.5),
+                                      //                 child: TableCalendar(
+                                      //                   calendarFormat:
+                                      //                       CalendarFormat
+                                      //                           .month,
+                                      //                   // eventLoader:
+                                      //                   //     (DateTime day) {
+                                      //                   //   // return List<_>;
+                                      //                   // },
+                                      //                   rowHeight: 35,
+                                      //                   headerStyle:
+                                      //                       const HeaderStyle(
+                                      //                     formatButtonVisible:
+                                      //                         false,
+                                      //                     titleCentered: true,
+                                      //                   ),
+                                      //                   calendarStyle:
+                                      //                       CalendarStyle(
+                                      //                           rangeHighlightColor:
+                                      //                               cyan.withOpacity(
+                                      //                                   0.3),
+                                      //                           rangeStartDecoration:
+                                      //                               const BoxDecoration(
+                                      //                                   color:
+                                      //                                       cyan),
+                                      //                           rangeEndDecoration:
+                                      //                               const BoxDecoration(
+                                      //                                   color:
+                                      //                                       cyan),
+                                      //                           selectedDecoration:
+                                      //                               const BoxDecoration(
+                                      //                             color:
+                                      //                                 appColor,
+                                      //                             shape: BoxShape
+                                      //                                 .circle,
+                                      //                           )),
+                                      //                   selectedDayPredicate:
+                                      //                       (day) => isSameDay(
+                                      //                           _selectedDay,
+                                      //                           day),
+                                      //                   firstDay: DateTime(
+                                      //                       2023, 1, 1),
+                                      //                   lastDay: DateTime(
+                                      //                       2200, 1, 1),
+                                      //                   focusedDay: _focusedDay,
+                                      //                   rangeSelectionMode:
+                                      //                       _rangeSelectionMode,
+                                      //                   onFormatChanged:
+                                      //                       (calenderFormat) {},
+                                      //                   onDaySelected:
+                                      //                       (selectedDay,
+                                      //                           focusedDay) {
+                                      //                     if (!isSameDay(
+                                      //                         _selectedDay,
+                                      //                         selectedDay)) {
+                                      //                       setState2(() {
+                                      //                         _selectedDay =
+                                      //                             selectedDay;
+                                      //                         _focusedDay =
+                                      //                             focusedDay;
+                                      //                         _rangeSelectionMode =
+                                      //                             RangeSelectionMode
+                                      //                                 .toggledOff;
+                                      //                         if (index <=
+                                      //                             livecontent
+                                      //                                 .contestQuestionModelNew
+                                      //                                 .result!
+                                      //                                 .length) {
+                                      //                           index =
+                                      //                               index + 1;
+                                      //                           debugPrint(livecontent
+                                      //                               .contestQuestionModelNew
+                                      //                               .result!
+                                      //                               .length.toString());
+                                      //                           debugPrint(index
+                                      //                                   .toString() +
+                                      //                               'index');
+                                      //                         }
+                                      //                         if (index ==
+                                      //                             livecontent
+                                      //                                 .contestQuestionModelNew
+                                      //                                 .result!
+                                      //                                 .length) {
+                                      //                           index = 0;
+                                      //                         }
+                                      //                         _differenceDay =
+                                      //                             _selectedDay!
+                                      //                                 .difference(
+                                      //                                     DateTime
+                                      //                                         .now());
+                                      //                         debugPrint(_differenceDay
+                                      //                                 .inDays
+                                      //                                 .toString() +
+                                      //                             'diff');
+                                      //                         debugPrint(_focusedDay
+                                      //                                 .day
+                                      //                                 .toString() +
+                                      //                             'this is focused');
+                                      //                         debugPrint(_selectedDay!
+                                      //                                 .day
+                                      //                                 .toString() +
+                                      //                             'this is _selectedDay');
+                                      //                       });
+                                      //                     }
+                                      //                   },
+                                      //                   rangeStartDay:
+                                      //                       DateTime.now(),
+                                      //                   rangeEndDay: DateTime
+                                      //                           .now()
+                                      //                       .add(Duration(
+                                      //                           days: livecontent
+                                      //                               .contestQuestionModel
+                                      //                               .result!
+                                      //                               .length)),
+                                      //                 ),
+                                      //               ),
+                                      //               const Text('Question'),
+                                      //               Text(
+                                      //                 livecontent
+                                      //                     .contestQuestionModelNew
+                                      //                     .result![index]
+                                      //                     .question!,
+                                      //                 maxLines: 2,
+                                      //                 overflow:
+                                      //                     TextOverflow.ellipsis,
+                                      //               )
+                                      //             ],
+                                      //           ),
+                                      //           actions: [
+                                      //             Row(
+                                      //               children: [
+                                      //                 TextButton(
+                                      //                   onPressed: () {
+                                      //                     Navigator.pop(
+                                      //                         context);
+                                      //                   },
+                                      //                   child: const Text(
+                                      //                     'Cancel',
+                                      //                     style: TextStyle(
+                                      //                         color: baseColor,
+                                      //                         fontSize: 20),
+                                      //                   ),
+                                      //                 ),
+                                      //                 TextButton(
+                                      //                   style: ButtonStyle(
+                                      //                       backgroundColor:
+                                      //                           MaterialStateProperty
+                                      //                               .all(cyan),
+                                      //                       shape: MaterialStateProperty.all(
+                                      //                           const RoundedRectangleBorder(
+                                      //                               borderRadius:
+                                      //                                   BorderRadius.all(
+                                      //                                       Radius.circular(28.0))))),
+                                      //                   onPressed: () async {
+                                      //                     if (_differenceDay
+                                      //                             .inDays ==
+                                      //                         0) {
+                                      //                       Utility.toastMessage(
+                                      //                           ' Coming Soon Waiting For Api');
+                                      //                     } else {
+                                      //                       Utility.toastMessage(
+                                      //                           'No Matching With Selected Day \n Please Select '
+                                      //                           'another question');
+                                      //                     }
+                                      //                   },
+                                      //                   child: const Text(
+                                      //                     'Confirm',
+                                      //                     style: TextStyle(
+                                      //                         color:
+                                      //                             Colors.white),
+                                      //                   ),
+                                      //                 ),
+                                      //               ],
+                                      //               mainAxisAlignment:
+                                      //                   MainAxisAlignment
+                                      //                       .spaceBetween,
+                                      //             )
+                                      //           ],
+                                      //           shape:
+                                      //               const RoundedRectangleBorder(
+                                      //                   borderRadius:
+                                      //                       BorderRadius.all(
+                                      //                           Radius.circular(
+                                      //                               10.0))),
+                                      //         );
+                                      //       });
+                                      //     });
                                     },
                                     style: ButtonStyle(
                                         shape: MaterialStateProperty.all<
@@ -1106,42 +1287,42 @@ class _ContestState extends State<Contest> {
                           width: double.infinity,
                           height: 40,
                           child: ElevatedButton(
-                              onPressed: () {
-                                Utility.customShowDialog(
-                                    title: const Center(child: Text('Details')),
-                                    content: Text(livecontent
-                                        .livecontentModel.result![3].name!),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text(
-                                          'Ok',
-                                          style: TextStyle(
-                                              color: cyan, fontSize: 20),
-                                        ),
-                                      )
-                                    ],
-                                    context: context);
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(cyan),
-                                shape: MaterialStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(28),
-                                  ),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(cyan),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(28),
                                 ),
                               ),
-                              child: Text(
-                                'Description',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              )),
+                            ),
+                            child: const Text(
+                              'Description',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              Utility.customShowDialog(
+                                  title: const Center(child: Text('Details')),
+                                  content: Text(livecontent
+                                      .livecontentModel.result![3].name!),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        'Ok',
+                                        style: TextStyle(
+                                            color: cyan, fontSize: 20),
+                                      ),
+                                    )
+                                  ],
+                                  context: context);
+                            },
+                          ),
                         ),
                         const SizedBox(
                           height: 5,
