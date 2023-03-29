@@ -839,7 +839,7 @@ class _ContestState extends State<Contest> {
                                     colors: Colors.white),
                                 MyText(
                                     title: livecontent.livecontentModel
-                                            .result?[3].totalPrize
+                                            .result?[2].totalPrize
                                             .toString() ??
                                         "",
                                     size: 24,
@@ -848,7 +848,7 @@ class _ContestState extends State<Contest> {
                               ],
                             ),
                             const Spacer(),
-                            (livecontent.livecontentModel.result?[3].isPlayed ??
+                            (livecontent.livecontentModel.result?[2].isPlayed ??
                                         0) ==
                                     0
                                 ? TextButton(
@@ -857,7 +857,7 @@ class _ContestState extends State<Contest> {
                                           title: Center(
                                             child: Text(livecontent
                                                 .livecontentModel
-                                                .result![3]
+                                                .result![2]
                                                 .name!),
                                           ),
                                           content: Column(
@@ -879,7 +879,7 @@ class _ContestState extends State<Contest> {
                                                   ),
                                                   MyText(
                                                       title:
-                                                          "Entry Fee: ${livecontent.livecontentModel.result?[3].price} Coin",
+                                                          "Entry Fee: ${livecontent.livecontentModel.result?[2].price} Coin",
                                                       size: 16,
                                                       fontWeight:
                                                           FontWeight.w600),
@@ -922,12 +922,12 @@ class _ContestState extends State<Contest> {
                                                 if (totalCoins! >=
                                                     int.parse(livecontent
                                                         .livecontentModel
-                                                        .result![3]
+                                                        .result![2]
                                                         .price!)) {
                                                   totalCoins = totalCoins! -
                                                       int.parse((livecontent
                                                           .livecontentModel
-                                                          .result?[3]
+                                                          .result?[2]
                                                           .price)!);
                                                   livecontent
                                                       .updateCoinsAndPoints(
@@ -948,7 +948,7 @@ class _ContestState extends State<Contest> {
                                                                     (livecontent
                                                                         .livecontentModel
                                                                         .result?[
-                                                                            3]
+                                                                            2]
                                                                         .name)!,
                                                               )
                                                           // ContestQuestions(
@@ -973,11 +973,11 @@ class _ContestState extends State<Contest> {
 
                                       // if (totalCoins! >=
                                       //     int.parse(livecontent.livecontentModel
-                                      //         .result![3].price!)) {
+                                      //         .result![2].price!)) {
                                       //   totalCoins = totalCoins! -
                                       //       int.parse((livecontent
                                       //           .livecontentModel
-                                      //           .result?[3]
+                                      //           .result?[2]
                                       //           .price)!);
                                       //   livecontent.updateCoinsAndPoints(
                                       //       userId: userId!.toString(),
@@ -1010,7 +1010,7 @@ class _ContestState extends State<Contest> {
                                       //                 MainAxisSize.min,
                                       //             children: [
                                       //               SizedBox(
-                                      //                 height: 300,
+                                      //                 height: 200,
                                       //                 width: 400,
                                       //                 // color:
                                       //                 //     cyan.withOpacity(0.5),
@@ -1022,7 +1022,7 @@ class _ContestState extends State<Contest> {
                                       //                   //     (DateTime day) {
                                       //                   //   // return List<_>;
                                       //                   // },
-                                      //                   rowHeight: 35,
+                                      //                   rowHeight: 25,
                                       //                   headerStyle:
                                       //                       const HeaderStyle(
                                       //                     formatButtonVisible:
@@ -1033,7 +1033,7 @@ class _ContestState extends State<Contest> {
                                       //                       CalendarStyle(
                                       //                           rangeHighlightColor:
                                       //                               cyan.withOpacity(
-                                      //                                   0.3),
+                                      //                                   0.2),
                                       //                           rangeStartDecoration:
                                       //                               const BoxDecoration(
                                       //                                   color:
@@ -1054,7 +1054,7 @@ class _ContestState extends State<Contest> {
                                       //                           _selectedDay,
                                       //                           day),
                                       //                   firstDay: DateTime(
-                                      //                       2023, 1, 1),
+                                      //                       2022, 1, 1),
                                       //                   lastDay: DateTime(
                                       //                       2200, 1, 1),
                                       //                   focusedDay: _focusedDay,
@@ -1239,14 +1239,14 @@ class _ContestState extends State<Contest> {
                             const SizedBox(width: 5),
                             MyText(
                                 title:
-                                    "WINNERS: ${livecontent.livecontentModel.result?[3].noOfUserPrize}",
+                                    "WINNERS: ${livecontent.livecontentModel.result?[2].noOfUserPrize}",
                                 size: 16,
                                 fontWeight: FontWeight.w400,
                                 colors: Colors.white),
                             const Spacer(),
                             MyText(
                                 title: livecontent
-                                        .livecontentModel.result?[3].name ??
+                                        .livecontentModel.result?[2].name ??
                                     "",
                                 size: 16,
                                 fontWeight: FontWeight.w600,
@@ -1275,7 +1275,7 @@ class _ContestState extends State<Contest> {
                               ),
                               MyText(
                                   title:
-                                      "Entry Fee: ${livecontent.livecontentModel.result?[3].price}",
+                                      "Entry Fee: ${livecontent.livecontentModel.result?[2].price}",
                                   size: 16,
                                   colors: Colors.white,
                                   fontWeight: FontWeight.w600),
@@ -1307,7 +1307,7 @@ class _ContestState extends State<Contest> {
                               Utility.customShowDialog(
                                   title: const Center(child: Text('Details')),
                                   content: Text(livecontent
-                                      .livecontentModel.result![3].name!),
+                                      .livecontentModel.result![2].name!),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
@@ -1517,7 +1517,7 @@ class _ContestState extends State<Contest> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return SizedBox(
-                        height: 30,
+                        height: 20,
                         child: Row(
                           children: [
                             Expanded(
@@ -1538,8 +1538,8 @@ class _ContestState extends State<Contest> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 MyImage(
-                                    width: 30,
-                                    height: 30,
+                                    width: 20,
+                                    height: 20,
                                     imagePath: "assets/images/ic_icons.png"),
                                 MyText(
                                   title: (winnerdata.winnerModel.result?[index]

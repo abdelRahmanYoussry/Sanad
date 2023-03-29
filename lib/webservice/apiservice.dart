@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:sanad/model/categorymastermodel.dart';
 import 'package:sanad/model/categorymodel.dart';
@@ -419,6 +420,8 @@ class ApiService {
     if (response.statusCode == 200) {
       // debugPrint("Question apiservice:===>${response.data}");
       contestQuestionModel = ContestQuestionModel.fromJson((response.data));
+      debugPrint(
+          "Question apiservice:===>${contestQuestionModel.result!.length}");
     } else {
       throw Exception('Failed to load album');
     }
