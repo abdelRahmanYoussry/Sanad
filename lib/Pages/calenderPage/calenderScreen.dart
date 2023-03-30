@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/pages/contest/contest.dart';
+import 'package:sanad/pages/home.dart';
 import 'package:sanad/pages/target/targetScreen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -58,6 +60,12 @@ class _CalenderScreenState extends State<CalenderScreen> {
           appBar: AppBar(
             title: const Text('Challenge Calender'),
             backgroundColor: Colors.white,
+            leading: IconButton(
+              onPressed: () {
+                Utility.navigateAndFinish(context, const Contest());
+              },
+              icon: const Icon(Icons.arrow_back),
+            ),
           ),
           body: Column(
             children: [
@@ -162,7 +170,8 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      Utility.navigateAndFinish(context, Home());
+                      // Navigator.pop(context);
                     },
                     child: const Text(
                       'Cancel',
