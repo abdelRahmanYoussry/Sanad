@@ -25,26 +25,28 @@ class ContestQuestionModel {
 }
 
 class Result {
-  Result({
-    this.id,
-    this.categoryId,
-    this.contestId,
-    this.levelId,
-    this.languageId,
-    this.questionLevelMasterId,
-    this.image,
-    this.question,
-    this.questionType,
-    this.optionA,
-    this.optionB,
-    this.optionC,
-    this.optionD,
-    this.optione,
-    this.answer,
-    this.note,
-    this.createdAt,
-    this.updatedAt,
-  });
+  Result(
+      {this.id,
+      this.categoryId,
+      this.contestId,
+      this.levelId,
+      this.languageId,
+      this.questionLevelMasterId,
+      this.image,
+      this.question,
+      this.questionType,
+      this.optionA,
+      this.optionB,
+      this.optionC,
+      this.optionD,
+      this.optione,
+      this.answer,
+      this.note,
+      this.createdAt,
+      this.updatedAt,
+      this.unit,
+      this.pricePoint,
+      this.target});
 
   int? id;
   int? categoryId;
@@ -59,6 +61,9 @@ class Result {
   String? optionB;
   String? optionC;
   String? optionD;
+  String? target;
+  String? unit;
+  String? pricePoint;
   String? optione;
   String? answer;
   String? note;
@@ -72,7 +77,8 @@ class Result {
         contestId: int.parse(json["contest_id"].toString()),
         levelId: int.parse(json["level_id"].toString()),
         languageId: int.parse(json["language_id"].toString()),
-        questionLevelMasterId: int.parse(json["question_level_master_id"].toString()),
+        questionLevelMasterId:
+            int.parse(json["question_level_master_id"].toString()),
         image: json["image"],
         question: json["question"],
         questionType: int.parse(json["question_type"].toString()),
@@ -85,6 +91,9 @@ class Result {
         note: json["note"],
         createdAt: json["created_at"],
         updatedAt: json["updated_at"],
+        unit: json['Unit'],
+        pricePoint: json['price_points'],
+        target: json['Target'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,5 +115,8 @@ class Result {
         "note": note,
         "created_at": createdAt,
         "updated_at": updatedAt,
+        "Unit": unit,
+        "price_points": pricePoint,
+        "Target": target,
       };
 }

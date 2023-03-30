@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sanad/Network/dio_helper.dart';
 import 'package:sanad/Network/endpoints.dart';
+import 'package:sanad/model/Statistics%20Model.dart';
 import 'package:sanad/model/paypalmodel.dart';
 
 import '../model/contentmodel.dart';
@@ -9,10 +10,11 @@ import '../webservice/apiservice.dart';
 
 part 'app_state.dart';
 
-class AppCubit extends Cubit<AppState> {
+class AppCubit extends Cubit<AppStateCubit> {
   AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
   PayPalModel? payPalModel;
+  StatisticsModel? statisticsModel;
   String? paymentLink;
   ContentModel livecontentModel = ContentModel();
 
@@ -46,5 +48,18 @@ class AppCubit extends Cubit<AppState> {
     livecontentModel = await ApiService().getContest(listType, userID);
     emit(GetLiveContentSuccessState());
     // debugPrint("${livecontentModel.status}");
+  }
+
+  getStatistics({required String userId}) {
+    emit(StatisticsLoadingState());
+    FinalDioHelper.getData(
+      url: statisticsUrl + userId,
+    ).then((value) {
+      statisticsModel = StatisticsModel.fromJson(value.data);
+      emit(StatisticsSuccessState());
+    }).catchError((error) {
+      debugPrint(error.toString());
+      emit(StatisticsErrorState());
+    });
   }
 }

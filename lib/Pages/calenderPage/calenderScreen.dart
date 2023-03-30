@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/pages/target/targetScreen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../Theme/color.dart';
@@ -31,6 +32,11 @@ class _CalenderScreenState extends State<CalenderScreen> {
     getUserId();
     _selectedDay = DateTime.now();
     super.initState();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
   }
 
   getUserId() async {
@@ -182,10 +188,19 @@ class _CalenderScreenState extends State<CalenderScreen> {
                           '  this is now');
                       debugPrint(_selectedDay.toString().split(' ')[0] +
                           '  this is selected');
-
-                      if (now.toString().split(' ')[0] ==
-                          _selectedDay.toString().split(' ')[0]) {
-                        Utility.toastMessage(' Coming Soon Waiting For Api');
+                      if (livecontent.contestQuestionModel.result![index2]
+                              .questionType ==
+                          3) {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TargetScreen(
+                                      result: livecontent
+                                          .contestQuestionModel.result![index2],
+                                    )));
+                      } else if (livecontent.contestQuestionModel
+                              .result![index2].questionType ==
+                          1) {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -194,10 +209,40 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                       contestName: widget.contestName,
                                     )));
                       } else {
-                        Utility.toastMessage(
-                            'No Matching With Selected Day \n Please Select '
-                            'another question');
+                        Utility.toastMessage(' Coming Soon Waiting For Api \n'
+                            'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
                       }
+                      // if (now.toString().split(' ')[0] ==
+                      //     _selectedDay.toString().split(' ')[0]) {
+                      //   if (livecontent.contestQuestionModel.result![index2]
+                      //           .questionType ==
+                      //       3) {
+                      //     Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => TargetScreen(
+                      //                   result: livecontent.contestQuestionModel
+                      //                       .result![index2],
+                      //                 )));
+                      //   } else if (livecontent.contestQuestionModel
+                      //           .result![index2].questionType ==
+                      //       1) {
+                      //     Navigator.pushReplacement(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //             builder: (context) => ContestQuestions(
+                      //                   contestId: widget.questionId.toString(),
+                      //                   contestName: widget.contestName,
+                      //                 )));
+                      //   } else {
+                      //     Utility.toastMessage(' Coming Soon Waiting For Api \n'
+                      //         'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
+                      //   }
+                      // } else {
+                      //   Utility.toastMessage(
+                      //       'No Matching With Selected Day \n Please Select '
+                      //       'another question');
+                      // }
                     },
                     child: const Text(
                       'Confirm',

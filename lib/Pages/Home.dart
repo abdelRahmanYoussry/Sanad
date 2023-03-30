@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
+import 'package:sanad/Cubit/app_cubit.dart';
 import 'package:sanad/Theme/color.dart';
 import 'package:sanad/Theme/config.dart';
+import 'package:sanad/pages/StatisticsPage/StatisticsScreen.dart';
 import 'package:sanad/pages/instrucation.dart';
 import 'package:sanad/pages/leaderboard.dart';
 import 'package:sanad/pages/login/login.dart';
@@ -19,7 +22,6 @@ import 'package:sanad/utils/adhelper.dart';
 import 'package:sanad/utils/sharepref.dart';
 
 import 'contest/contest.dart';
-import 'quiz/category.dart';
 
 bool topBar = false;
 
@@ -100,35 +102,40 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: appBgColor,
-      body: GestureDetector(
-        onTap: (() => setState(() {
-              topBar = false;
-            })),
-        child: Stack(
-          children: [
-            Container(
-              height: 310,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/dash_bg.png"),
-                  fit: BoxFit.cover,
+    return BlocConsumer<AppCubit, AppStateCubit>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: appBgColor,
+          body: GestureDetector(
+            onTap: (() => setState(() {
+                  topBar = false;
+                })),
+            child: Stack(
+              children: [
+                Container(
+                  height: 310,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage("assets/images/dash_bg.png"),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.vertical(
+                        bottom: Radius.elliptical(50.0, 50.0)),
+                  ),
                 ),
-                borderRadius: BorderRadius.vertical(
-                    bottom: Radius.elliptical(50.0, 50.0)),
-              ),
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [getAppbar(), buildBody()],
+                  ),
+                ),
+                topBar ? getTopBar() : Container(),
+              ],
             ),
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [getAppbar(), buildBody()],
-              ),
-            ),
-            topBar ? getTopBar() : Container(),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -399,210 +406,135 @@ class _HomeState extends State<Home> {
   }
 
   getDashboard() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return BlocConsumer<AppCubit, AppStateCubit>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        return Column(
           children: [
-            const SizedBox(
-              width: 15,
-            ),
-            Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () {
-                  AdHelper.showInterstitialAd();
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Contest()));
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/green2_bg.png"),
-                        fit: BoxFit.fill),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Join in",
-                            style: GoogleFonts.poppins(
-                                color: Colors.white, fontSize: 18)),
-                        Text("Challenges",
-                            style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontSize: 28,
-                                fontWeight: FontWeight.w600)),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Image.asset(
-                            'assets/images/right_arrow.png',
-                            height: 40.0,
-                            width: 55.0,
-                          ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      AdHelper.showInterstitialAd();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Contest()));
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.22,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/green2_bg.png"),
+                            fit: BoxFit.fill),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 30),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Join in",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white, fontSize: 18)),
+                            Text("Challenges",
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontSize: 28,
+                                    fontWeight: FontWeight.w600)),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Image.asset(
+                                'assets/images/right_arrow.png',
+                                height: 40.0,
+                                width: 55.0,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  width: 15,
+                ),
+              ],
             ),
-
-            /*
-              Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () {
-                  AdHelper.showInterstitialAd();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const PraticeStage()));
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/blue_bg.png"),
-                        fit: BoxFit.fill),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Join in",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      AdHelper.showRewardedAd();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const Category()));
+                      AppCubit.get(context).getStatistics(userId: userId!);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const StatisticsScreen()));
+                    },
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.22,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/red2_bg.png"),
+                            fit: BoxFit.fill),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 50),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Join in",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                            const Text(
+                              "History",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Image.asset(
+                                'assets/images/right_arrow.png',
+                                height: 40.0,
+                                width: 50.0,
+                              ),
+                            ),
+                          ],
                         ),
-                        const Text(
-                          "Practise",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Image.asset(
-                            'assets/images/right_arrow.png',
-                            height: 35.0,
-                            width: 50.0,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-
-            */
-            const SizedBox(
-              width: 15,
+                const SizedBox(
+                  width: 5,
+                ),
+              ],
             ),
           ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const SizedBox(
-              width: 5,
-            ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Container(
-            //     height: MediaQuery.of(context).size.height * 0.22,
-            //     decoration: const BoxDecoration(
-            //       image: DecorationImage(
-            //           image: AssetImage("assets/images/green_bg.png"),
-            //           fit: BoxFit.fill),
-            //     ),
-            //     child: Padding(
-            //       padding: const EdgeInsets.only(left: 30),
-            //       child: Column(
-            //         crossAxisAlignment: CrossAxisAlignment.start,
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text("Join in",
-            //               style: GoogleFonts.poppins(
-            //                   color: Colors.white, fontSize: 18)),
-            //           Text("Challenge",
-            //               style: GoogleFonts.poppins(
-            //                   color: Colors.white,
-            //                   fontSize: 24,
-            //                   fontWeight: FontWeight.w600)),
-            //           Padding(
-            //             padding: const EdgeInsets.only(top: 15),
-            //             child: Image.asset(
-            //               'assets/images/right_arrow.png',
-            //               height: 40.0,
-            //               width: 55.0,
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  AdHelper.showRewardedAd();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Category()));
-                },
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.22,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/red2_bg.png"),
-                        fit: BoxFit.fill),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 50),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Join in",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                        const Text(
-                          "History",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Image.asset(
-                            'assets/images/right_arrow.png',
-                            height: 40.0,
-                            width: 50.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-          ],
-        ),
-      ],
+        );
+      },
     );
   }
 

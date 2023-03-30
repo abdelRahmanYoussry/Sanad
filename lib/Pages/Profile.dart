@@ -362,7 +362,7 @@ class _ProfileState extends State<Profile> {
                               color: textColorGrey)),
                       MyText(
                         title:
-                            profiledata.profileModel.result![0].address ?? "",
+                            profiledata.profileModel.result![0].country ?? "",
                         size: 16,
                         fontWeight: FontWeight.w500,
                         colors: black,

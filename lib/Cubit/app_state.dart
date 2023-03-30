@@ -1,14 +1,20 @@
 part of 'app_cubit.dart';
 
 @immutable
-abstract class AppState {}
+abstract class AppStateCubit {}
 
-class AppInitial extends AppState {}
+class AppInitial extends AppStateCubit {}
 
-class PayPalSuccessState extends AppState {}
+class PayPalSuccessState extends AppStateCubit {}
 
-class PayPalLoadingState extends AppState {}
+class PayPalLoadingState extends AppStateCubit {}
 
-class PayPalErrorState extends AppState {}
+class PayPalErrorState extends AppStateCubit {}
 
-class GetLiveContentSuccessState extends AppState {}
+class GetLiveContentSuccessState extends AppStateCubit {}
+
+class StatisticsSuccessState extends AppStateCubit {}
+
+class StatisticsLoadingState extends AppStateCubit {}
+
+class StatisticsErrorState extends AppStateCubit {}

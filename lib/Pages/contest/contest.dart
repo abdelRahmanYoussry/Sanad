@@ -642,6 +642,11 @@ class _ContestState extends State<Contest> {
                                                     ),
                                                   ),
                                                   TextButton(
+                                                    child: const Text(
+                                                      'Confirm',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
                                                     style: ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStateProperty
@@ -658,42 +663,51 @@ class _ContestState extends State<Contest> {
                                                               .livecontentModel
                                                               .result![index]
                                                               .price!)) {
-                                                        totalCoins = totalCoins! -
-                                                            int.parse((livecontent
-                                                                .livecontentModel
-                                                                .result?[index]
-                                                                .price)!);
-                                                        livecontent
-                                                            .updateCoinsAndPoints(
-                                                                userId: userId!
-                                                                    .toString(),
-                                                                coins:
-                                                                    totalCoins!
-                                                                        .toInt(),
-                                                                context:
-                                                                    context);
-
-                                                        Navigator
-                                                            .pushReplacement(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            CalenderScreen(
-                                                                              questionId: (livecontent.livecontentModel.result?[index].id.toString())!,
-                                                                              contestName: (livecontent.livecontentModel.result?[index].name)!,
-                                                                            )));
+                                                        if (livecontent
+                                                            .contestQuestionModel
+                                                            .result!
+                                                            .isEmpty) {
+                                                          Utility.toastMessage(
+                                                              ' Challenge is Coming Soon');
+                                                        } else {
+                                                          totalCoins = totalCoins! -
+                                                              int.parse((livecontent
+                                                                  .livecontentModel
+                                                                  .result?[
+                                                                      index]
+                                                                  .price)!);
+                                                          livecontent.updateCoinsAndPoints(
+                                                              userId: userId!
+                                                                  .toString(),
+                                                              coins: totalCoins!
+                                                                  .toInt(),
+                                                              context: context);
+                                                          Navigator
+                                                              .pushReplacement(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                      builder: (context) =>
+                                                                          CalenderScreen(
+                                                                            questionId:
+                                                                                (livecontent.livecontentModel.result?[index].id.toString())!,
+                                                                            contestName:
+                                                                                (livecontent.livecontentModel.result?[index].name)!,
+                                                                          )));
+                                                        }
+                                                      } else if (totalCoins! <
+                                                          int.parse(livecontent
+                                                              .livecontentModel
+                                                              .result![index]
+                                                              .price!)) {
+                                                        Utility.toastMessage(
+                                                            ' You have $totalCoins coin \n '
+                                                            'Please recharge your wallet');
                                                       } else {
                                                         Utility.toastMessage(
                                                             ' You have $totalCoins coin \n '
                                                             'Please recharge your wallet');
                                                       }
                                                     },
-                                                    child: const Text(
-                                                      'Confirm',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
                                                   ),
                                                 ],
                                                 context: context);
@@ -816,520 +830,520 @@ class _ContestState extends State<Contest> {
                       },
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        left: 5, top: 10, right: 5, bottom: 0),
-                    height: MediaQuery.of(context).size.height / 4,
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20))),
-                    child: Container(
-                      padding: const EdgeInsets.only(
-                          left: 10, top: 10, right: 10, bottom: 5),
-                      child: Column(children: [
-                        Row(
-                          children: [
-                            Column(
-                              children: [
-                                MyText(
-                                    title: "Prize Pool",
-                                    size: 16,
-                                    fontWeight: FontWeight.w400,
-                                    colors: Colors.white),
-                                MyText(
-                                    title: livecontent.livecontentModel
-                                            .result?[2].totalPrize
-                                            .toString() ??
-                                        "",
-                                    size: 24,
-                                    fontWeight: FontWeight.w600,
-                                    colors: Colors.white)
-                              ],
-                            ),
-                            const Spacer(),
-                            (livecontent.livecontentModel.result?[2].isPlayed ??
-                                        0) ==
-                                    0
-                                ? TextButton(
-                                    onPressed: () {
-                                      Utility.customShowDialog(
-                                          title: Center(
-                                            child: Text(livecontent
-                                                .livecontentModel
-                                                .result![2]
-                                                .name!),
-                                          ),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  MyText(
-                                                      title: "5h 40m",
-                                                      size: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                  const VerticalDivider(
-                                                    thickness: 2,
-                                                    width: 20,
-                                                    color: textColorGrey,
-                                                  ),
-                                                  MyText(
-                                                      title:
-                                                          "Entry Fee: ${livecontent.livecontentModel.result?[2].price} Coin",
-                                                      size: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 10,
-                                              ),
-                                              const Text(
-                                                'Are you Sure to Join Now?',
-                                                style: TextStyle(
-                                                    color: actionColor),
-                                              ),
-                                            ],
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: const Text(
-                                                'Cancel',
-                                                style: TextStyle(
-                                                    color: baseColor,
-                                                    fontSize: 20),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          cyan),
-                                                  shape: MaterialStateProperty.all(
-                                                      const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius.circular(
-                                                                      28.0))))),
-                                              onPressed: () async {
-                                                if (totalCoins! >=
-                                                    int.parse(livecontent
-                                                        .livecontentModel
-                                                        .result![2]
-                                                        .price!)) {
-                                                  totalCoins = totalCoins! -
-                                                      int.parse((livecontent
-                                                          .livecontentModel
-                                                          .result?[2]
-                                                          .price)!);
-                                                  livecontent
-                                                      .updateCoinsAndPoints(
-                                                          userId: userId!
-                                                              .toString(),
-                                                          coins: totalCoins!
-                                                              .toInt(),
-                                                          context: context);
-
-                                                  Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CalenderScreen(
-                                                                questionId:
-                                                                    '14',
-                                                                contestName:
-                                                                    (livecontent
-                                                                        .livecontentModel
-                                                                        .result?[
-                                                                            2]
-                                                                        .name)!,
-                                                              )
-                                                          // ContestQuestions(
-                                                          //   contestId: livecontent.livecontentModel.result?[index].id.toString(),
-                                                          //   contestName: livecontent.livecontentModel.result?[index].name,
-                                                          // )
-                                                          ));
-                                                } else {
-                                                  Utility.toastMessage(
-                                                      ' You have $totalCoins coin \n '
-                                                      'Please recharge your wallet');
-                                                }
-                                              },
-                                              child: const Text(
-                                                'Confirm',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            ),
-                                          ],
-                                          context: context);
-
-                                      // if (totalCoins! >=
-                                      //     int.parse(livecontent.livecontentModel
-                                      //         .result![2].price!)) {
-                                      //   totalCoins = totalCoins! -
-                                      //       int.parse((livecontent
-                                      //           .livecontentModel
-                                      //           .result?[2]
-                                      //           .price)!);
-                                      //   livecontent.updateCoinsAndPoints(
-                                      //       userId: userId!.toString(),
-                                      //       coins: totalCoins!.toInt(),
-                                      //       context: context);
-                                      //
-                                      //   Navigator.pushReplacement(
-                                      //       context,
-                                      //       MaterialPageRoute(
-                                      //           builder: (context) =>
-                                      //               CalenderScreen(
-                                      //                 questionId: '14',
-                                      //               )));
-                                      // } else {
-                                      //   Utility.toastMessage(
-                                      //       ' You have $totalCoins coin \n '
-                                      //       'Please recharge your wallet');
-                                      // }
-
-                                      // showDialog(
-                                      //     context: context,
-                                      //     builder: (context) {
-                                      //       return StatefulBuilder(
-                                      //           builder: (context, setState2) {
-                                      //         return AlertDialog(
-                                      //           actionsAlignment:
-                                      //               MainAxisAlignment.start,
-                                      //           content: Column(
-                                      //             mainAxisSize:
-                                      //                 MainAxisSize.min,
-                                      //             children: [
-                                      //               SizedBox(
-                                      //                 height: 200,
-                                      //                 width: 400,
-                                      //                 // color:
-                                      //                 //     cyan.withOpacity(0.5),
-                                      //                 child: TableCalendar(
-                                      //                   calendarFormat:
-                                      //                       CalendarFormat
-                                      //                           .month,
-                                      //                   // eventLoader:
-                                      //                   //     (DateTime day) {
-                                      //                   //   // return List<_>;
-                                      //                   // },
-                                      //                   rowHeight: 25,
-                                      //                   headerStyle:
-                                      //                       const HeaderStyle(
-                                      //                     formatButtonVisible:
-                                      //                         false,
-                                      //                     titleCentered: true,
-                                      //                   ),
-                                      //                   calendarStyle:
-                                      //                       CalendarStyle(
-                                      //                           rangeHighlightColor:
-                                      //                               cyan.withOpacity(
-                                      //                                   0.2),
-                                      //                           rangeStartDecoration:
-                                      //                               const BoxDecoration(
-                                      //                                   color:
-                                      //                                       cyan),
-                                      //                           rangeEndDecoration:
-                                      //                               const BoxDecoration(
-                                      //                                   color:
-                                      //                                       cyan),
-                                      //                           selectedDecoration:
-                                      //                               const BoxDecoration(
-                                      //                             color:
-                                      //                                 appColor,
-                                      //                             shape: BoxShape
-                                      //                                 .circle,
-                                      //                           )),
-                                      //                   selectedDayPredicate:
-                                      //                       (day) => isSameDay(
-                                      //                           _selectedDay,
-                                      //                           day),
-                                      //                   firstDay: DateTime(
-                                      //                       2022, 1, 1),
-                                      //                   lastDay: DateTime(
-                                      //                       2200, 1, 1),
-                                      //                   focusedDay: _focusedDay,
-                                      //                   rangeSelectionMode:
-                                      //                       _rangeSelectionMode,
-                                      //                   onFormatChanged:
-                                      //                       (calenderFormat) {},
-                                      //                   onDaySelected:
-                                      //                       (selectedDay,
-                                      //                           focusedDay) {
-                                      //                     if (!isSameDay(
-                                      //                         _selectedDay,
-                                      //                         selectedDay)) {
-                                      //                       setState2(() {
-                                      //                         _selectedDay =
-                                      //                             selectedDay;
-                                      //                         _focusedDay =
-                                      //                             focusedDay;
-                                      //                         _rangeSelectionMode =
-                                      //                             RangeSelectionMode
-                                      //                                 .toggledOff;
-                                      //                         if (index <=
-                                      //                             livecontent
-                                      //                                 .contestQuestionModelNew
-                                      //                                 .result!
-                                      //                                 .length) {
-                                      //                           index =
-                                      //                               index + 1;
-                                      //                           debugPrint(livecontent
-                                      //                               .contestQuestionModelNew
-                                      //                               .result!
-                                      //                               .length.toString());
-                                      //                           debugPrint(index
-                                      //                                   .toString() +
-                                      //                               'index');
-                                      //                         }
-                                      //                         if (index ==
-                                      //                             livecontent
-                                      //                                 .contestQuestionModelNew
-                                      //                                 .result!
-                                      //                                 .length) {
-                                      //                           index = 0;
-                                      //                         }
-                                      //                         _differenceDay =
-                                      //                             _selectedDay!
-                                      //                                 .difference(
-                                      //                                     DateTime
-                                      //                                         .now());
-                                      //                         debugPrint(_differenceDay
-                                      //                                 .inDays
-                                      //                                 .toString() +
-                                      //                             'diff');
-                                      //                         debugPrint(_focusedDay
-                                      //                                 .day
-                                      //                                 .toString() +
-                                      //                             'this is focused');
-                                      //                         debugPrint(_selectedDay!
-                                      //                                 .day
-                                      //                                 .toString() +
-                                      //                             'this is _selectedDay');
-                                      //                       });
-                                      //                     }
-                                      //                   },
-                                      //                   rangeStartDay:
-                                      //                       DateTime.now(),
-                                      //                   rangeEndDay: DateTime
-                                      //                           .now()
-                                      //                       .add(Duration(
-                                      //                           days: livecontent
-                                      //                               .contestQuestionModel
-                                      //                               .result!
-                                      //                               .length)),
-                                      //                 ),
-                                      //               ),
-                                      //               const Text('Question'),
-                                      //               Text(
-                                      //                 livecontent
-                                      //                     .contestQuestionModelNew
-                                      //                     .result![index]
-                                      //                     .question!,
-                                      //                 maxLines: 2,
-                                      //                 overflow:
-                                      //                     TextOverflow.ellipsis,
-                                      //               )
-                                      //             ],
-                                      //           ),
-                                      //           actions: [
-                                      //             Row(
-                                      //               children: [
-                                      //                 TextButton(
-                                      //                   onPressed: () {
-                                      //                     Navigator.pop(
-                                      //                         context);
-                                      //                   },
-                                      //                   child: const Text(
-                                      //                     'Cancel',
-                                      //                     style: TextStyle(
-                                      //                         color: baseColor,
-                                      //                         fontSize: 20),
-                                      //                   ),
-                                      //                 ),
-                                      //                 TextButton(
-                                      //                   style: ButtonStyle(
-                                      //                       backgroundColor:
-                                      //                           MaterialStateProperty
-                                      //                               .all(cyan),
-                                      //                       shape: MaterialStateProperty.all(
-                                      //                           const RoundedRectangleBorder(
-                                      //                               borderRadius:
-                                      //                                   BorderRadius.all(
-                                      //                                       Radius.circular(28.0))))),
-                                      //                   onPressed: () async {
-                                      //                     if (_differenceDay
-                                      //                             .inDays ==
-                                      //                         0) {
-                                      //                       Utility.toastMessage(
-                                      //                           ' Coming Soon Waiting For Api');
-                                      //                     } else {
-                                      //                       Utility.toastMessage(
-                                      //                           'No Matching With Selected Day \n Please Select '
-                                      //                           'another question');
-                                      //                     }
-                                      //                   },
-                                      //                   child: const Text(
-                                      //                     'Confirm',
-                                      //                     style: TextStyle(
-                                      //                         color:
-                                      //                             Colors.white),
-                                      //                   ),
-                                      //                 ),
-                                      //               ],
-                                      //               mainAxisAlignment:
-                                      //                   MainAxisAlignment
-                                      //                       .spaceBetween,
-                                      //             )
-                                      //           ],
-                                      //           shape:
-                                      //               const RoundedRectangleBorder(
-                                      //                   borderRadius:
-                                      //                       BorderRadius.all(
-                                      //                           Radius.circular(
-                                      //                               10.0))),
-                                      //         );
-                                      //       });
-                                      //     });
-                                    },
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        28.0))),
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                appColor)),
-                                    child: MyText(
-                                      title: ' Join Now ',
-                                      size: 16,
-                                      fontWeight: FontWeight.w500,
-                                      colors: white,
-                                    ))
-                                : MyText(
-                                    title: 'Already Played',
-                                    fontWeight: FontWeight.w500,
-                                    colors: red,
-                                    size: 14,
-                                    maxline: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            Image.asset(
-                              "assets/images/ic_trophy.png",
-                              height: 15,
-                              width: 15,
-                              color: Colors.white,
-                            ),
-                            const SizedBox(width: 5),
-                            MyText(
-                                title:
-                                    "WINNERS: ${livecontent.livecontentModel.result?[2].noOfUserPrize}",
-                                size: 16,
-                                fontWeight: FontWeight.w400,
-                                colors: Colors.white),
-                            const Spacer(),
-                            MyText(
-                                title: livecontent
-                                        .livecontentModel.result?[2].name ??
-                                    "",
-                                size: 16,
-                                fontWeight: FontWeight.w600,
-                                overflow: TextOverflow.ellipsis,
-                                maxline: 1,
-                                colors: Colors.white)
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        const Divider(height: 1, color: Colors.white),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: 25,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              MyText(
-                                  title: "5h 40m",
-                                  size: 16,
-                                  colors: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                              const VerticalDivider(
-                                thickness: 2,
-                                width: 20,
-                                color: Colors.white,
-                              ),
-                              MyText(
-                                  title:
-                                      "Entry Fee: ${livecontent.livecontentModel.result?[2].price}",
-                                  size: 16,
-                                  colors: Colors.white,
-                                  fontWeight: FontWeight.w600),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          width: double.infinity,
-                          height: 40,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(cyan),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(28),
-                                ),
-                              ),
-                            ),
-                            child: const Text(
-                              'Description',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                            onPressed: () {
-                              Utility.customShowDialog(
-                                  title: const Center(child: Text('Details')),
-                                  content: Text(livecontent
-                                      .livecontentModel.result![2].name!),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text(
-                                        'Ok',
-                                        style: TextStyle(
-                                            color: cyan, fontSize: 20),
-                                      ),
-                                    )
-                                  ],
-                                  context: context);
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ]),
-                    ),
-                  )
+                  // Container(
+                  //   margin: const EdgeInsets.only(
+                  //       left: 5, top: 10, right: 5, bottom: 0),
+                  //   height: MediaQuery.of(context).size.height / 4,
+                  //   decoration: BoxDecoration(
+                  //       color: Colors.black.withOpacity(0.5),
+                  //       borderRadius:
+                  //           const BorderRadius.all(Radius.circular(20))),
+                  //   child: Container(
+                  //     padding: const EdgeInsets.only(
+                  //         left: 10, top: 10, right: 10, bottom: 5),
+                  //     child: Column(children: [
+                  //       Row(
+                  //         children: [
+                  //           Column(
+                  //             children: [
+                  //               MyText(
+                  //                   title: "Prize Pool",
+                  //                   size: 16,
+                  //                   fontWeight: FontWeight.w400,
+                  //                   colors: Colors.white),
+                  //               MyText(
+                  //                   title: livecontent.livecontentModel
+                  //                           .result?[2].totalPrize
+                  //                           .toString() ??
+                  //                       "",
+                  //                   size: 24,
+                  //                   fontWeight: FontWeight.w600,
+                  //                   colors: Colors.white)
+                  //             ],
+                  //           ),
+                  //           const Spacer(),
+                  //           (livecontent.livecontentModel.result?[2].isPlayed ??
+                  //                       0) ==
+                  //                   0
+                  //               ? TextButton(
+                  //                   onPressed: () {
+                  //                     Utility.customShowDialog(
+                  //                         title: Center(
+                  //                           child: Text(livecontent
+                  //                               .livecontentModel
+                  //                               .result![2]
+                  //                               .name!),
+                  //                         ),
+                  //                         content: Column(
+                  //                           mainAxisSize: MainAxisSize.min,
+                  //                           children: [
+                  //                             Row(
+                  //                               mainAxisAlignment:
+                  //                                   MainAxisAlignment.center,
+                  //                               children: [
+                  //                                 MyText(
+                  //                                     title: "5h 40m",
+                  //                                     size: 16,
+                  //                                     fontWeight:
+                  //                                         FontWeight.w600),
+                  //                                 const VerticalDivider(
+                  //                                   thickness: 2,
+                  //                                   width: 20,
+                  //                                   color: textColorGrey,
+                  //                                 ),
+                  //                                 MyText(
+                  //                                     title:
+                  //                                         "Entry Fee: ${livecontent.livecontentModel.result?[2].price} Coin",
+                  //                                     size: 16,
+                  //                                     fontWeight:
+                  //                                         FontWeight.w600),
+                  //                               ],
+                  //                             ),
+                  //                             const SizedBox(
+                  //                               height: 10,
+                  //                             ),
+                  //                             const Text(
+                  //                               'Are you Sure to Join Now?',
+                  //                               style: TextStyle(
+                  //                                   color: actionColor),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                         actions: [
+                  //                           TextButton(
+                  //                             onPressed: () {
+                  //                               Navigator.pop(context);
+                  //                             },
+                  //                             child: const Text(
+                  //                               'Cancel',
+                  //                               style: TextStyle(
+                  //                                   color: baseColor,
+                  //                                   fontSize: 20),
+                  //                             ),
+                  //                           ),
+                  //                           TextButton(
+                  //                             style: ButtonStyle(
+                  //                                 backgroundColor:
+                  //                                     MaterialStateProperty.all(
+                  //                                         cyan),
+                  //                                 shape: MaterialStateProperty.all(
+                  //                                     const RoundedRectangleBorder(
+                  //                                         borderRadius:
+                  //                                             BorderRadius.all(
+                  //                                                 Radius.circular(
+                  //                                                     28.0))))),
+                  //                             onPressed: () async {
+                  //                               if (totalCoins! >=
+                  //                                   int.parse(livecontent
+                  //                                       .livecontentModel
+                  //                                       .result![2]
+                  //                                       .price!)) {
+                  //                                 totalCoins = totalCoins! -
+                  //                                     int.parse((livecontent
+                  //                                         .livecontentModel
+                  //                                         .result?[2]
+                  //                                         .price)!);
+                  //                                 livecontent
+                  //                                     .updateCoinsAndPoints(
+                  //                                         userId: userId!
+                  //                                             .toString(),
+                  //                                         coins: totalCoins!
+                  //                                             .toInt(),
+                  //                                         context: context);
+                  //
+                  //                                 Navigator.pushReplacement(
+                  //                                     context,
+                  //                                     MaterialPageRoute(
+                  //                                         builder: (context) =>
+                  //                                             CalenderScreen(
+                  //                                               questionId:
+                  //                                                   '14',
+                  //                                               contestName:
+                  //                                                   (livecontent
+                  //                                                       .livecontentModel
+                  //                                                       .result?[
+                  //                                                           2]
+                  //                                                       .name)!,
+                  //                                             )
+                  //                                         // ContestQuestions(
+                  //                                         //   contestId: livecontent.livecontentModel.result?[index].id.toString(),
+                  //                                         //   contestName: livecontent.livecontentModel.result?[index].name,
+                  //                                         // )
+                  //                                         ));
+                  //                               } else {
+                  //                                 Utility.toastMessage(
+                  //                                     ' You have $totalCoins coin \n '
+                  //                                     'Please recharge your wallet');
+                  //                               }
+                  //                             },
+                  //                             child: const Text(
+                  //                               'Confirm',
+                  //                               style: TextStyle(
+                  //                                   color: Colors.white),
+                  //                             ),
+                  //                           ),
+                  //                         ],
+                  //                         context: context);
+                  //
+                  //                     // if (totalCoins! >=
+                  //                     //     int.parse(livecontent.livecontentModel
+                  //                     //         .result![2].price!)) {
+                  //                     //   totalCoins = totalCoins! -
+                  //                     //       int.parse((livecontent
+                  //                     //           .livecontentModel
+                  //                     //           .result?[2]
+                  //                     //           .price)!);
+                  //                     //   livecontent.updateCoinsAndPoints(
+                  //                     //       userId: userId!.toString(),
+                  //                     //       coins: totalCoins!.toInt(),
+                  //                     //       context: context);
+                  //                     //
+                  //                     //   Navigator.pushReplacement(
+                  //                     //       context,
+                  //                     //       MaterialPageRoute(
+                  //                     //           builder: (context) =>
+                  //                     //               CalenderScreen(
+                  //                     //                 questionId: '14',
+                  //                     //               )));
+                  //                     // } else {
+                  //                     //   Utility.toastMessage(
+                  //                     //       ' You have $totalCoins coin \n '
+                  //                     //       'Please recharge your wallet');
+                  //                     // }
+                  //
+                  //                     // showDialog(
+                  //                     //     context: context,
+                  //                     //     builder: (context) {
+                  //                     //       return StatefulBuilder(
+                  //                     //           builder: (context, setState2) {
+                  //                     //         return AlertDialog(
+                  //                     //           actionsAlignment:
+                  //                     //               MainAxisAlignment.start,
+                  //                     //           content: Column(
+                  //                     //             mainAxisSize:
+                  //                     //                 MainAxisSize.min,
+                  //                     //             children: [
+                  //                     //               SizedBox(
+                  //                     //                 height: 200,
+                  //                     //                 width: 400,
+                  //                     //                 // color:
+                  //                     //                 //     cyan.withOpacity(0.5),
+                  //                     //                 child: TableCalendar(
+                  //                     //                   calendarFormat:
+                  //                     //                       CalendarFormat
+                  //                     //                           .month,
+                  //                     //                   // eventLoader:
+                  //                     //                   //     (DateTime day) {
+                  //                     //                   //   // return List<_>;
+                  //                     //                   // },
+                  //                     //                   rowHeight: 25,
+                  //                     //                   headerStyle:
+                  //                     //                       const HeaderStyle(
+                  //                     //                     formatButtonVisible:
+                  //                     //                         false,
+                  //                     //                     titleCentered: true,
+                  //                     //                   ),
+                  //                     //                   calendarStyle:
+                  //                     //                       CalendarStyle(
+                  //                     //                           rangeHighlightColor:
+                  //                     //                               cyan.withOpacity(
+                  //                     //                                   0.2),
+                  //                     //                           rangeStartDecoration:
+                  //                     //                               const BoxDecoration(
+                  //                     //                                   color:
+                  //                     //                                       cyan),
+                  //                     //                           rangeEndDecoration:
+                  //                     //                               const BoxDecoration(
+                  //                     //                                   color:
+                  //                     //                                       cyan),
+                  //                     //                           selectedDecoration:
+                  //                     //                               const BoxDecoration(
+                  //                     //                             color:
+                  //                     //                                 appColor,
+                  //                     //                             shape: BoxShape
+                  //                     //                                 .circle,
+                  //                     //                           )),
+                  //                     //                   selectedDayPredicate:
+                  //                     //                       (day) => isSameDay(
+                  //                     //                           _selectedDay,
+                  //                     //                           day),
+                  //                     //                   firstDay: DateTime(
+                  //                     //                       2022, 1, 1),
+                  //                     //                   lastDay: DateTime(
+                  //                     //                       2200, 1, 1),
+                  //                     //                   focusedDay: _focusedDay,
+                  //                     //                   rangeSelectionMode:
+                  //                     //                       _rangeSelectionMode,
+                  //                     //                   onFormatChanged:
+                  //                     //                       (calenderFormat) {},
+                  //                     //                   onDaySelected:
+                  //                     //                       (selectedDay,
+                  //                     //                           focusedDay) {
+                  //                     //                     if (!isSameDay(
+                  //                     //                         _selectedDay,
+                  //                     //                         selectedDay)) {
+                  //                     //                       setState2(() {
+                  //                     //                         _selectedDay =
+                  //                     //                             selectedDay;
+                  //                     //                         _focusedDay =
+                  //                     //                             focusedDay;
+                  //                     //                         _rangeSelectionMode =
+                  //                     //                             RangeSelectionMode
+                  //                     //                                 .toggledOff;
+                  //                     //                         if (index <=
+                  //                     //                             livecontent
+                  //                     //                                 .contestQuestionModelNew
+                  //                     //                                 .result!
+                  //                     //                                 .length) {
+                  //                     //                           index =
+                  //                     //                               index + 1;
+                  //                     //                           debugPrint(livecontent
+                  //                     //                               .contestQuestionModelNew
+                  //                     //                               .result!
+                  //                     //                               .length.toString());
+                  //                     //                           debugPrint(index
+                  //                     //                                   .toString() +
+                  //                     //                               'index');
+                  //                     //                         }
+                  //                     //                         if (index ==
+                  //                     //                             livecontent
+                  //                     //                                 .contestQuestionModelNew
+                  //                     //                                 .result!
+                  //                     //                                 .length) {
+                  //                     //                           index = 0;
+                  //                     //                         }
+                  //                     //                         _differenceDay =
+                  //                     //                             _selectedDay!
+                  //                     //                                 .difference(
+                  //                     //                                     DateTime
+                  //                     //                                         .now());
+                  //                     //                         debugPrint(_differenceDay
+                  //                     //                                 .inDays
+                  //                     //                                 .toString() +
+                  //                     //                             'diff');
+                  //                     //                         debugPrint(_focusedDay
+                  //                     //                                 .day
+                  //                     //                                 .toString() +
+                  //                     //                             'this is focused');
+                  //                     //                         debugPrint(_selectedDay!
+                  //                     //                                 .day
+                  //                     //                                 .toString() +
+                  //                     //                             'this is _selectedDay');
+                  //                     //                       });
+                  //                     //                     }
+                  //                     //                   },
+                  //                     //                   rangeStartDay:
+                  //                     //                       DateTime.now(),
+                  //                     //                   rangeEndDay: DateTime
+                  //                     //                           .now()
+                  //                     //                       .add(Duration(
+                  //                     //                           days: livecontent
+                  //                     //                               .contestQuestionModel
+                  //                     //                               .result!
+                  //                     //                               .length)),
+                  //                     //                 ),
+                  //                     //               ),
+                  //                     //               const Text('Question'),
+                  //                     //               Text(
+                  //                     //                 livecontent
+                  //                     //                     .contestQuestionModelNew
+                  //                     //                     .result![index]
+                  //                     //                     .question!,
+                  //                     //                 maxLines: 2,
+                  //                     //                 overflow:
+                  //                     //                     TextOverflow.ellipsis,
+                  //                     //               )
+                  //                     //             ],
+                  //                     //           ),
+                  //                     //           actions: [
+                  //                     //             Row(
+                  //                     //               children: [
+                  //                     //                 TextButton(
+                  //                     //                   onPressed: () {
+                  //                     //                     Navigator.pop(
+                  //                     //                         context);
+                  //                     //                   },
+                  //                     //                   child: const Text(
+                  //                     //                     'Cancel',
+                  //                     //                     style: TextStyle(
+                  //                     //                         color: baseColor,
+                  //                     //                         fontSize: 20),
+                  //                     //                   ),
+                  //                     //                 ),
+                  //                     //                 TextButton(
+                  //                     //                   style: ButtonStyle(
+                  //                     //                       backgroundColor:
+                  //                     //                           MaterialStateProperty
+                  //                     //                               .all(cyan),
+                  //                     //                       shape: MaterialStateProperty.all(
+                  //                     //                           const RoundedRectangleBorder(
+                  //                     //                               borderRadius:
+                  //                     //                                   BorderRadius.all(
+                  //                     //                                       Radius.circular(28.0))))),
+                  //                     //                   onPressed: () async {
+                  //                     //                     if (_differenceDay
+                  //                     //                             .inDays ==
+                  //                     //                         0) {
+                  //                     //                       Utility.toastMessage(
+                  //                     //                           ' Coming Soon Waiting For Api');
+                  //                     //                     } else {
+                  //                     //                       Utility.toastMessage(
+                  //                     //                           'No Matching With Selected Day \n Please Select '
+                  //                     //                           'another question');
+                  //                     //                     }
+                  //                     //                   },
+                  //                     //                   child: const Text(
+                  //                     //                     'Confirm',
+                  //                     //                     style: TextStyle(
+                  //                     //                         color:
+                  //                     //                             Colors.white),
+                  //                     //                   ),
+                  //                     //                 ),
+                  //                     //               ],
+                  //                     //               mainAxisAlignment:
+                  //                     //                   MainAxisAlignment
+                  //                     //                       .spaceBetween,
+                  //                     //             )
+                  //                     //           ],
+                  //                     //           shape:
+                  //                     //               const RoundedRectangleBorder(
+                  //                     //                   borderRadius:
+                  //                     //                       BorderRadius.all(
+                  //                     //                           Radius.circular(
+                  //                     //                               10.0))),
+                  //                     //         );
+                  //                     //       });
+                  //                     //     });
+                  //                   },
+                  //                   style: ButtonStyle(
+                  //                       shape: MaterialStateProperty.all<
+                  //                               RoundedRectangleBorder>(
+                  //                           RoundedRectangleBorder(
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(
+                  //                                       28.0))),
+                  //                       backgroundColor:
+                  //                           MaterialStateProperty.all(
+                  //                               appColor)),
+                  //                   child: MyText(
+                  //                     title: ' Join Now ',
+                  //                     size: 16,
+                  //                     fontWeight: FontWeight.w500,
+                  //                     colors: white,
+                  //                   ))
+                  //               : MyText(
+                  //                   title: 'Already Played',
+                  //                   fontWeight: FontWeight.w500,
+                  //                   colors: red,
+                  //                   size: 14,
+                  //                   maxline: 1,
+                  //                   overflow: TextOverflow.ellipsis,
+                  //                 ),
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 15),
+                  //       Row(
+                  //         children: [
+                  //           Image.asset(
+                  //             "assets/images/ic_trophy.png",
+                  //             height: 15,
+                  //             width: 15,
+                  //             color: Colors.white,
+                  //           ),
+                  //           const SizedBox(width: 5),
+                  //           MyText(
+                  //               title:
+                  //                   "WINNERS: ${livecontent.livecontentModel.result?[2].noOfUserPrize}",
+                  //               size: 16,
+                  //               fontWeight: FontWeight.w400,
+                  //               colors: Colors.white),
+                  //           const Spacer(),
+                  //           MyText(
+                  //               title: livecontent
+                  //                       .livecontentModel.result?[2].name ??
+                  //                   "",
+                  //               size: 16,
+                  //               fontWeight: FontWeight.w600,
+                  //               overflow: TextOverflow.ellipsis,
+                  //               maxline: 1,
+                  //               colors: Colors.white)
+                  //         ],
+                  //       ),
+                  //       const SizedBox(height: 10),
+                  //       const Divider(height: 1, color: Colors.white),
+                  //       const SizedBox(height: 10),
+                  //       SizedBox(
+                  //         height: 25,
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.center,
+                  //           children: [
+                  //             MyText(
+                  //                 title: "5h 40m",
+                  //                 size: 16,
+                  //                 colors: Colors.white,
+                  //                 fontWeight: FontWeight.w600),
+                  //             const VerticalDivider(
+                  //               thickness: 2,
+                  //               width: 20,
+                  //               color: Colors.white,
+                  //             ),
+                  //             MyText(
+                  //                 title:
+                  //                     "Entry Fee: ${livecontent.livecontentModel.result?[2].price}",
+                  //                 size: 16,
+                  //                 colors: Colors.white,
+                  //                 fontWeight: FontWeight.w600),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       const Spacer(),
+                  //       SizedBox(
+                  //         width: double.infinity,
+                  //         height: 40,
+                  //         child: ElevatedButton(
+                  //           style: ButtonStyle(
+                  //             backgroundColor: MaterialStateProperty.all(cyan),
+                  //             shape: MaterialStateProperty.all(
+                  //               RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(28),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //           child: const Text(
+                  //             'Description',
+                  //             style: TextStyle(
+                  //               fontWeight: FontWeight.bold,
+                  //               fontSize: 18,
+                  //               color: Colors.white,
+                  //             ),
+                  //           ),
+                  //           onPressed: () {
+                  //             Utility.customShowDialog(
+                  //                 title: const Center(child: Text('Details')),
+                  //                 content: Text(livecontent
+                  //                     .livecontentModel.result![2].name!),
+                  //                 actions: [
+                  //                   TextButton(
+                  //                     onPressed: () {
+                  //                       Navigator.pop(context);
+                  //                     },
+                  //                     child: const Text(
+                  //                       'Ok',
+                  //                       style: TextStyle(
+                  //                           color: cyan, fontSize: 20),
+                  //                     ),
+                  //                   )
+                  //                 ],
+                  //                 context: context);
+                  //           },
+                  //         ),
+                  //       ),
+                  //       const SizedBox(
+                  //         height: 5,
+                  //       ),
+                  //     ]),
+                  //   ),
+                  // )
                 ],
               );
       },

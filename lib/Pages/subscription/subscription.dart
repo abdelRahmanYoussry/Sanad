@@ -192,7 +192,7 @@ class _SubscriptionState extends State<Subscription> {
           (packageProvider.packagesModel.result?.length ?? 0) > 0) {
         packagelist = packageProvider.packagesModel.result;
         log("===>package ${packagelist?.length}");
-        return BlocConsumer<AppCubit, AppState>(
+        return BlocConsumer<AppCubit, AppStateCubit>(
           listener: (context, state) {
             if (state is PayPalSuccessState) {
               Utility.navigateTo(context,
