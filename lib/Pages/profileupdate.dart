@@ -24,11 +24,11 @@ class ProfileUpdate extends StatefulWidget {
 }
 
 class _ProfileUpdateState extends State<ProfileUpdate> {
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _contactController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
+  // final TextEditingController _addressController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
   final SingleValueDropDownController genderController =
       SingleValueDropDownController();
   final SingleValueDropDownController countryController =
@@ -36,7 +36,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   String? profilePic;
   XFile? _image;
   String? userId;
-  String? userCountry;
+  // String? userCountry;
   SharePref sharePref = SharePref();
 
   _imgFromCamera() async {
@@ -87,7 +87,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   @override
   initState() {
     getUserId();
-    getUserCountry();
+    // getUserCountry();
     super.initState();
   }
 
@@ -96,13 +96,13 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
     debugPrint('userID===>${userId.toString()}');
 
     final profiledata = Provider.of<ApiProvider>(context, listen: false);
-    profiledata.getProfile(context, userId);
+    await profiledata.getProfile(context, userId);
   }
 
-  getUserCountry() async {
-    userCountry = await sharePref.read('userCountry') ?? '"';
-    debugPrint('userCountry===>${userCountry.toString()}');
-  }
+  // getUserCountry() async {
+  //   userCountry = await sharePref.read('userCountry') ?? '"';
+  //   debugPrint('userCountry===>${userCountry.toString()}');
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -216,23 +216,26 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   buildData() {
     return Consumer<ApiProvider>(
       builder: (context, profiledata, child) {
-        if (_nameController.text.isEmpty) {
-          _nameController.text =
-              profiledata.profileModel.result?[0].fullname.toString() ?? "";
-          _emailController.text =
-              profiledata.profileModel.result?[0].email.toString() ?? "";
-          _contactController.text =
-              profiledata.profileModel.result?[0].mobileNumber.toString() ?? "";
-          _addressController.text =
-              profiledata.profileModel.result?[0].biodata.toString() ?? "";
-          _ageController.text =
-              profiledata.profileModel.result![0].age.toString() ?? '';
-          _addressController.text = userCountry ?? 'address';
+        print(nameController.text.toString());
+        if (nameController.text.isEmpty) {
+          countryController.dropDownValue = DropDownValueModel(
+              name: profiledata.profileModel.result![0].country!, value: 1);
           genderController.dropDownValue = DropDownValueModel(
               name: profiledata.profileModel.result![0].gender!, value: 1);
-          countryController.dropDownValue = DropDownValueModel(
-              name: profiledata.profileModel.result![0].address!, value: 0);
+          nameController.text =
+              profiledata.profileModel.result?[0].fullname.toString() ?? "";
+          emailController.text =
+              profiledata.profileModel.result?[0].email.toString() ?? "";
+          contactController.text =
+              profiledata.profileModel.result?[0].mobileNumber.toString() ?? "";
+          // _addressController.text =
+          //     profiledata.profileModel.result?[0].biodata.toString() ?? "";
+          ageController.text =
+              profiledata.profileModel.result![0].age.toString() ?? '';
+          // _addressController.text = userCountry ?? 'address';
         }
+        profilePic =
+            profiledata.profileModel.result?[0].profileImg.toString() ?? "";
         List<DropDownValueModel> genderTypeList = [
           const DropDownValueModel(name: 'Female', value: 0),
           const DropDownValueModel(name: 'Male', value: 1),
@@ -241,8 +244,6 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
           const DropDownValueModel(name: 'Egypt', value: 0),
           const DropDownValueModel(name: 'Malaysia', value: 1),
         ];
-        profilePic =
-            profiledata.profileModel.result?[0].profileImg.toString() ?? "";
 
         // File f =
         //     File(profiledata.profileModel.result?[0].biodata.toString() ?? "");
@@ -256,15 +257,15 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 formField("Name", "assets/images/ic_profile_user.png",
-                    _nameController),
+                    nameController),
                 formField("Email", "assets/images/ic_profile_email.png",
-                    _emailController),
+                    emailController),
                 formField("Contact No", "assets/images/ic_profile_contact.png",
-                    _contactController),
+                    contactController),
                 // formField("Address", "assets/images/ic_profile_address.png",
                 //     _addressController),
                 formField(
-                    'Age', "assets/images/ic_profile_user.png", _ageController),
+                    'Age', "assets/images/ic_profile_user.png", ageController),
                 const SizedBox(
                   height: 20,
                 ),
@@ -299,10 +300,10 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                     onChanged: (value) {
                       sharePref.save('userCountry', value.name);
                     },
-                    borderSide: BorderSide(color: baseColor, width: 2),
+                    borderSide: const BorderSide(color: baseColor, width: 2),
                     enableDropDown: true,
                     controller: countryController,
-                    label: const Text('Country')),
+                    label: const Text('Select Your Gander')),
                 const SizedBox(height: 40),
                 Center(
                   child: TextButton(
@@ -368,28 +369,32 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   }
 
   updateProfile() async {
-    if (_nameController.text.isEmpty) {
+    if (nameController.text.isEmpty) {
       Utility.toastMessage("Please enter your name");
       return;
     }
-    if (_emailController.text.isEmpty) {
+    if (emailController.text.isEmpty) {
       Utility.toastMessage("Please enter your email");
       return;
     }
-    if (_contactController.text.isEmpty) {
+    if (contactController.text.isEmpty) {
       Utility.toastMessage("Please enter your contact number");
       return;
     }
-    if (_addressController.text.isEmpty) {
-      Utility.toastMessage("Please enter your address");
-      return;
-    }
-    if (_ageController.text.isEmpty) {
+    // if (_addressController.text.isEmpty) {
+    //   Utility.toastMessage("Please enter your address");
+    //   return;
+    // }
+    if (ageController.text.isEmpty) {
       Utility.toastMessage("Please enter your address");
       return;
     }
     if (genderController.dropDownValue!.name.isEmpty) {
-      Utility.toastMessage("Please enter your address");
+      Utility.toastMessage("Please enter your gender");
+      return;
+    }
+    if (countryController.dropDownValue!.name.isEmpty) {
+      Utility.toastMessage("Please enter your Country");
       return;
     }
     if (_image == null && profilePic == "") {
@@ -404,24 +409,26 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
     var update = Provider.of<ApiProvider>(context, listen: false);
     if (image != null) {
       await update.getUpdateProfile(
-        contact: _contactController.text.toString(),
-        address: _addressController.text,
+        contact: contactController.text.toString(),
+        // address: _addressController.text,
         image: image,
         userId: userId!,
-        email: _emailController.text,
+        email: emailController.text,
         gender: genderController.dropDownValue!.name,
-        fullname: _nameController.text,
-        age: _ageController.text,
+        fullname: nameController.text,
+        age: ageController.text,
+        country: countryController.dropDownValue!.name,
       );
     } else {
       await update.getUpdateProfile(
-        contact: _contactController.text.toString(),
-        address: _addressController.text,
+        contact: contactController.text.toString(),
+        // address: _addressController.text,
         userId: userId!,
-        email: _emailController.text,
+        email: emailController.text,
         gender: genderController.dropDownValue!.name,
-        fullname: _nameController.text,
-        age: _ageController.text,
+        fullname: nameController.text,
+        age: ageController.text,
+        country: countryController.dropDownValue!.name,
       );
     }
     if (!update.loading) {

@@ -682,11 +682,11 @@ class _ContestState extends State<Contest> {
                                                               coins: totalCoins!
                                                                   .toInt(),
                                                               context: context);
-                                                          Navigator
-                                                              .pushReplacement(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder: (context) =>
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
                                                                           CalenderScreen(
                                                                             questionId:
                                                                                 (livecontent.livecontentModel.result?[index].id.toString())!,

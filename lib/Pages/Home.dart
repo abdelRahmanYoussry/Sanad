@@ -507,7 +507,7 @@ class _HomeState extends State<Home> {
                                   TextStyle(color: Colors.white, fontSize: 18),
                             ),
                             const Text(
-                              "History",
+                              "Statistics",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 28,

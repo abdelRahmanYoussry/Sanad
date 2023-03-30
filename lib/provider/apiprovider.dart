@@ -173,8 +173,9 @@ class ApiProvider extends ChangeNotifier {
     required String fullname,
     required String email,
     required String contact,
-    required String address,
+    // required String address,
     required String gender,
+    required String country,
     required String age,
     File? image,
   }) async {
@@ -184,10 +185,10 @@ class ApiProvider extends ChangeNotifier {
           email: email,
           userId: userId,
           image: image,
-          address: address,
+          // address: address,
           contact: contact,
           age: age,
-          // country: country,
+          country: country,
           gender: gender,
           fullName: fullname);
       // // debugPrint("${profileModel.status}");
@@ -198,10 +199,10 @@ class ApiProvider extends ChangeNotifier {
           email: email,
           userId: userId,
           // image: image,
-          address: address,
+          // address: address,
           contact: contact,
           age: age,
-          // country: country,
+          country: country,
           gender: gender,
           fullName: fullname);
       // // debugPrint("${profileModel.status}");

@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:sanad/model/contestquestionmodel.dart';
+import 'package:sanad/pages/calenderPage/calenderScreen.dart';
 import 'package:sanad/utils/utility.dart';
 
+import '../../Theme/color.dart';
 import '../../Theme/config.dart';
 
 class TargetScreen extends StatefulWidget {
-  TargetScreen({Key? key, required this.result}) : super(key: key);
+  TargetScreen({
+    Key? key,
+    required this.result,
+    required this.contestName,
+    required this.questionId,
+  }) : super(key: key);
   Result? result;
+  String questionId, contestName;
   @override
   State<TargetScreen> createState() => _TargetScreenState();
 }
@@ -41,7 +49,13 @@ class _TargetScreenState extends State<TargetScreen> {
                       color: Colors.white,
                       size: 30,
                     ),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CalenderScreen(
+                                  questionId: widget.questionId,
+                                  contestName: widget.contestName,
+                                ))),
                   ),
                   const Align(
                     alignment: Alignment.center,
@@ -105,8 +119,23 @@ class _TargetScreenState extends State<TargetScreen> {
                                             .toInt() *
                                         int.parse(widget.result!.pricePoint!)
                                             .toInt();
-                                Utility.toastMessage(
-                                    target.toString() + ' Target');
+                                Utility.customShowDialog(
+                                    title: const Text('Congratulation'),
+                                    content: Text(
+                                        ' You Have Won  ${target.round()} points'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          'Ok',
+                                          style: TextStyle(
+                                              color: cyan, fontSize: 20),
+                                        ),
+                                      )
+                                    ],
+                                    context: context);
                               }
                             },
                             height: 45,

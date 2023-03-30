@@ -76,8 +76,8 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 ),
                 calendarStyle: CalendarStyle(
                     rangeHighlightColor: cyan.withOpacity(0.3),
-                    rangeStartDecoration:
-                        BoxDecoration(color: cyan, shape: BoxShape.circle),
+                    rangeStartDecoration: const BoxDecoration(
+                        color: cyan, shape: BoxShape.circle),
                     rangeEndDecoration: const BoxDecoration(
                         color: cyan, shape: BoxShape.circle),
                     selectedDecoration: const BoxDecoration(
@@ -100,19 +100,19 @@ class _CalenderScreenState extends State<CalenderScreen> {
                       _focusedDay = focusedDay;
                       _rangeSelectionMode = RangeSelectionMode.toggledOff;
                       livecontent.contestQuestionModel.result!
-                          .forEach((element) {
-                        // livecontent.contestQuestionModel.result[element]=index2;
-                      });
-                      // _differenceDay=DateTime.now().difference(_selectedDay!);
+                          .forEach((element) {});
                       _differenceDay = _selectedDay!.difference(DateTime.now());
                       if (index2 <=
                           livecontent.contestQuestionModel.result!.length) {
-                        // index2 = index2 + 1;///////////////////////
-                        index2 = _differenceDay.inDays;
-                        // debugPrint(livecontent
-                        //     .contestQuestionModelNew.result!.length
-                        //     .toString());
-                        // debugPrint(index.toString() + 'index');
+                        int daysBetween(DateTime from, DateTime to) {
+                          from = DateTime(from.year, from.month, from.day);
+                          to = DateTime(to.year, to.month, to.day);
+                          return (to.difference(from).inHours / 24).round();
+                        }
+
+                        index2 = daysBetween(DateTime.now(), _selectedDay!);
+
+                        // index2 = _differenceDay.inDays;
                       }
                       if (index2 ==
                           livecontent.contestQuestionModel.result!.length) {
@@ -121,10 +121,6 @@ class _CalenderScreenState extends State<CalenderScreen> {
 
                       debugPrint(_differenceDay.inDays.toString() +
                           'this is _differenceDay');
-                      // debugPrint(
-                      //     _focusedDay.day.toString() + 'this is focused');
-                      // debugPrint(_selectedDay!.day.toString() +
-                      //     'this is _selectedDay');
                     });
                   }
                 },
@@ -145,7 +141,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               if (livecontent.contestQuestionModel.result!.isNotEmpty)
@@ -197,11 +193,13 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                 builder: (context) => TargetScreen(
                                       result: livecontent
                                           .contestQuestionModel.result![index2],
+                                      contestName: widget.contestName,
+                                      questionId: widget.questionId,
                                     )));
                       } else if (livecontent.contestQuestionModel
                               .result![index2].questionType ==
                           1) {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ContestQuestions(

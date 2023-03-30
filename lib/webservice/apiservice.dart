@@ -209,10 +209,10 @@ class ApiService {
       required String fullName,
       required String email,
       required String contact,
-      required String address,
+      // required String address,
       dynamic? image,
       required String age,
-      // required String country,
+      required String country,
       required String gender}
 // ,
       // userId, fullname, email, contact, address, image
@@ -227,11 +227,12 @@ class ApiService {
             "fullname": fullName,
             "email": email,
             "mobile_number": contact,
-            "biodata": address,
+            // "biodata": address,
             "profile_img": await MultipartFile.fromFile(image.path,
                 filename: basename(image.path)),
             'gender': gender,
             'age': age,
+            'country': country
             // 'address':
           }));
     } else {
@@ -241,9 +242,9 @@ class ApiService {
             "fullname": fullName,
             "email": email,
             "mobile_number": contact,
-            "biodata": address,
             // "profile_img": await MultipartFile.fromFile(image.path,
             //     filename: basename(image.path)),
+            'country': country,
             'gender': gender,
             'age': age
           }));
