@@ -99,8 +99,7 @@ class _CalenderScreenState extends State<CalenderScreen> {
                       _selectedDay = selectedDay;
                       _focusedDay = focusedDay;
                       _rangeSelectionMode = RangeSelectionMode.toggledOff;
-                      livecontent.contestQuestionModel.result!
-                          .forEach((element) {});
+
                       _differenceDay = _selectedDay!.difference(DateTime.now());
                       if (index2 <=
                           livecontent.contestQuestionModel.result!.length) {
@@ -179,68 +178,70 @@ class _CalenderScreenState extends State<CalenderScreen> {
                                     BorderRadius.all(Radius.circular(28.0))))),
                     onPressed: () async {
                       DateTime now = DateTime.now();
-
-                      debugPrint(now.toLocal().toString().split(' ')[0] +
-                          '  this is now');
-                      debugPrint(_selectedDay.toString().split(' ')[0] +
-                          '  this is selected');
-                      if (livecontent.contestQuestionModel.result![index2]
-                              .questionType ==
-                          3) {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => TargetScreen(
-                                      result: livecontent
-                                          .contestQuestionModel.result![index2],
-                                      contestName: widget.contestName,
-                                      questionId: widget.questionId,
-                                    )));
-                      } else if (livecontent.contestQuestionModel
-                              .result![index2].questionType ==
-                          1) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ContestQuestions(
-                                      contestId: widget.questionId.toString(),
-                                      contestName: widget.contestName,
-                                    )));
-                      } else {
-                        Utility.toastMessage(' Coming Soon Waiting For Api \n'
-                            'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
-                      }
-                      // if (now.toString().split(' ')[0] ==
-                      //     _selectedDay.toString().split(' ')[0]) {
-                      //   if (livecontent.contestQuestionModel.result![index2]
-                      //           .questionType ==
-                      //       3) {
-                      //     Navigator.pushReplacement(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => TargetScreen(
-                      //                   result: livecontent.contestQuestionModel
-                      //                       .result![index2],
-                      //                 )));
-                      //   } else if (livecontent.contestQuestionModel
-                      //           .result![index2].questionType ==
-                      //       1) {
-                      //     Navigator.pushReplacement(
-                      //         context,
-                      //         MaterialPageRoute(
-                      //             builder: (context) => ContestQuestions(
-                      //                   contestId: widget.questionId.toString(),
-                      //                   contestName: widget.contestName,
-                      //                 )));
-                      //   } else {
-                      //     Utility.toastMessage(' Coming Soon Waiting For Api \n'
-                      //         'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
-                      //   }
+                      //
+                      // debugPrint(now.toLocal().toString().split(' ')[0] +
+                      //     '  this is now');
+                      // debugPrint(_selectedDay.toString().split(' ')[0] +
+                      //     '  this is selected');
+                      // if (livecontent.contestQuestionModel.result![index2]
+                      //         .questionType ==
+                      //     3) {
+                      //   Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => TargetScreen(
+                      //                 result: livecontent
+                      //                     .contestQuestionModel.result![index2],
+                      //                 contestName: widget.contestName,
+                      //                 questionId: widget.questionId,
+                      //               )));
+                      // } else if (livecontent.contestQuestionModel
+                      //         .result![index2].questionType ==
+                      //     1) {
+                      //   Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => ContestQuestions(
+                      //                 contestId: widget.questionId.toString(),
+                      //                 contestName: widget.contestName,
+                      //               )));
                       // } else {
-                      //   Utility.toastMessage(
-                      //       'No Matching With Selected Day \n Please Select '
-                      //       'another question');
+                      //   Utility.toastMessage(' Coming Soon Waiting For Api \n'
+                      //       'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
                       // }
+                      if (now.toString().split(' ')[0] ==
+                          _selectedDay.toString().split(' ')[0]) {
+                        if (livecontent.contestQuestionModel.result![index2]
+                                .questionType ==
+                            3) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => TargetScreen(
+                                        result: livecontent.contestQuestionModel
+                                            .result![index2],
+                                        contestName: widget.contestName,
+                                        questionId: widget.questionId,
+                                      )));
+                        } else if (livecontent.contestQuestionModel
+                                .result![index2].questionType ==
+                            1) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContestQuestions(
+                                        contestId: widget.questionId.toString(),
+                                        contestName: widget.contestName,
+                                      )));
+                        } else {
+                          Utility.toastMessage(' Coming Soon Waiting For Api \n'
+                              'the Question type is:  ${livecontent.contestQuestionModel.result![index2].questionType}  ');
+                        }
+                      } else {
+                        Utility.toastMessage(
+                            'No Matching With Selected Day \n Please Select '
+                            'another question');
+                      }
                     },
                     child: const Text(
                       'Confirm',

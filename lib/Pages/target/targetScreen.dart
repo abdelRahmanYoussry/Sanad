@@ -91,17 +91,33 @@ class _TargetScreenState extends State<TargetScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          TextField(
-                            controller: answerController,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                                labelText: "Answer",
-                                labelStyle: TextStyle(color: Colors.black),
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
-                                hintText: "Answer",
-                                hintStyle: TextStyle(color: Colors.grey)),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 200,
+                            child: Image.network(widget.result!.image!),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: answerController,
+                                  keyboardType: TextInputType.number,
+                                  decoration: const InputDecoration(
+                                      labelText: "Answer",
+                                      labelStyle:
+                                          TextStyle(color: Colors.black),
+                                      contentPadding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      border: InputBorder.none,
+                                      hintText: "Answer",
+                                      hintStyle: TextStyle(color: Colors.grey)),
+                                ),
+                              ),
+                              Text(widget.result!.unit!)
+                            ],
                           ),
                           Divider(
                             thickness: 0.5,
@@ -109,6 +125,9 @@ class _TargetScreenState extends State<TargetScreen> {
                           ),
                           const SizedBox(
                             height: 20,
+                          ),
+                          SizedBox(
+                            height: size.height * 0.02,
                           ),
                           MaterialButton(
                             onPressed: () {
@@ -126,7 +145,16 @@ class _TargetScreenState extends State<TargetScreen> {
                                     actions: [
                                       TextButton(
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      CalenderScreen(
+                                                        questionId:
+                                                            widget.questionId,
+                                                        contestName:
+                                                            widget.contestName,
+                                                      )));
                                         },
                                         child: const Text(
                                           'Ok',
